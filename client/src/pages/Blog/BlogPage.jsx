@@ -1,3 +1,4 @@
+// File: client/src/pages/Blog/BlogPage.jsx
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
@@ -9,415 +10,323 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { motion } from 'framer-motion'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight,
   BookOpen,
   Calendar,
   Clock,
-  Home,
   Search,
+  ChevronRight,
+  TrendingUp,
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-// Sample blog data
+// Sample blog data (Preserved)
 const blogPosts = [
   {
     id: 1,
     title: 'Understanding Mortgage Rates in Germany',
-    excerpt:
-      'Learn how mortgage rates work in Germany and what factors influence them in the current market.',
+    excerpt: 'Learn how mortgage rates work in Germany and what factors influence them in the current market.',
     category: 'Financing',
     date: 'Feb 18, 2025',
     readTime: '5 min',
-    image:
-      'https://images.pexels.com/photos/534220/pexels-photo-534220.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop',
     featured: true,
   },
   {
     id: 2,
     title: 'First-Time Home Buyer Guide',
-    excerpt:
-      'Everything you need to know about buying your first home in Germany, from preparation to closing.',
+    excerpt: 'Everything you need to know about buying your first home in Germany, from preparation to closing.',
     category: 'Guides',
     date: 'Feb 10, 2025',
     readTime: '8 min',
-    image:
-      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1373&q=80',
+    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1373&q=80',
     featured: true,
   },
   {
     id: 3,
     title: 'Navigating Property Taxes in Different German States',
-    excerpt:
-      "A comprehensive overview of property tax structures across Germany's federal states.",
+    excerpt: "A comprehensive overview of property tax structures across Germany's federal states.",
     category: 'Taxes',
     date: 'Feb 5, 2025',
     readTime: '6 min',
-    image:
-      'https://images.pexels.com/photos/2098405/pexels-photo-2098405.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1554224155-169641357599?q=80&w=2070&auto=format&fit=crop',
     featured: false,
   },
   {
     id: 4,
     title: 'Tips for a Successful Property Viewing',
-    excerpt:
-      'How to make the most of your property viewings and what to look for in your potential new home.',
+    excerpt: 'How to make the most of your property viewings and what to look for in your potential new home.',
     category: 'Buying',
     date: 'Jan 28, 2025',
     readTime: '4 min',
-    image:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     featured: false,
   },
   {
     id: 5,
     title: 'Renovation Loans: What You Need to Know',
-    excerpt:
-      'Explore financing options for renovating your new property and maximizing its value.',
+    excerpt: 'Explore financing options for renovating your new property and maximizing its value.',
     category: 'Financing',
     date: 'Jan 20, 2025',
     readTime: '7 min',
-    image:
-      'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1581578731522-745d05ad9a2d?q=80&w=2070&auto=format&fit=crop',
     featured: false,
   },
   {
     id: 6,
     title: 'The Impact of Energy Efficiency on Property Value',
-    excerpt:
-      'How energy standards affect property prices and long-term investment potential in Germany.',
+    excerpt: 'How energy standards affect property prices and long-term investment potential in Germany.',
     category: 'Market Trends',
     date: 'Jan 15, 2025',
     readTime: '5 min',
-    image:
-      'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    image: 'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
     featured: false,
   },
 ]
 
-// Category icons mapping
+// Updated Category Icons with Navy/Gold theme
 const getCategoryIcon = (category) => {
+  const iconClass = 'w-4 h-4 text-[#D4AF37]'
+  const bgClass = 'p-2 rounded-xl bg-[#D4AF37]/10'
+  
   switch (category) {
-    case 'Financing':
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-blue-100 p-2 rounded-full'
-        >
-          <BookOpen size={16} className='text-blue-600' />
-        </motion.div>
-      )
-    case 'Guides':
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-green-100 p-2 rounded-full'
-        >
-          <BookOpen size={16} className='text-green-600' />
-        </motion.div>
-      )
-    case 'Taxes':
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-red-100 p-2 rounded-full'
-        >
-          <BookOpen size={16} className='text-red-600' />
-        </motion.div>
-      )
-    case 'Buying':
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-purple-100 p-2 rounded-full'
-        >
-          <Home size={16} className='text-purple-600' />
-        </motion.div>
-      )
-    case 'Market Trends':
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-yellow-100 p-2 rounded-full'
-        >
-          <BookOpen size={16} className='text-yellow-600' />
-        </motion.div>
-      )
-    default:
-      return (
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className='bg-gray-100 p-2 rounded-full'
-        >
-          <BookOpen size={16} className='text-gray-600' />
-        </motion.div>
-      )
+    case 'Financing': return <div className={bgClass}><TrendingUp className={iconClass} /></div>
+    case 'Guides': return <div className={bgClass}><BookOpen className={iconClass} /></div>
+    default: return <div className={bgClass}><BookOpen className={iconClass} /></div>
   }
 }
 
-// Featured blog card component
-const FeaturedBlogCard = ({ post }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className='col-span-1 md:col-span-2'
-  >
-    <Card className='overflow-hidden h-full border-none shadow-md hover:shadow-lg transition-shadow duration-300'>
-      <div className='relative'>
-        <img
-          src={post.image}
-          alt={post.title}
-          className='w-full h-64 object-cover'
-        />
-        <div className='absolute top-4 left-4 bg-white bg-opacity-90 px-3 py-1 rounded-full'>
-          <span className='text-sm font-medium text-blue-600'>
-            {post.category}
-          </span>
-        </div>
-      </div>
-      <CardHeader>
-        <CardTitle className='text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors'>
-          {post.title}
-        </CardTitle>
-        <CardDescription className='flex items-center gap-4 text-sm text-gray-500'>
-          <span className='flex items-center gap-1'>
-            <Calendar size={14} />
-            {post.date}
-          </span>
-          <span className='flex items-center gap-1'>
-            <Clock size={14} />
-            {post.readTime}
-          </span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className='text-gray-600'>{post.excerpt}</p>
-      </CardContent>
-      <CardFooter>
-        <Button
-          variant='link'
-          className='px-0 text-blue-600 hover:text-blue-800'
-        >
-          Read More <ArrowRight size={16} className='ml-2' />
-        </Button>
-      </CardFooter>
-    </Card>
-  </motion.div>
-)
-
-// Regular blog card component
 const BlogCard = ({ post, index }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    className="group"
   >
-    <Card className='overflow-hidden h-full border-none shadow-md hover:shadow-lg transition-shadow duration-300'>
-      <div className='relative'>
-        <img
-          src={post.image}
-          alt={post.title}
-          className='w-full h-48 object-cover'
-        />
-        <div className='absolute top-4 left-4 bg-white bg-opacity-90 px-3 py-1 rounded-full flex items-center gap-2'>
-          {getCategoryIcon(post.category)}
-          <span className='text-sm font-medium text-gray-700'>
+    <Card className="h-full bg-white dark:bg-[#0A192F]/50 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[32px] overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-none hover:border-[#D4AF37] transition-all duration-500">
+      <div className="relative overflow-hidden h-60">
+        <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <div className="absolute top-4 left-4">
+          <span className="px-4 py-1.5 rounded-full bg-white/90 dark:bg-[#0A192F]/80 backdrop-blur-md text-[#0A192F] dark:text-[#D4AF37] text-xs font-bold uppercase tracking-widest border border-[#D4AF37]/20">
             {post.category}
           </span>
         </div>
       </div>
-      <CardHeader>
-        <CardTitle className='text-lg font-bold text-gray-800 hover:text-blue-600 transition-colors'>
+      <CardHeader className="space-y-4 px-8 pt-8">
+        <div className="flex items-center gap-4 text-xs font-semibold text-gray-500 dark:text-gray-400">
+          <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
+          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime} read</span>
+        </div>
+        <CardTitle className="text-2xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight group-hover:text-[#D4AF37] transition-colors">
           {post.title}
         </CardTitle>
-        <CardDescription className='flex items-center gap-4 text-sm text-gray-500'>
-          <span className='flex items-center gap-1'>
-            <Calendar size={14} />
-            {post.date}
-          </span>
-          <span className='flex items-center gap-1'>
-            <Clock size={14} />
-            {post.readTime}
-          </span>
-        </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p className='text-gray-600 line-clamp-3'>{post.excerpt}</p>
+      <CardContent className="px-8 flex-1">
+        <CardDescription className="text-gray-600 dark:text-gray-400 font-body leading-relaxed line-clamp-3">
+          {post.excerpt}
+        </CardDescription>
       </CardContent>
-      <CardFooter>
-        <Button
-          variant='link'
-          className='px-0 text-blue-600 hover:text-blue-800'
-        >
-          Read More <ArrowRight size={16} className='ml-2' />
+      <CardFooter className="px-8 pb-8 pt-4">
+        <Button variant="link" className="px-0 text-[#0A192F] dark:text-[#D4AF37] font-bold text-sm tracking-wide group/btn">
+          READ MORE <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
         </Button>
       </CardFooter>
     </Card>
   </motion.div>
 )
-
-// Main Blog Page Component
-// Custom CSS for white placeholder
-const searchInputStyle = {
-  '::placeholder': { color: 'white !important' },
-}
 
 const BlogPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredPosts, setFilteredPosts] = useState(blogPosts)
   const [activeCategory, setActiveCategory] = useState('all')
 
-  const featuredPosts = blogPosts.filter((post) => post.featured)
   const categories = ['all', ...new Set(blogPosts.map((post) => post.category))]
 
   useEffect(() => {
     let result = blogPosts
-
-    // Filter by search
     if (searchQuery) {
       result = result.filter(
-        (post) =>
-          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          post.category.toLowerCase().includes(searchQuery.toLowerCase())
+        (post) => post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-
-    // Filter by category
     if (activeCategory !== 'all') {
       result = result.filter((post) => post.category === activeCategory)
     }
-
     setFilteredPosts(result)
   }, [searchQuery, activeCategory])
 
-  // Hero animation variants
-  const heroVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        when: 'beforeChildren',
-        staggerChildren: 0.2,
-      },
-    },
-  }
-
-  const heroItemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
-  }
-
   return (
-    <>
+    <div className="min-h-screen bg-white dark:bg-[#0A192F] transition-colors duration-500">
       <Navbar />
-      <div className='min-h-screen bg-gray-50'>
-        {/* Categories / Tabs */}
-        <section className='py-8 container mx-auto px-4'>
-          <Tabs
-            defaultValue='all'
-            value={activeCategory}
-            onValueChange={setActiveCategory}
+
+      {/* Hero Header */}
+      <section className="pt-32 pb-20 px-6 md:px-10">
+        <div className="max-w-7xl mx-auto text-center space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
           >
-            <TabsList className='grid grid-flow-col auto-cols-max gap-2 overflow-x-auto pb-2 w-full justify-start'>
+            <BookOpen className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-xs font-bold tracking-widest text-[#0A192F] dark:text-gray-300 uppercase">
+              Baufiking Insights
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight"
+          >
+            Knowledge for Your <span className="text-[#D4AF37]">Next Chapter</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-body"
+          >
+            Expert advice and market insights on the German mortgage landscape.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Filters & Search - Premium Styling */}
+      <section className="sticky top-20 z-30 py-6 bg-white/80 dark:bg-[#0A192F]/80 backdrop-blur-xl border-y border-slate-100 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full md:w-auto">
+            <TabsList className="h-auto flex flex-wrap p-1 gap-2 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
               {categories.map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}
-                  className='capitalize'
+                  className="rounded-xl px-6 py-2.5 font-bold text-sm capitalize data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
                 >
                   {category}
                 </TabsTrigger>
               ))}
             </TabsList>
           </Tabs>
-        </section>
 
-        {/* Featured Posts */}
-        {featuredPosts.length > 0 &&
-          activeCategory === 'all' &&
-          !searchQuery && (
-            <section className='py-8 container mx-auto px-4'>
-              <h2 className='text-2xl font-bold mb-6 text-gray-800'>
-                Featured Articles
-              </h2>
-              <div className='grid md:grid-cols-2 gap-6'>
-                {featuredPosts.map((post) => (
-                  <FeaturedBlogCard key={post.id} post={post} />
-                ))}
-              </div>
-            </section>
-          )}
+          <div className="relative w-full md:w-80 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+            <input
+              type="text"
+              placeholder="Search articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-6 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none text-sm"
+            />
+          </div>
+        </div>
+      </section>
 
-        {/* All Posts Grid */}
-        <section className='py-8 container mx-auto px-4 mb-16'>
-          <h2 className='text-2xl font-bold mb-6 text-gray-800'>
-            {searchQuery
-              ? 'Search Results'
-              : activeCategory !== 'all'
-              ? `${activeCategory} Articles`
-              : 'All Articles'}
-          </h2>
+      {/* Blog Grid */}
+      <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto">
+        <div className="space-y-12">
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold font-heading text-[#0A192F] dark:text-white">
+              {searchQuery ? 'Search Results' : activeCategory !== 'all' ? `${activeCategory} Articles` : 'Featured Insights'}
+            </h2>
+            <div className="h-px flex-1 mx-8 bg-slate-100 dark:bg-slate-800 hidden md:block" />
+          </div>
 
-          {filteredPosts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='text-center py-16'
-            >
-              <p className='text-xl text-gray-500'>
-                No articles found matching your criteria.
-              </p>
-              <Button
-                variant='outline'
-                className='mt-4'
-                onClick={() => {
-                  setSearchQuery('')
-                  setActiveCategory('all')
-                }}
+          <AnimatePresence mode="wait">
+            {filteredPosts.length === 0 ? (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-center py-32 space-y-6"
               >
-                Reset Filters
-              </Button>
-            </motion.div>
-          ) : (
-            <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {filteredPosts.map((post, index) => (
-                <BlogCard key={post.id} post={post} index={index} />
-              ))}
-            </div>
-          )}
+                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-gray-300">
+                  <Search className="w-10 h-10" />
+                </div>
+                <p className="text-xl text-gray-500 font-body">No articles found matching your criteria.</p>
+                <Button 
+                  onClick={() => { setSearchQuery(''); setActiveCategory('all'); }} 
+                  className="bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl px-8 h-12 font-bold"
+                >
+                  Reset Filters
+                </Button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="grid"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10"
+              >
+                {filteredPosts.map((post, index) => (
+                  <BlogCard key={post.id} post={post} index={index} />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Pagination */}
-          {/* {filteredPosts.length > 0 && (
-            <div className='flex justify-center mt-12'>
-              <div className='flex gap-2'>
-                <Button variant='outline' size='sm' disabled>
+          {/* Pagination Placeholder (Updated Style) */}
+          {filteredPosts.length > 0 && (
+            <div className="flex justify-center mt-20 pt-10 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex gap-3">
+                <Button variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 text-gray-400" disabled>
                   Previous
                 </Button>
-                <Button className='bg-blue-600 hover:bg-blue-700' size='sm'>
-                  1
-                </Button>
-                <Button variant='outline' size='sm'>
-                  2
-                </Button>
-                <Button variant='outline' size='sm'>
-                  3
-                </Button>
-                <Button variant='outline' size='sm'>
+                {[1, 2, 3].map(p => (
+                  <Button key={p} className={`w-10 h-10 rounded-xl font-bold ${p === 1 ? 'bg-[#D4AF37] text-white shadow-lg shadow-[#D4AF37]/20' : 'bg-transparent text-gray-500 hover:text-[#D4AF37]'}`}>
+                    {p}
+                  </Button>
+                ))}
+                <Button variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 font-bold hover:text-[#D4AF37]">
                   Next
                 </Button>
               </div>
             </div>
-          )} */}
-        </section>
-      </div>
+          )}
+        </div>
+      </section>
+
+      {/* Newsletter / CTA Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="py-32 px-6 md:px-10 bg-slate-50 dark:bg-slate-900/50"
+      >
+        <div className="max-w-4xl mx-auto rounded-[48px] bg-[#0A192F] p-12 md:p-20 text-center space-y-10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] translate-x-1/2 translate-y-1/2" />
+          
+          <div className="relative z-10 space-y-6">
+            <h2 className="text-4xl md:text-5xl font-bold font-heading text-white">Subscribe to Our Market Insights</h2>
+            <p className="text-gray-300 text-lg font-body max-w-lg mx-auto leading-relaxed">
+              Stay ahead with the latest property trends and mortgage updates in Germany. 
+              Delivered straight to your inbox.
+            </p>
+          </div>
+
+          <form className="relative z-10 flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={e => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="Your email address"
+              className="flex-1 px-8 py-5 rounded-3xl bg-white/10 border border-white/20 text-white placeholder:text-gray-500 outline-none focus:border-[#D4AF37] transition-all"
+            />
+            <Button className="bg-[#D4AF37] hover:bg-[#B8962E] text-white h-[66px] px-10 rounded-3xl font-bold text-lg shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-95">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+      </motion.section>
+
       <Footer />
-    </>
+    </div>
   )
 }
 
