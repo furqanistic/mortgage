@@ -154,7 +154,7 @@ const RoadmapSection = () => {
         </div>
 
         {/* Desktop View: Interactive Horizontal Timeline */}
-        <div className="hidden lg:block mb-16 px-4">
+        <div className="hidden lg:block mb-16 px-4 ">
             <div className="flex items-center w-full">
                  {steps.map((step, index) => {
                      const StepIcon = step.icon
@@ -163,7 +163,7 @@ const RoadmapSection = () => {
                      const isLastStep = index === steps.length - 1
                      
                      return (
-                         <div key={index} className={`flex items-center ${isLastStep ? '' : 'flex-1'} relative`}>
+                         <div key={index} className={`flex items-center   ${isLastStep ? '' : 'flex-1'} relative`}>
                              {/* Step Button - Z-index 10 to sit above lines */}
                              <button 
                                 onClick={() => setActiveStep(index)}
@@ -202,7 +202,7 @@ const RoadmapSection = () => {
         </div>
 
         {/* Content Display Area */}
-        <div className='bg-white dark:bg-card border border-border shadow-sm rounded-3xl p-8 lg:p-12 overflow-hidden relative'>
+        <div className='bg-white dark:bg-card border border-border shadow-sm rounded-3xl p-8 lg:p-12 overflow-hidden relative '>
            {/* Decorative background blob */}
            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none" />
            
