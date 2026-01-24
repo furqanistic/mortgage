@@ -1,3 +1,4 @@
+// File: client/src/pages/About/AboutPage.jsx
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
@@ -7,7 +8,6 @@ import {
   Award,
   Building,
   ChevronRight,
-  Sparkles,
   Star,
   Target,
   Users,
@@ -20,194 +20,203 @@ const AboutPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.8,
+        ease: [0.21, 0.45, 0.32, 0.9],
       },
     },
   }
 
-  return (
-    <>
-      <Navbar />
-      <div className='bg-white min-h-screen'>
-        {/* Hero Section */}
-        <section className='relative pt-24 pb-16 overflow-hidden'>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className='absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-[#155FA0]/5 to-transparent'
-          />
+  const stats = [
+    { value: '1,000+', label: 'Happy Clients' },
+    { value: '€10m+', label: 'Properties Handled' },
+    { value: '98%', label: 'Success Rate' },
+    { value: '4.9/5', label: 'Client Rating' },
+  ]
 
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+  const features = [
+    {
+      icon: Target,
+      title: 'Smart Matching',
+      description: 'AI-powered property recommendations',
+    },
+    {
+      icon: Users,
+      title: 'Expert Support',
+      description: '24/7 guidance throughout your journey',
+    },
+    {
+      icon: Building,
+      title: 'Complete Coverage',
+      description: 'From search to final handover',
+    },
+  ]
+
+  return (
+    <div className="font-['Roboto'] selection:bg-[#C5A059]/30">
+      <Navbar />
+      <main className="min-h-screen bg-white dark:bg-[#000d1a] transition-colors duration-500">
+        
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden">
+          {/* Subtle Background Glow */}
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-[#C5A059]/5 rounded-full blur-[120px] pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.div
               variants={containerVariants}
-              initial='hidden'
-              animate='visible'
-              className='grid md:grid-cols-2 gap-12 items-center'
+              initial="hidden"
+              animate="visible"
+              className="grid lg:grid-cols-2 gap-16 items-center"
             >
-              <motion.div variants={itemVariants} className='space-y-6'>
+              <div className="space-y-10">
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#155FA0]/5'
+                  variants={itemVariants}
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#001F3F]/10 dark:border-[#C5A059]/20 bg-[#001F3F]/5 dark:bg-[#C5A059]/5"
                 >
-                  <Star className='w-4 h-4 text-[#155FA0]' />
-                  <span className='text-sm font-medium text-[#155FA0]'>
+                  <Star className="w-4 h-4 text-[#C5A059]" />
+                  <span className="text-xs font-semibold tracking-wider uppercase text-[#001F3F] dark:text-[#C5A059]">
                     Trusted by 15,000+ Homebuyers
                   </span>
                 </motion.div>
 
-                <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900'>
-                  Making Home
-                  <span className='text-[#155FA0]'> Ownership</span>
-                  <br />
-                  Simple
-                </h1>
+                <motion.h1 
+                  variants={itemVariants}
+                  className="text-5xl lg:text-7xl font-bold font-['Inter'] leading-[1.1] text-[#001F3F] dark:text-white"
+                >
+                  Making Home <br />
+                  <span className="text-[#C5A059]">Ownership</span> Simple
+                </motion.h1>
 
-                <p className='text-lg text-gray-600 max-w-lg'>
+                <motion.p 
+                  variants={itemVariants}
+                  className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl"
+                >
                   We combine AI innovation with expert guidance to transform
                   your German home buying journey into a seamless experience.
-                </p>
+                </motion.p>
 
-                <motion.div
-                  variants={itemVariants}
-                  className='flex flex-col sm:flex-row gap-4'
-                >
+                <motion.div variants={itemVariants} className="flex flex-wrap gap-5">
                   <Button
-                    className='bg-[#155FA0] text-white hover:bg-[#51A0D0] h-12 px-6 rounded-full'
+                    className="bg-[#001F3F] dark:bg-[#C5A059] text-white dark:text-[#000d1a] hover:opacity-90 transition-all h-14 px-10 rounded-full text-lg font-medium shadow-xl shadow-[#001F3F]/10 dark:shadow-[#C5A059]/10"
                     onClick={() => {}}
                   >
                     Start Your Journey
-                    <ChevronRight className='w-4 h-4 ml-2' />
+                    <ChevronRight className="w-5 h-5 ml-2" />
                   </Button>
                 </motion.div>
-              </motion.div>
+              </div>
 
-              <motion.div variants={itemVariants} className='relative'>
-                <div className='aspect-square rounded-3xl overflow-hidden bg-[#155FA0]/5 p-8'>
+              <motion.div variants={itemVariants} className="relative group">
+                <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#001F3F]/5 dark:bg-[#C5A059]/5 border border-[#001F3F]/10 dark:border-[#C5A059]/20 shadow-2xl">
                   <img
-                    src='/Logo.svg'
-                    alt='About Baufiking'
-                    className='w-full h-full object-cover rounded-2xl'
+                    src="/Logo.svg"
+                    alt="About Baufiking"
+                    className="w-full h-full object-contain p-12 transition-transform duration-700 group-hover:scale-105"
                   />
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className='absolute -bottom-6 -right-6 bg-white shadow-lg p-6 rounded-2xl'
-                  >
-                    <div className='flex items-center gap-3'>
-                      <Award className='w-10 h-10 text-[#155FA0]' />
-                      <div>
-                        <p className='text-sm font-semibold text-gray-900'>
-                          Top Rated
-                        </p>
-                        <p className='text-xs text-gray-500'>
-                          in Property Tech
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
                 </div>
+                
+                {/* Floating Badge */}
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.5 }}
+                  className="absolute -bottom-8 -left-8 bg-white dark:bg-[#001F3F] shadow-2xl p-8 rounded-3xl border border-slate-100 dark:border-white/10 hidden md:block"
+                >
+                  <div className="flex items-center gap-5">
+                    <div className="p-3 bg-[#C5A059]/10 rounded-2xl">
+                      <Award className="w-8 h-8 text-[#C5A059]" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-[#001F3F] dark:text-white">
+                        Top Rated
+                      </p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        in Property Tech
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
         </section>
 
         {/* Stats Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className='py-16 bg-gray-50'
-        >
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
-              {[
-                { value: '1,000+', label: 'Happy Clients' },
-                { value: '€10m+', label: 'Properties Handled' },
-                { value: '98%', label: 'Success Rate' },
-                { value: '4.9/5', label: 'Client Rating' },
-              ].map((stat, index) => (
+        <section className="py-24 bg-[#001F3F] text-white dark:bg-[#C5A059]/5 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-24">
+              {stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className='text-center'
+                  className="text-center"
                 >
-                  <p className='text-3xl font-bold text-[#155FA0]'>
+                  <p className="text-4xl lg:text-5xl font-bold font-['Inter'] text-[#C5A059] mb-2">
                     {stat.value}
                   </p>
-                  <p className='text-sm text-gray-600'>{stat.label}</p>
+                  <p className="text-sm tracking-widest uppercase font-medium text-white/70 dark:text-slate-400">
+                    {stat.label}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Mission Section */}
-        <section className='py-20'>
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-            <motion.div
-              variants={containerVariants}
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              className='grid md:grid-cols-2 gap-16 items-center'
-            >
-              <motion.div variants={itemVariants} className='space-y-6'>
-                <h2 className='text-3xl font-bold text-gray-900'>
-                  Our Mission
-                </h2>
-                <p className='text-gray-600'>
-                  We believe that everyone deserves their dream home in Germany.
-                  Through our AI-powered platform and expert guidance, we're
-                  making the complex journey of home buying accessible and
-                  stress-free for all.
-                </p>
-                <div className='space-y-4'>
-                  {[
-                    {
-                      icon: Target,
-                      title: 'Smart Matching',
-                      description: 'AI-powered property recommendations',
-                    },
-                    {
-                      icon: Users,
-                      title: 'Expert Support',
-                      description: '24/7 guidance throughout your journey',
-                    },
-                    {
-                      icon: Building,
-                      title: 'Complete Coverage',
-                      description: 'From search to final handover',
-                    },
-                  ].map((feature, index) => (
+        <section className="py-32 lg:py-48">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-24 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-12"
+              >
+                <div className="space-y-6">
+                  <h2 className="text-4xl lg:text-5xl font-bold font-['Inter'] text-[#001F3F] dark:text-white">
+                    Our Mission
+                  </h2>
+                  <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+                    We believe that everyone deserves their dream home in Germany.
+                    Through our AI-powered platform and expert guidance, we're
+                    making the complex journey of home buying accessible and
+                    stress-free for all.
+                  </p>
+                </div>
+
+                <div className="grid gap-6">
+                  {features.map((feature, index) => (
                     <motion.div
                       key={index}
-                      variants={itemVariants}
-                      className='flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all'
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="group flex items-start gap-6 p-6 rounded-3xl border border-transparent hover:border-[#001F3F]/10 dark:hover:border-[#C5A059]/20 hover:bg-[#001F3F]/5 dark:hover:bg-[#C5A059]/5 transition-all duration-300"
                     >
-                      <div className='p-2 rounded-lg bg-[#155FA0]/10'>
-                        <feature.icon className='w-5 h-5 text-[#155FA0]' />
+                      <div className="shrink-0 p-4 rounded-2xl bg-[#001F3F]/5 dark:bg-[#C5A059]/10 text-[#001F3F] dark:text-[#C5A059] group-hover:bg-[#001F3F] dark:group-hover:bg-[#C5A059] group-hover:text-white dark:group-hover:text-[#000d1a] transition-colors">
+                        <feature.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className='font-semibold text-gray-900'>
+                        <h3 className="text-xl font-bold text-[#001F3F] dark:text-white mb-1">
                           {feature.title}
                         </h3>
-                        <p className='text-sm text-gray-600'>
+                        <p className="text-slate-600 dark:text-slate-400">
                           {feature.description}
                         </p>
                       </div>
@@ -216,85 +225,83 @@ const AboutPage = () => {
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className='relative'>
-                <div className='grid grid-cols-2 gap-4'>
-                  <div className='space-y-4'>
-                    <div className='aspect-square rounded-2xl overflow-hidden'>
-                      <img
-                        src='https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1200'
-                        alt='Feature 1'
-                        className='w-full h-full object-cover'
-                      />
-                    </div>
-                    <div className='aspect-square rounded-2xl overflow-hidden'>
-                      <img
-                        src='https://images.pexels.com/photos/8082319/pexels-photo-8082319.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load'
-                        alt='Feature 2'
-                        className='w-full h-full object-cover'
-                      />
-                    </div>
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="relative grid grid-cols-2 gap-6"
+              >
+                <div className="space-y-6">
+                  <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
+                    <img
+                      src="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      alt="Modern German architecture"
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    />
                   </div>
-                  <div className='space-y-4 pt-8'>
-                    <div className='aspect-square rounded-2xl overflow-hidden'>
-                      <img
-                        src='https://images.pexels.com/photos/5644337/pexels-photo-5644337.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load'
-                        alt='Feature 3'
-                        className='w-full h-full object-cover'
-                      />
-                    </div>
-                    <div className='aspect-square rounded-2xl overflow-hidden'>
-                      <img
-                        src='https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1200'
-                        alt='Feature 4'
-                        className='w-full h-full object-cover'
-                      />
-                    </div>
+                  <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                    <img
+                      src="https://images.pexels.com/photos/8082319/pexels-photo-8082319.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load"
+                      alt="Interior design"
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-6 pt-12">
+                  <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                    <img
+                      src="https://images.pexels.com/photos/5644337/pexels-photo-5644337.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load"
+                      alt="Consultation session"
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    />
+                  </div>
+                  <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
+                    <img
+                      src="https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      alt="Happy family in new home"
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    />
                   </div>
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className='py-20 bg-[#155FA0]'
-        >
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
-            <motion.div
-              variants={containerVariants}
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              className='max-w-2xl mx-auto'
-            >
-              <motion.h2
-                variants={itemVariants}
-                className='text-3xl font-bold text-white mb-6'
-              >
-                Ready to Find Your Dream Home?
-              </motion.h2>
-              <motion.p variants={itemVariants} className='text-white/80 mb-8'>
-                Let's start your journey to homeownership together.
-              </motion.p>
-              <motion.div variants={itemVariants}>
+        <section className="py-24 lg:py-32 px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-7xl mx-auto rounded-[3rem] bg-[#001F3F] dark:bg-[#C5A059]/10 p-12 lg:p-24 text-center relative overflow-hidden"
+          >
+            {/* Background Accent */}
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,#C5A059/10,transparent_50%)]" />
+            
+            <div className="relative z-10 max-w-3xl mx-auto space-y-10">
+              <h2 className="text-4xl lg:text-6xl font-bold font-['Inter'] text-white">
+                Ready to Find Your <span className="text-[#C5A059]">Dream Home?</span>
+              </h2>
+              <p className="text-xl text-white/70 leading-relaxed">
+                Let's start your journey to homeownership together. Our experts are ready to help you every step of the way.
+              </p>
+              <div className="flex justify-center pt-4">
                 <Button
-                  className='bg-white text-[#155FA0] hover:bg-gray-100 h-12 px-6 rounded-full'
+                  className="bg-[#C5A059] text-[#001F3F] hover:bg-white hover:text-[#001F3F] transition-all h-16 px-12 rounded-full text-lg font-bold shadow-2xl shadow-black/20"
                   onClick={() => {}}
                 >
                   Schedule a Consultation
-                  <ArrowRight className='w-4 h-4 ml-2' />
+                  <ArrowRight className="w-6 h-6 ml-3" />
                 </Button>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.section>
-      </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+      </main>
       <Footer />
-    </>
+    </div>
   )
 }
 
