@@ -1,3 +1,4 @@
+// File: client/src/pages/Auth/Auth.jsx
 import Navbar from '@/components/Home/Navbar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -11,20 +12,17 @@ import {
   selectCurrentUser,
   selectIsLoading,
 } from '@/redux/userSlice'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight,
-  Building,
   ChevronRight,
-  Euro,
-  Home,
-  Key,
   Lock,
   Mail,
   PieChart,
-  User,
+  ShieldCheck,
+  Zap
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -36,17 +34,20 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      duration: 0.5,
+      duration: 0.6,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5 },
+    transition: { 
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] 
+    },
   },
 }
 
@@ -55,11 +56,9 @@ const Auth = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // Get Redux state using selectors
   const currentUser = useSelector(selectCurrentUser)
   const loading = useSelector(selectIsLoading)
 
-  // Form states
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -75,7 +74,6 @@ const Auth = () => {
     terms: false,
   })
 
-  // Check if user is already logged in
   useEffect(() => {
     if (currentUser) {
       const redirectPath = currentUser.role === 'admin' ? '/admin' : '/'
@@ -83,7 +81,6 @@ const Auth = () => {
     }
   }, [currentUser, navigate])
 
-  // Handle login form changes
   const handleLoginChange = (e) => {
     const { id, value, checked, type } = e.target
     setLoginData({
@@ -92,7 +89,6 @@ const Auth = () => {
     })
   }
 
-  // Handle signup form changes
   const handleSignupChange = (e) => {
     const { id, value, checked, type } = e.target
     setSignupData({
@@ -101,489 +97,229 @@ const Auth = () => {
     })
   }
 
-  // Handle login submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
     dispatch(loginStart())
-
     try {
       const response = await axiosInstance.post('/auth/signin', {
         email: loginData.email,
         password: loginData.password,
       })
-
-      // Dispatch full response data - our reducer will extract what we need
       dispatch(loginSuccess(response.data))
-
-      // Store token in localStorage
       if (response.data.token) {
         localStorage.setItem('token', response.data.token)
-
-        // Set auth header for future requests
-        axiosInstance.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${response.data.token}`
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
       }
-
       toast.success('Logged in successfully')
-
-      // Redirect will happen via useEffect
     } catch (error) {
       dispatch(loginFailure())
-      toast.error(
-        error.response?.data?.message || 'Login failed. Please try again.'
-      )
+      toast.error(error.response?.data?.message || 'Login failed. Please try again.')
     }
   }
 
-  // Handle signup submission
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
     dispatch(loginStart())
-
-    // Validate passwords match
     if (signupData.password !== signupData.confirmPassword) {
       toast.error('Passwords do not match')
       dispatch(loginFailure())
       return
     }
-
     try {
       await axiosInstance.post('/auth/signup', {
         name: `${signupData.firstName} ${signupData.lastName}`.trim(),
         email: signupData.email,
         password: signupData.password,
-        role: 'user', // Default role for new users
+        role: 'user',
       })
-
       toast.success('Account created successfully! Please log in.')
-
-      // Reset form and switch to login tab
       setSignupData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        terms: false,
+        firstName: '', lastName: '', email: '', password: '', confirmPassword: '', terms: false,
       })
-
       setActiveTab('login')
-      dispatch(loginFailure()) // Reset loading state
+      dispatch(loginFailure())
     } catch (error) {
       dispatch(loginFailure())
-      toast.error(
-        error.response?.data?.message ||
-          'Registration failed. Please try again.'
-      )
+      toast.error(error.response?.data?.message || 'Registration failed. Please try again.')
     }
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-white dark:bg-[#0A192F] transition-colors duration-500 overflow-x-hidden">
       <Navbar />
-      <div className='min-h-screen flex flex-col items-center justify-center relative p-4 md:p-8 overflow-hidden'>
-        {/* Background gradient */}
-        <div className='absolute inset-0 bg-gradient-to-br from-[#155FA0] via-[#51A0D0] to-[#71C8DC] z-0'></div>
-
-        {/* Animated background illustrations */}
-        <div className='absolute inset-0 z-0'>
-          {/* Buildings silhouette */}
-          <motion.svg
-            className='absolute bottom-0 left-0 w-full opacity-20'
-            viewBox='0 0 1440 320'
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 0.2, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-          >
-            <path
-              fill='#ffffff'
-              d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,181.3C960,181,1056,203,1152,197.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'
-            ></path>
-          </motion.svg>
-
-          {/* Floating house icons */}
-          <motion.div
-            className='absolute top-16 left-12 text-white/10 md:text-white/20'
-            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 2 }}
-          >
-            <Home size={80} />
-          </motion.div>
-
-          <motion.div
-            className='absolute top-1/4 right-16 text-white/10 md:text-white/20'
-            initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 2, delay: 0.3 }}
-          >
-            <Home size={120} />
-          </motion.div>
-
-          <motion.div
-            className='absolute bottom-24 right-8 text-white/10 md:text-white/15'
-            initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 2, delay: 0.6 }}
-          >
-            <Home size={60} />
-          </motion.div>
-
-          {/* Abstract decorative elements */}
-          <motion.div
-            className='absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-white/5'
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.1 }}
-            transition={{ duration: 2 }}
-          />
-
-          <motion.div
-            className='absolute bottom-1/4 right-1/3 w-40 h-40 rounded-full bg-white/5'
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.1 }}
-            transition={{ duration: 2, delay: 0.4 }}
-          />
+      
+      <div className='relative min-h-[calc(100vh-140px)] flex items-center justify-center p-6 md:p-10'>
+        {/* Decorative background elements - Subtle & Premium */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-[#D4AF37]/5 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-[10%] -right-[5%] w-[40%] h-[40%] bg-[#0A192F]/10 dark:bg-[#D4AF37]/5 rounded-full blur-[120px]" />
         </div>
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className='w-full max-w-md mb-8 text-center'
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='inline-flex items-center gap-2 mb-2'
+
+        <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-16 items-center z-10">
+          
+          {/* Left Column: Branding & Value Proposition */}
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="hidden lg:flex flex-col space-y-12"
           >
-            <Home className='w-8 h-8 text-white' />
-            <h1 className='text-3xl font-bold text-white'>Baufiking</h1>
+            <motion.div variants={itemVariants} className="space-y-6">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
+                <span className="text-xs font-bold tracking-widest text-[#0A192F] dark:text-gray-300 uppercase">
+                  Secure Portal
+                </span>
+              </div>
+              <h1 className="text-5xl xl:text-7xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight">
+                Unlock Your <span className="text-[#D4AF37]">German Home</span>
+              </h1>
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-body leading-relaxed max-w-lg">
+                Your AI-powered mortgage journey starts here. Expert advice, 
+                premium solutions, and transparent guidance every step of the way.
+              </p>
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="grid sm:grid-cols-2 gap-8">
+              {[
+                { icon: Zap, title: "Fast Approval", desc: "Get pre-approved in minutes" },
+                { icon: PieChart, title: "Best Rates", desc: "Access 400+ lenders" },
+              ].map((feature, i) => (
+                <div key={i} className="flex flex-col gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700">
+                    <feature.icon className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-[#0A192F] dark:text-white">{feature.title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{feature.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
-          <p className='text-white/90 text-lg'>
-            Your AI mortgage assistant for Germany
-          </p>
-        </motion.div>
 
-        <motion.div
-          initial='hidden'
-          animate='visible'
-          variants={containerVariants}
-          className='w-full max-w-md'
-        >
-          <Card className='p-6 md:p-8 shadow-xl bg-white/95 backdrop-blur rounded-2xl'>
-            <Tabs
-              defaultValue='login'
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className='w-full'
-            >
-              <TabsList className='grid grid-cols-2 mb-6'>
-                <TabsTrigger value='login' className='text-base'>
-                  Login
-                </TabsTrigger>
-                <TabsTrigger value='signup' className='text-base'>
-                  Signup
-                </TabsTrigger>
-              </TabsList>
+          {/* Right Column: Auth Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Card className="p-8 md:p-12 bg-white dark:bg-[#0A192F]/50 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[40px] shadow-2xl shadow-slate-200/50 dark:shadow-none">
+              <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="h-auto grid w-full grid-cols-2 p-1 bg-gray-100 dark:bg-slate-800 rounded-sm mb-12 border border-slate-200 dark:border-white/10">
+                  <TabsTrigger value="login" className="rounded-xl py-2.5 font-bold text-sm data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300">
+                    Login
+                  </TabsTrigger>
+                  <TabsTrigger value="signup" className="rounded-xl py-2.5 font-bold text-sm data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300">
+                    Register
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value='login'>
-                <motion.form
-                  variants={containerVariants}
-                  className='space-y-4'
-                  onSubmit={handleLoginSubmit}
-                >
-                  <motion.div variants={itemVariants}>
-                    <label
-                      className='block text-sm font-medium text-gray-700 mb-1'
-                      htmlFor='email'
+                <AnimatePresence mode="wait">
+                  <TabsContent value="login">
+                    <motion.form 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-8" 
+                      onSubmit={handleLoginSubmit}
                     >
-                      Email
-                    </label>
-                    <div className='relative'>
-                      <Mail className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                      <Input
-                        id='email'
-                        type='email'
-                        placeholder='your.email@example.com'
-                        className='pl-10 border-gray-300'
-                        value={loginData.email}
-                        onChange={handleLoginChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
+                          <div className="relative group">
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+                            <Input id="email" type="email" placeholder="name@example.com" value={loginData.email} onChange={handleLoginChange}
+                              className="w-full pl-12 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                          </div>
+                        </div>
 
-                  <motion.div variants={itemVariants}>
-                    <label
-                      className='block text-sm font-medium text-gray-700 mb-1'
-                      htmlFor='password'
-                    >
-                      Password
-                    </label>
-                    <div className='relative'>
-                      <Lock className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                      <Input
-                        id='password'
-                        type='password'
-                        placeholder='••••••••'
-                        className='pl-10 border-gray-300'
-                        value={loginData.password}
-                        onChange={handleLoginChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center ml-1">
+                            <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Password</label>
+                            <button type="button" className="text-xs font-bold text-[#D4AF37] hover:underline">Forgot?</button>
+                          </div>
+                          <div className="relative group">
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+                            <Input id="password" type="password" placeholder="••••••••" value={loginData.password} onChange={handleLoginChange}
+                              className="w-full pl-12 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                          </div>
+                        </div>
 
-                  <motion.div
-                    variants={itemVariants}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center'>
-                      <input
-                        id='rememberMe'
-                        name='remember-me'
-                        type='checkbox'
-                        className='h-4 w-4 rounded border-gray-300 text-[#155FA0] focus:ring-[#51A0D0]'
-                        checked={loginData.rememberMe}
-                        onChange={handleLoginChange}
-                      />
-                      <label
-                        htmlFor='rememberMe'
-                        className='ml-2 block text-sm text-gray-700'
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                    <div className='text-sm'>
-                      <a
-                        href='#'
-                        className='font-medium text-[#155FA0] hover:text-[#51A0D0]'
-                      >
-                        Forgot password?
-                      </a>
-                    </div>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants}>
-                    <Button
-                      className='w-full bg-[#155FA0] hover:bg-[#51A0D0] text-white flex items-center justify-center gap-2'
-                      type='submit'
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        'Signing in...'
-                      ) : (
-                        <>
-                          <span>Sign in</span>
-                          <ArrowRight className='h-4 w-4' />
-                        </>
-                      )}
-                    </Button>
-                  </motion.div>
-                </motion.form>
-              </TabsContent>
-
-              <TabsContent value='signup'>
-                <motion.form
-                  variants={containerVariants}
-                  className='space-y-4'
-                  onSubmit={handleSignupSubmit}
-                >
-                  <motion.div
-                    variants={itemVariants}
-                    className='grid grid-cols-2 gap-4'
-                  >
-                    <div>
-                      <label
-                        className='block text-sm font-medium text-gray-700 mb-1'
-                        htmlFor='firstName'
-                      >
-                        First Name
-                      </label>
-                      <div className='relative'>
-                        <User className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                        <Input
-                          id='firstName'
-                          placeholder='John'
-                          className='pl-10 border-gray-300'
-                          value={signupData.firstName}
-                          onChange={handleSignupChange}
-                          required
-                        />
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <input type="checkbox" id="rememberMe" checked={loginData.rememberMe} onChange={handleLoginChange}
+                            className="w-5 h-5 rounded-lg border-2 border-slate-200 dark:border-slate-700 text-[#D4AF37] focus:ring-[#D4AF37] transition-all cursor-pointer" />
+                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors">Remember me on this device</span>
+                        </label>
                       </div>
-                    </div>
 
-                    <div>
-                      <label
-                        className='block text-sm font-medium text-gray-700 mb-1'
-                        htmlFor='lastName'
-                      >
-                        Last Name
+                      <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl text-lg font-bold shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-[0.98]" 
+                        type="submit" disabled={loading}>
+                        {loading ? "Signing in..." : <div className="flex items-center gap-2">Sign In <ArrowRight className="w-5 h-5" /></div>}
+                      </Button>
+                    </motion.form>
+                  </TabsContent>
+
+                  <TabsContent value="signup">
+                    <motion.form 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-6" 
+                      onSubmit={handleSignupSubmit}
+                    >
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">First Name</label>
+                          <Input id="firstName" placeholder="John" value={signupData.firstName} onChange={handleSignupChange}
+                            className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Last Name</label>
+                          <Input id="lastName" placeholder="Doe" value={signupData.lastName} onChange={handleSignupChange}
+                            className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
+                        <Input id="email" type="email" placeholder="your@email.com" value={signupData.email} onChange={handleSignupChange}
+                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Password</label>
+                        <Input id="password" type="password" placeholder="••••••••" value={signupData.password} onChange={handleSignupChange}
+                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Confirm Password</label>
+                        <Input id="confirmPassword" type="password" placeholder="••••••••" value={signupData.confirmPassword} onChange={handleSignupChange}
+                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                      </div>
+
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input type="checkbox" id="terms" checked={signupData.terms} onChange={handleSignupChange}
+                          className="w-5 h-5 mt-0.5 rounded-lg border-2 border-slate-200 dark:border-slate-700 text-[#D4AF37] focus:ring-[#D4AF37] transition-all cursor-pointer" required />
+                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                          I agree to the <button type="button" className="text-[#D4AF37] font-bold">Terms of Service</button> and <button type="button" className="text-[#D4AF37] font-bold">Privacy Policy</button>
+                        </span>
                       </label>
-                      <Input
-                        id='lastName'
-                        placeholder='Doe'
-                        className='border-gray-300'
-                        value={signupData.lastName}
-                        onChange={handleSignupChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
 
-                  <motion.div variants={itemVariants}>
-                    <label
-                      className='block text-sm font-medium text-gray-700 mb-1'
-                      htmlFor='email'
-                    >
-                      Email
-                    </label>
-                    <div className='relative'>
-                      <Mail className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                      <Input
-                        id='email'
-                        type='email'
-                        placeholder='your.email@example.com'
-                        className='pl-10 border-gray-300'
-                        value={signupData.email}
-                        onChange={handleSignupChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants}>
-                    <label
-                      className='block text-sm font-medium text-gray-700 mb-1'
-                      htmlFor='password'
-                    >
-                      Password
-                    </label>
-                    <div className='relative'>
-                      <Lock className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                      <Input
-                        id='password'
-                        type='password'
-                        placeholder='••••••••'
-                        className='pl-10 border-gray-300'
-                        value={signupData.password}
-                        onChange={handleSignupChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants}>
-                    <label
-                      className='block text-sm font-medium text-gray-700 mb-1'
-                      htmlFor='confirmPassword'
-                    >
-                      Confirm Password
-                    </label>
-                    <div className='relative'>
-                      <Key className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
-                      <Input
-                        id='confirmPassword'
-                        type='password'
-                        placeholder='••••••••'
-                        className='pl-10 border-gray-300'
-                        value={signupData.confirmPassword}
-                        onChange={handleSignupChange}
-                        required
-                      />
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    variants={itemVariants}
-                    className='flex items-center'
-                  >
-                    <input
-                      id='terms'
-                      name='terms'
-                      type='checkbox'
-                      className='h-4 w-4 rounded border-gray-300 text-[#155FA0] focus:ring-[#51A0D0]'
-                      checked={signupData.terms}
-                      onChange={handleSignupChange}
-                      required
-                    />
-                    <label
-                      htmlFor='terms'
-                      className='ml-2 block text-sm text-gray-700'
-                    >
-                      I agree to the{' '}
-                      <a
-                        href='#'
-                        className='text-[#155FA0] hover:text-[#51A0D0]'
-                      >
-                        Terms of Service
-                      </a>{' '}
-                      and{' '}
-                      <a
-                        href='#'
-                        className='text-[#155FA0] hover:text-[#51A0D0]'
-                      >
-                        Privacy Policy
-                      </a>
-                    </label>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants}>
-                    <Button
-                      className='w-full bg-[#155FA0] hover:bg-[#51A0D0] text-white flex items-center justify-center gap-2'
-                      type='submit'
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        'Creating Account...'
-                      ) : (
-                        <>
-                          <span>Create Account</span>
-                          <ChevronRight className='h-4 w-4' />
-                        </>
-                      )}
-                    </Button>
-                  </motion.div>
-                </motion.form>
-              </TabsContent>
-            </Tabs>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className='mt-8 text-white/80 text-center text-sm z-10'
-        >
-          <div className='flex items-center justify-center space-x-6 mb-4'>
-            <motion.div
-              className='flex flex-col items-center'
-              whileHover={{ y: -3 }}
-            >
-              <Building className='h-6 w-6 mb-1' />
-              <span className='text-xs'>Property Search</span>
-            </motion.div>
-            <motion.div
-              className='flex flex-col items-center'
-              whileHover={{ y: -3 }}
-            >
-              <Euro className='h-6 w-6 mb-1' />
-              <span className='text-xs'>Financing</span>
-            </motion.div>
-            <motion.div
-              className='flex flex-col items-center'
-              whileHover={{ y: -3 }}
-            >
-              <PieChart className='h-6 w-6 mb-1' />
-              <span className='text-xs'>AI Insights</span>
-            </motion.div>
-          </div>
-          <p>Simplifying home buying in Germany with expert guidance</p>
-          <p className='mt-1'>© 2025 Baufiking. All rights reserved.</p>
-        </motion.div>
+                      <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl text-lg font-bold shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-[0.98]" 
+                        type="submit" disabled={loading}>
+                        {loading ? "Creating Account..." : <div className="flex items-center gap-2">Create Account <ChevronRight className="w-5 h-5" /></div>}
+                      </Button>
+                    </motion.form>
+                  </TabsContent>
+                </AnimatePresence>
+              </Tabs>
+            </Card>
+          </motion.div>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
