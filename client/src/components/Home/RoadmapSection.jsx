@@ -154,7 +154,7 @@ const RoadmapSection = () => {
         </div>
 
         {/* Desktop View: Interactive Horizontal Timeline */}
-        <div className="hidden lg:block mb-16 px-4 ">
+        <div className="hidden lg:block mb-32 px-4 ">
             <div className="flex items-center w-full">
                  {steps.map((step, index) => {
                      const StepIcon = step.icon
