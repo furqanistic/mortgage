@@ -1,3 +1,4 @@
+// File: client/src/pages/HomePage.jsx
 import CTASection from '@/components/Home/CTASection'
 import HeroSection from '@/components/Home/HeroSection'
 import MortgageCalculator from '@/components/Home/MortgageCalculator'

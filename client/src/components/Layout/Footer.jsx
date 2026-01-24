@@ -1,3 +1,5 @@
+// File: client/src/components/layout/Footer.jsx
+// File: client/src/components/layout/Footer.jsx
 import { motion } from 'framer-motion'
 import {
   Building,
@@ -13,6 +15,7 @@ import {
   Users,
 } from 'lucide-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   const navItems = [
@@ -29,9 +32,9 @@ const Footer = () => {
   }
 
   return (
-    <footer className='bg-white text-gray-800 border-t border-gray-100'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+    <footer className='bg-white dark:bg-card border-t border-border'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12'>
           {/* Company Info */}
           <motion.div
             initial='hidden'
@@ -39,24 +42,25 @@ const Footer = () => {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
             transition={{ duration: 0.5 }}
-            className='space-y-4'
+            className='space-y-6'
           >
-            <img src='/Logo.svg' alt='Baufiking Logo' className='h-12 mb-6' />
-            <p className='text-sm text-gray-600'>
+            <div className="flex items-center gap-2">
+                <img src='/Logo.svg' alt='Baufiking Logo' className='h-10' />
+            </div>
+            <p className='text-sm text-muted-foreground leading-relaxed'>
               Simplifying home buying in Germany with expert guidance and
-              AI-powered solutions.
+              premium financial solutions.
             </p>
-            <div className='flex space-x-4 mt-6'>
+            <div className='flex space-x-3'>
               {[Globe, Twitter, Instagram, Github].map((Icon, index) => (
                 <motion.a
                   key={index}
                   href='#'
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}
                   whileTap={{ scale: 0.95 }}
-                  className='p-2 bg-gray-50 rounded-full hover:bg-[#155FA0] hover:text-white 
-                           transition-all duration-300'
+                  className='p-2 bg-secondary text-secondary-foreground rounded-full transition-all duration-300'
                 >
-                  <Icon className='w-5 h-5' />
+                  <Icon className='w-4 h-4' />
                 </motion.a>
               ))}
             </div>
@@ -69,9 +73,9 @@ const Footer = () => {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className='space-y-4'
+            className='space-y-6'
           >
-            <h3 className='text-lg font-semibold mb-4 text-[#155FA0]'>
+            <h3 className='text-lg font-bold font-heading text-primary'>
               Quick Links
             </h3>
             <ul className='space-y-3'>
@@ -79,18 +83,18 @@ const Footer = () => {
                 <motion.li
                   key={index}
                   whileHover={{ x: 5 }}
-                  className='flex items-center space-x-2'
+                  className='flex items-center'
                 >
-                  <item.icon className='w-4 h-4 text-[#51A0D0]' />
-                  <a
-                    href={item.href}
-                    className='text-sm hover:text-[#155FA0] transition-colors'
+                  <Link
+                    to={item.href}
+                    className='text-sm text-muted-foreground hover:text-accent transition-colors flex items-center gap-2'
                   >
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/50" />
                     {item.label}
-                  </a>
+                      </Link>
                 </motion.li>
-              ))}
-            </ul>
+                  ))}
+                </ul>
           </motion.div>
 
           {/* Contact Info */}
@@ -100,21 +104,29 @@ const Footer = () => {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className='space-y-4'
+            className='space-y-6'
           >
-            <h3 className='text-lg font-semibold mb-4 text-[#155FA0]'>
+            <h3 className='text-lg font-bold font-heading text-primary'>
               Contact Us
             </h3>
-            <ul className='space-y-3'>
-              <li className='flex items-center space-x-3'>
-                <Phone className='w-4 h-4 text-[#51A0D0]' />
-                <span className='text-sm text-gray-600'>+4915171618082</span>
+            <ul className='space-y-4'>
+              <li className='flex items-start space-x-3'>
+                <Phone className='w-5 h-5 text-accent mt-0.5' />
+                <span className='text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer'>
+                    +49 151 7161 8082
+                </span>
               </li>
-              <li className='flex items-center space-x-3'>
-                <Mail className='w-4 h-4 text-[#51A0D0]' />
-                <span className='text-sm text-gray-600'>
+              <li className='flex items-start space-x-3'>
+                <Mail className='w-5 h-5 text-accent mt-0.5' />
+                <span className='text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer'>
                   ravinder.singh@baufiking.de
                 </span>
+              </li>
+              <li className='flex items-start space-x-3'>
+                 <Building className='w-5 h-5 text-accent mt-0.5' />
+                 <span className='text-sm text-muted-foreground'>
+                    München, Germany
+                 </span>
               </li>
             </ul>
           </motion.div>
@@ -126,33 +138,33 @@ const Footer = () => {
             viewport={{ once: true }}
             variants={fadeInUpVariants}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className='space-y-4'
+            className='space-y-6'
           >
-            <h3 className='text-lg font-semibold mb-4 text-[#155FA0]'>
+            <h3 className='text-lg font-bold font-heading text-primary'>
               Stay Updated
             </h3>
-            <p className='text-sm text-gray-600 mb-4'>
-              Subscribe to our newsletter for the latest updates and insights.
+            <p className='text-sm text-muted-foreground'>
+              Subscribe to our newsletter for the latest market insights.
             </p>
-            <form className='space-y-3'>
+            <form className='space-y-3' onSubmit={(e) => e.preventDefault()}>
               <input
                 type='email'
                 placeholder='Enter your email'
-                className='w-full px-4 py-2 rounded-lg bg-gray-50 border border-gray-200 
-                         focus:outline-none focus:border-[#155FA0] transition-colors
-                         placeholder-gray-400 text-sm'
+                className='w-full px-4 py-2.5 rounded-xl bg-secondary/50 border border-border 
+                         focus:outline-none focus:ring-1 focus:ring-primary transition-all
+                         placeholder-muted-foreground text-sm'
               />
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className='w-full px-4 py-2 bg-[#155FA0] text-white rounded-lg
-                         hover:bg-[#51A0D0] transition-colors text-sm font-medium'
+                className='w-full px-4 py-2.5 bg-primary text-primary-foreground rounded-xl
+                         hover:bg-primary/90 transition-colors text-sm font-semibold shadow-lg shadow-primary/20'
               >
                 Subscribe
               </motion.button>
             </form>
           </motion.div>
-        </div>
+          </div>
 
         {/* Bottom Bar */}
         <motion.div
@@ -161,9 +173,13 @@ const Footer = () => {
           viewport={{ once: true }}
           variants={fadeInUpVariants}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className='border-t border-gray-100 mt-12 pt-8 text-center text-sm text-gray-500'
+          className='border-t border-border/60 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground'
         >
           <p>© {new Date().getFullYear()} Baufiking. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+              <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+          </div>
         </motion.div>
       </div>
     </footer>
