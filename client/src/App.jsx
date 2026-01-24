@@ -1,3 +1,4 @@
+// File: client/src/App.jsx
 import { Toaster } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import {
