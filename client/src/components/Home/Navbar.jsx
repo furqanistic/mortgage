@@ -25,6 +25,9 @@ import {
   ShieldPlus,
   User,
   Users,
+  Phone,
+  Mail,
+  ChevronRight
 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -71,14 +74,10 @@ const Navbar = () => {
     { icon: NotebookText, label: 'Blog', path: '/blog' },
   ]
 
-  const authNavItem = { icon: User, label: 'Signup/Login', path: '/auth' }
   const adminNavItem = { icon: ShieldPlus, label: 'Admin', path: '/admin' }
 
   const getNavItems = () => {
     let items = [...publicNavItems]
-    if (!isAuthenticated) {
-      items.push(authNavItem)
-    }
     if (isAdmin) {
       items.push(adminNavItem)
     }
@@ -88,53 +87,49 @@ const Navbar = () => {
   const navItems = getNavItems()
 
   return (
-    <header className="sticky top-0 z-50 w-full transition-all duration-300">
-      {/* Top banner - more compact */}
-      <div className='bg-background/80 dark:bg-[#0A192F]/90 backdrop-blur-md border-b border-border/40 py-1.5'>
+    <header className="sticky top-0 z-50 w-full transition-all duration-300 font-body">
+      {/* Top Banner - Premium & Compact */}
+      <div className='bg-[#0A192F] text-white py-2 overflow-hidden border-b border-[#D4AF37]/10'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-[10px] sm:text-xs font-medium text-center sm:text-left'>
+          <div className='flex justify-between items-center text-[10px] sm:text-xs tracking-wide'>
              
              <div className="hidden lg:flex items-center gap-4">
-                <span className="text-muted-foreground whitespace-nowrap">Expert Mortgage Advice</span>
+                <span className="text-gray-400 uppercase tracking-widest font-bold">Expert Mortgage Advice</span>
              </div>
 
-             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2 w-full sm:w-auto">
-                <a href="tel:+4915171618082" className="flex items-center gap-1.5 sm:gap-2 group text-muted-foreground hover:text-primary transition-colors">
-                  <div className="p-1 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  </div>
-                  <span className="whitespace-nowrap font-semibold">+49 151 71618082</span>
+             <div className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 w-full lg:w-auto">
+                <a href="tel:+4915171618082" className="flex items-center gap-2 group text-gray-300 hover:text-[#D4AF37] transition-colors">
+                  <Phone className="w-3 h-3 text-[#D4AF37]" />
+                  <span className="font-semibold font-heading">+49 151 71618082</span>
                 </a>
                 
-                <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-1.5 sm:gap-2 group text-muted-foreground hover:text-primary transition-colors">
-                  <div className="p-1 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                  </div>
-                  <span className="whitespace-nowrap">ravinder.singh@baufiking.de</span>
+                <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-2 group text-gray-300 hover:text-[#D4AF37] transition-colors">
+                  <Mail className="w-3 h-3 text-[#D4AF37]" />
+                  <span>ravinder.singh@baufiking.de</span>
                 </a>
              </div>
           </div>
         </div>
       </div>
 
-      {/* Main navbar - refreshed and more compact */}
+      {/* Main Navbar */}
       <nav
-        className={`transition-all duration-500 border-b ${
+        className={`transition-all duration-500 ${
           isScrolled
-            ? 'glass py-1.5'
-            : 'bg-background/50 dark:bg-[#0A192F]/50 py-3 backdrop-blur-[2px]'
+            ? 'glass border-none shadow-lg py-2'
+            : 'border-b border-border/40 bg-white/80 dark:bg-[#0A192F]/80 py-4 backdrop-blur-md'
         }`}
       >
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex items-center justify-between'>
             {/* Logo */}
-            <Link to='/' className='flex-shrink-0 group'>
+            <Link to='/' className='flex-shrink-0 group relative z-50'>
               <img
                 src='/Logo.svg'
                 alt='Baufiking Logo'
                 className={`transition-all duration-500 ease-out transform group-hover:scale-105 ${
-                  isScrolled ? 'h-8' : 'h-11'
-                } group-hover:opacity-90`}
+                  isScrolled ? 'h-9' : 'h-11'
+                }`}
               />
             </Link>
 
@@ -144,48 +139,56 @@ const Navbar = () => {
                 <Link
                   key={index}
                   to={item.path}
-                  className={`group relative flex items-center px-4 py-2 text-sm font-medium rounded-full transition-all duration-300
+                  className={`group relative flex items-center px-4 py-2 text-sm font-bold font-heading transition-all duration-300
                     ${
                       location.pathname === item.path
-                        ? 'text-primary bg-primary/5'
-                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                        ? 'text-[#0A192F] dark:text-[#D4AF37]'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-[#D4AF37] dark:hover:text-[#D4AF37]'
                     }`}
                 >
                   <span className='z-10 relative'>{item.label}</span>
-                  {/* Animated underline effect */}
-                  <span className={`absolute bottom-1.5 left-4 right-4 h-0.5 bg-accent/50 rounded-full transition-all duration-300 origin-left
-                      ${location.pathname === item.path ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-50'}`} 
-                  />
+                  {/* Active Indicator */}
+                  {location.pathname === item.path && (
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#D4AF37] rounded-full" />
+                  )}
                 </Link>
               ))}
 
-              <div className="mx-2 h-6 w-px bg-border/60 " />
+              <div className="mx-3 h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
               <ThemeToggle />
 
-              {/* User Profile Dropdown */}
-              {isAuthenticated && (
+              {/* Authentication Actions */}
+              {!isAuthenticated ? (
+                <Link
+                  to='/auth'
+                  className='ml-4 px-6 py-2.5 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-full font-bold text-sm shadow-lg shadow-[#D4AF37]/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center gap-2'
+                >
+                  <User className="w-4 h-4" />
+                  <span>Login</span>
+                </Link>
+              ) : (
                 <DropdownMenu>
                   <DropdownMenuTrigger className='focus:outline-none ml-2'>
-                    <div className='flex items-center space-x-2 px-2 py-1.5 rounded-full hover:bg-secondary transition-colors border border-transparent hover:border-border/40'>
-                      <Avatar className='h-8 w-8 border border-border shadow-sm'>
+                    <div className='flex items-center space-x-2 px-1.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-transparent'>
+                      <Avatar className='h-8 w-8 border border-white dark:border-slate-600 shadow-sm'>
                         <AvatarImage src='' />
-                        <AvatarFallback className='bg-primary text-primary-foreground font-medium text-xs'>
+                        <AvatarFallback className='bg-[#0A192F] text-[#D4AF37] font-bold text-xs'>
                           {getUserInitials()}
                         </AvatarFallback>
                       </Avatar>
-                      <span className='font-medium text-sm text-foreground pr-1 hidden lg:inline-block'>
+                      <span className='font-bold font-heading text-sm text-[#0A192F] dark:text-white pr-2 hidden lg:inline-block max-w-[100px] truncate'>
                         {currentUser?.name || 'User'}
                       </span>
                     </div>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end' className='w-56 glass-card mt-2'>
-                    <DropdownMenuLabel className="font-heading text-primary">
+                  <DropdownMenuContent align='end' className='w-56 glass-card mt-2 p-2'>
+                    <DropdownMenuLabel className="font-heading text-[#0A192F] dark:text-[#D4AF37]">
                       Hello, {currentUser?.name.split(' ')[0] || 'User'}
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-border/50" />
+                    <DropdownMenuSeparator className="bg-slate-200 dark:bg-slate-700" />
                     <DropdownMenuItem
-                      className='cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10'
+                      className='cursor-pointer text-red-500 focus:text-red-500 focus:bg-red-50 dark:focus:bg-red-900/10 font-medium'
                       onClick={handleLogout}
                     >
                       <LogOut className='mr-2 h-4 w-4' />
@@ -197,90 +200,74 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Navigation */}
-            <div className='md:hidden flex items-center gap-2'>
+            <div className='md:hidden flex items-center gap-3'>
               <ThemeToggle />
               <Sheet>
                 <SheetTrigger asChild>
                   <button
-                    className='p-2.5 rounded-full text-foreground hover:bg-secondary 
-                      transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20'
+                    className='p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[#0A192F] dark:text-white hover:bg-[#D4AF37] hover:text-white dark:hover:bg-[#D4AF37] dark:hover:text-[#0A192F] transition-all duration-300 border border-transparent'
                   >
-                    <Menu className='h-6 w-6' />
+                    <Menu className='h-5 w-5' />
                   </button>
                 </SheetTrigger>
-                <SheetContent side='right' className='w-[300px] glass-card border-l border-white/20 sm:w-[350px] p-0'>
-                  <div className="flex flex-col h-full bg-background/95 backdrop-blur-xl">
-                    <div className="p-6 border-b border-border/40">
+                <SheetContent side='right' className='w-[300px] sm:w-[350px] p-0 border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0A192F]'>
+                  <div className="flex flex-col h-full">
+                    <div className="p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-black/20">
                       <Link to='/'>
-                        <img
-                          src='/Logo.svg'
-                          alt='Baufiking'
-                          className='h-10'
-                        />
+                        <img src='/Logo.svg' alt='Baufiking' className='h-10 mb-6' />
                       </Link>
-                    </div>
-                    
-                    <div className='flex-1 overflow-y-auto py-6 px-4 space-y-2'>
-                       {isAuthenticated && (
-                        <div className='flex items-center space-x-3 px-4 py-4 mb-6 bg-secondary/50 rounded-2xl border border-border/50'>
-                          <Avatar className='h-12 w-12 border-2 border-background shadow-sm'>
-                            <AvatarImage src='' />
-                            <AvatarFallback className='bg-primary text-primary-foreground'>
+                      
+                      {isAuthenticated ? (
+                        <div className='flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700'>
+                          <Avatar className='h-12 w-12 border-2 border-[#D4AF37]'>
+                            <AvatarFallback className='bg-[#0A192F] text-[#D4AF37] font-bold'>
                               {getUserInitials()}
                             </AvatarFallback>
                           </Avatar>
                           <div className='overflow-hidden'>
-                            <p className='font-heading font-semibold text-foreground truncate'>
+                            <p className='font-heading font-bold text-[#0A192F] dark:text-white truncate'>
                               {currentUser?.name || 'User'}
                             </p>
-                            <p className='text-xs text-muted-foreground truncate'>
-                              {currentUser?.email || ''}
-                            </p>
+                            <button onClick={handleLogout} className="text-xs font-medium text-red-500 hover:underline">
+                              Sign out
+                            </button>
                           </div>
                         </div>
+                      ) : (
+                         <div className="bg-[#0A192F] dark:bg-slate-800 rounded-2xl p-6 text-center space-y-4 relative overflow-hidden">
+                           <div className="absolute top-0 right-0 w-20 h-20 bg-[#D4AF37]/20 rounded-full blur-xl -translate-y-1/2 translate-x-1/2" />
+                           <h3 className="text-white font-heading font-bold text-lg relative z-10">Start Your Journey</h3>
+                           <Link to='/auth' className="block w-full py-3 bg-[#D4AF37] text-white font-bold rounded-xl shadow-lg shadow-[#D4AF37]/20 relative z-10 active:scale-95 transition-all">
+                             Login / Register
+                           </Link>
+                         </div>
                       )}
-
+                    </div>
+                    
+                    <div className='flex-1 overflow-y-auto py-8 px-6 space-y-2'>
                       {navItems.map((item, index) => (
                         <Link
                           key={index}
                           to={item.path}
-                          className={`flex items-center space-x-4 px-4 py-3.5 rounded-xl
-                            transition-all duration-200 group ${
-                              location.pathname === item.path
-                                ? 'bg-primary/5 text-primary font-semibold'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
+                          className={`flex items-center justify-between px-4 py-4 rounded-xl transition-all duration-300 group
+                            ${location.pathname === item.path
+                                ? 'bg-[#0A192F] dark:bg-white text-white dark:text-[#0A192F] font-bold shadow-lg shadow-[#0A192F]/10 dark:shadow-white/5'
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-[#0A192F] dark:hover:text-white'
                             }`}
                         >
-                          <item.icon className={`w-5 h-5 ${location.pathname === item.path ? 'text-accent' : 'text-muted-foreground group-hover:text-primary'} transition-colors`} />
-                          <span className='text-base'>
-                            {item.label}
-                          </span>
+                          <div className="flex items-center gap-4">
+                            <item.icon className="w-5 h-5" />
+                            <span className='font-heading text-sm'>{item.label}</span>
+                          </div>
+                          <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${location.pathname === item.path ? 'opacity-100 text-[#D4AF37] dark:text-[#0A192F]' : ''}`} />
                         </Link>
                       ))}
-
-                      {isAuthenticated && (
-                        <button
-                          onClick={handleLogout}
-                          className='flex w-full items-center space-x-4 px-4 py-3.5 rounded-xl
-                          text-destructive hover:bg-destructive/5 transition-all duration-200 mt-4'
-                        >
-                          <LogOut className='w-5 h-5' />
-                          <span className='text-base font-medium'>Log out</span>
-                        </button>
-                      )}
-                      
-                      {!isAuthenticated && (
-                         <div className="mt-8 px-4">
-                           <Link
-                             to='/auth'
-                             className='flex items-center justify-center w-full py-3 bg-primary text-primary-foreground 
-                             font-semibold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 
-                             active:scale-[0.98] transition-all duration-200'
-                           >
-                             Get Started
-                           </Link>
-                         </div>
-                      )}
+                    </div>
+                    
+                    <div className="p-8 border-t border-slate-100 dark:border-slate-800 text-center">
+                      <p className="text-xs text-slate-400 dark:text-slate-600 font-medium">
+                        © 2025 Baufiking v2.0
+                      </p>
                     </div>
                   </div>
                 </SheetContent>
