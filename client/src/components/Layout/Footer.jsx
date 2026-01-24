@@ -32,9 +32,9 @@ const Footer = () => {
   }
 
   return (
-    <footer className='bg-white dark:bg-card border-t border-border'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12'>
+    <footer className='bg-white dark:bg-[#0A192F] border-t border-border'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-10'>
           {/* Company Info */}
           <motion.div
             initial='hidden'
@@ -45,7 +45,7 @@ const Footer = () => {
             className='space-y-6'
           >
             <div className="flex items-center gap-2">
-                <img src='/Logo.svg' alt='Baufiking Logo' className='h-10' />
+                <img src='/Logo.svg' alt='Baufiking Logo' className='h-8' />
             </div>
             <p className='text-sm text-muted-foreground leading-relaxed'>
               Simplifying home buying in Germany with expert guidance and
@@ -173,7 +173,7 @@ const Footer = () => {
           viewport={{ once: true }}
           variants={fadeInUpVariants}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className='border-t border-border/60 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground'
+          className='border-t border-border/60 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground'
         >
           <p>© {new Date().getFullYear()} Baufiking. All rights reserved.</p>
           <div className="flex items-center gap-6">
