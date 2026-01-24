@@ -63,7 +63,7 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="font-['Roboto'] selection:bg-[#C5A059]/30">
+    <div className="font-body selection:bg-[#C5A059]/30">
       <Navbar />
       <main className="min-h-screen bg-white dark:bg-[#000d1a] transition-colors duration-500">
         
@@ -92,7 +92,7 @@ const AboutPage = () => {
 
                 <motion.h1 
                   variants={itemVariants}
-                  className="text-5xl lg:text-7xl font-bold font-['Inter'] leading-[1.1] text-[#001F3F] dark:text-white"
+                  className="text-5xl lg:text-7xl font-bold font-heading leading-[1.1] text-[#001F3F] dark:text-white"
                 >
                   Making Home <br />
                   <span className="text-[#C5A059]">Ownership</span> Simple
@@ -165,7 +165,7 @@ const AboutPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-4xl lg:text-5xl font-bold font-['Inter'] text-[#C5A059] mb-2">
+                  <p className="text-4xl lg:text-5xl font-bold font-heading text-[#C5A059] mb-2">
                     {stat.value}
                   </p>
                   <p className="text-sm tracking-widest uppercase font-medium text-white/70 dark:text-slate-400">
@@ -188,7 +188,7 @@ const AboutPage = () => {
                 className="space-y-12"
               >
                 <div className="space-y-6">
-                  <h2 className="text-4xl lg:text-5xl font-bold font-['Inter'] text-[#001F3F] dark:text-white">
+                  <h2 className="text-4xl lg:text-5xl font-bold font-heading text-[#001F3F] dark:text-white">
                     Our Mission
                   </h2>
                   <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -280,7 +280,7 @@ const AboutPage = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,#C5A059/10,transparent_50%)]" />
             
             <div className="relative z-10 max-w-3xl mx-auto space-y-10">
-              <h2 className="text-4xl lg:text-6xl font-bold font-['Inter'] text-white">
+              <h2 className="text-4xl lg:text-6xl font-bold font-heading text-white">
                 Ready to Find Your <span className="text-[#C5A059]">Dream Home?</span>
               </h2>
               <p className="text-xl text-white/70 leading-relaxed">
