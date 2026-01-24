@@ -89,8 +89,8 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300">
-      {/* Top banner - Premium & Responsive */}
-      <div className='bg-background/80 backdrop-blur-md border-b border-border/40 py-2'>
+      {/* Top banner - more compact */}
+      <div className='bg-background/80 dark:bg-[#0A192F]/90 backdrop-blur-md border-b border-border/40 py-1.5'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-[10px] sm:text-xs font-medium text-center sm:text-left'>
              
@@ -117,12 +117,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Main navbar */}
+      {/* Main navbar - refreshed and more compact */}
       <nav
         className={`transition-all duration-500 border-b ${
           isScrolled
-            ? 'glass  py-2'
-            : 'bg-background/50 -transparent py-4 backdrop-blur-[2px]'
+            ? 'glass py-1.5'
+            : 'bg-background/50 dark:bg-[#0A192F]/50 py-3 backdrop-blur-[2px]'
         }`}
       >
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -133,7 +133,7 @@ const Navbar = () => {
                 src='/Logo.svg'
                 alt='Baufiking Logo'
                 className={`transition-all duration-500 ease-out transform group-hover:scale-105 ${
-                  isScrolled ? 'h-10' : 'h-14'
+                  isScrolled ? 'h-8' : 'h-11'
                 } group-hover:opacity-90`}
               />
             </Link>
