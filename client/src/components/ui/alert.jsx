@@ -1,16 +1,21 @@
+// File: client/src/components/ui/alert.jsx
 import * as React from "react"
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
+  "relative w-full rounded-2xl border px-6 py-4 text-sm [&>svg+div]:translate-y-[-1px] [&>svg]:absolute [&>svg]:left-6 [&>svg]:top-5 [&>svg]:text-foreground [&>svg~*]:pl-8 font-body transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground",
+        default: "bg-background border-border/60 text-foreground shadow-sm",
         destructive:
-          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+          "border-destructive/20 bg-destructive/5 text-destructive dark:border-destructive/30 [&>svg]:text-destructive font-semibold",
+        success:
+          "border-accent/20 bg-accent/5 text-primary dark:text-accent [&>svg]:text-accent font-semibold",
+        outline:
+          "bg-transparent border-primary/10 text-primary dark:text-foreground",
       },
     },
     defaultVariants: {

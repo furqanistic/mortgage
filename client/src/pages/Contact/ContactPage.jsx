@@ -60,42 +60,42 @@ const ContactPage = () => {
   return (
     <>
       <Navbar />
-      <div className='bg-white min-h-screen'>
+      <div className='bg-background min-h-screen transition-colors duration-300'>
         {/* Hero Section */}
-        <section className='relative pt-24 pb-16 overflow-hidden'>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className='absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-[#155FA0]/5 to-transparent'
-          />
-
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <section className='relative pt-32 pb-24 overflow-hidden'>
+          {/* Subtle decoration */}
+          <div className='absolute inset-0 pointer-events-none'>
+            <div className="absolute top-[-10%] right-[-5%] w-[60vw] h-[60vw] bg-primary/5 rounded-full blur-[120px]" />
+            <div className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-accent/5 rounded-full blur-[100px]" />
+            <div className="absolute inset-0 opacity-[0.02]" 
+                 style={{ backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`, backgroundSize: '48px 48px' }} 
+            />
+          </div>
+          
+          <div className='max-w-7xl mx-auto px-6 lg:px-12 relative z-10'>
             <motion.div
               variants={containerVariants}
               initial='hidden'
               animate='visible'
-              className='text-center max-w-3xl mx-auto'
+              className='text-center max-w-4xl mx-auto space-y-8'
             >
-              <motion.div variants={itemVariants} className='space-y-6'>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#155FA0]/5 mb-6'
-                >
-                  <MessageSquare className='w-4 h-4 text-[#155FA0]' />
-                  <span className='text-sm font-medium text-[#155FA0]'>
-                    We're Here to Help
+              <motion.div variants={itemVariants} className='space-y-8'>
+                <div className='inline-flex items-center gap-3 px-4 py-2 bg-secondary/40 backdrop-blur-sm rounded-full border border-border/40 shadow-sm'>
+                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  <span className='text-xs font-bold text-primary/70 tracking-[0.2em] uppercase font-body'>
+                    Global Support & Guidance
                   </span>
-                </motion.div>
+                </div>
 
-                <h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-6'>
-                  Let's Start Your
-                  <span className='text-[#155FA0]'> Journey</span>
+                <h1 className='text-6xl md:text-7xl lg:text-8xl font-bold font-heading text-primary leading-[0.95] tracking-tight'>
+                   Let&apos;s Start Your <br />
+                   <span className='text-transparent bg-clip-text bg-gradient-to-br from-primary via-primary to-accent relative'>
+                     Journey Home
+                   </span>
                 </h1>
 
-                <p className='text-lg text-gray-600'>
-                  Have questions about buying a home in Germany? Our team of
-                  experts is here to guide you every step of the way.
+                <p className='text-xl md:text-2xl text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed font-body'>
+                  Have questions about your mortgage possibilities in Germany? Our elite team of advisors is standing by to provide the clarity you deserve.
                 </p>
               </motion.div>
             </motion.div>
@@ -103,48 +103,51 @@ const ContactPage = () => {
         </section>
 
         {/* Contact Options */}
-        <section className='py-16 bg-gray-50'>
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <section className='py-24 bg-background relative border-y border-border/20'>
+          <div className='max-w-7xl mx-auto px-6 lg:px-12'>
             <motion.div
               variants={containerVariants}
               initial='hidden'
               whileInView='visible'
               viewport={{ once: true }}
-              className='grid md:grid-cols-3 gap-8'
+              className='grid md:grid-cols-3 gap-10'
             >
               {[
                 {
                   icon: Phone,
-                  title: 'Call Us',
-                  info: '+4915171618082',
-                  action: 'Available 24/7',
+                  title: 'Direct Call',
+                  info: '+49 151 71618082',
+                  action: 'Speak with an Expert',
+                  color: 'primary'
                 },
                 {
                   icon: Mail,
-                  title: 'Email Us',
+                  title: 'Email Advice',
                   info: 'ravinder.singh@baufiking.de',
-                  action: 'We reply within 24 hours',
+                  action: 'Guaranteed 24h Response',
+                  color: 'accent'
                 },
                 {
                   icon: MapPin,
-                  title: 'Visit Us',
+                  title: 'Visit Studio',
                   info: 'Berlin, Germany',
-                  action: 'Book an appointment',
+                  action: 'Schedule a Visit',
+                  color: 'primary'
                 },
               ].map((contact, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}
-                  className='bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all'
+                  className='group bg-card p-10 rounded-[2.5rem] border border-border hover:border-accent/40 shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500'
                 >
-                  <div className='p-3 rounded-xl bg-[#155FA0]/10 inline-block mb-4'>
-                    <contact.icon className='w-6 h-6 text-[#155FA0]' />
+                  <div className={`p-4 rounded-2xl bg-secondary/50 inline-block mb-8 group-hover:bg-accent/10 transition-colors`}>
+                    <contact.icon className={`w-8 h-8 text-primary group-hover:text-accent font-bold`} />
                   </div>
-                  <h3 className='text-xl font-semibold text-gray-900 mb-2'>
+                  <h3 className='text-2xl font-bold font-heading text-primary mb-4'>
                     {contact.title}
                   </h3>
-                  <p className='text-gray-600 mb-2'>{contact.info}</p>
-                  <p className='text-sm text-[#155FA0]'>{contact.action}</p>
+                  <p className='text-lg font-medium text-foreground/80 mb-2 truncate group-hover:text-primary transition-colors'>{contact.info}</p>
+                  <p className='text-sm font-bold text-accent uppercase tracking-[0.15em]'>{contact.action}</p>
                 </motion.div>
               ))}
             </motion.div>

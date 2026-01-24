@@ -67,7 +67,7 @@ const SuccessStories = () => {
   }, [stories.length])
 
   return (
-    <section className='py-24 bg-secondary/20 relative overflow-hidden'>
+    <section className='py-32 bg-background relative overflow-hidden transition-colors duration-300'>
        {/* Background Decoration */}
        <div className='absolute top-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none' />
 
@@ -76,13 +76,15 @@ const SuccessStories = () => {
            <div className='inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-primary text-xs font-bold uppercase tracking-wider mb-4'>
              <Star className='w-4 h-4 fill-current text-accent' /> Success Stories
            </div>
-           <h2 className='text-4xl md:text-5xl font-bold text-primary mb-4'>Real Results, Real Homes</h2>
-           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
+           <h2 className='text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-primary mb-6 tracking-tight'>
+             Real Results, <span className="text-accent">Real Homes</span>
+           </h2>
+           <p className='text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-body'>
               Join hundreds of satisfied clients who found their dream property with our help.
            </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             {/* Left: Testimonial & Stats */}
             <div className="space-y-8">
                 <AnimatePresence mode="wait">
@@ -95,8 +97,8 @@ const SuccessStories = () => {
                         className="space-y-8"
                     >
                          <div className="relative">
-                             <Quote className="absolute -top-4 -left-4 w-12 h-12 text-accent/20 rotate-180" />
-                             <h3 className="text-2xl md:text-3xl font-medium leading-relaxed text-foreground italic relative z-10">
+                             <Quote className="absolute -top-12 -left-12 w-24 h-24 text-accent/5 rotate-180 pointer-events-none" />
+                             <h3 className="text-3xl md:text-4xl font-medium leading-[1.4] text-foreground italic relative z-10 font-body">
                                  "{stories[activeStory].quote}"
                              </h3>
                          </div>
@@ -112,18 +114,18 @@ const SuccessStories = () => {
                              </div>
                          </div>
                          
-                         <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border">
-                             <div>
-                                 <p className="text-sm text-muted-foreground mb-1">Time to Buy</p>
-                                 <p className="text-xl font-bold text-primary">{stories[activeStory].stats.time}</p>
+                         <div className="grid grid-cols-3 gap-8 p-10 bg-card rounded-[2.5rem] border border-border/50 shadow-inner mt-12">
+                             <div className="space-y-1">
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Time to Buy</p>
+                                 <p className="text-2xl font-bold text-primary">{stories[activeStory].stats.time}</p>
                              </div>
-                             <div>
-                                 <p className="text-sm text-muted-foreground mb-1">Savings</p>
-                                 <p className="text-xl font-bold text-accent">{stories[activeStory].property.savings}</p>
+                             <div className="space-y-1">
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Savings</p>
+                                 <p className="text-2xl font-bold text-accent">{stories[activeStory].property.savings}</p>
                              </div>
-                             <div>
-                                 <p className="text-sm text-muted-foreground mb-1">Equity Built</p>
-                                 <p className="text-xl font-bold text-primary">{stories[activeStory].stats.equity}</p>
+                             <div className="space-y-1">
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Equity Built</p>
+                                 <p className="text-2xl font-bold text-primary">{stories[activeStory].stats.equity}</p>
                              </div>
                          </div>
                     </motion.div>

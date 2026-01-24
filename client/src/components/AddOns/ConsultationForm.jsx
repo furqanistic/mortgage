@@ -1,11 +1,10 @@
 // File: client/src/components/AddOns/ConsultationForm.jsx
 import { motion } from 'framer-motion'
-import { Calendar, X, ArrowRight, CheckCircle } from 'lucide-react'
-import React, { useState } from 'react'
+import { X, ArrowRight, CheckCircle } from 'lucide-react'
+import { useState } from 'react'
 
 // shadcn UI components
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -37,30 +36,32 @@ const ConsultationForm = ({ isOpen, onClose }) => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className='bg-background rounded-3xl shadow-2xl w-full max-w-2xl relative overflow-hidden max-h-[90vh] flex flex-col border border-border/50'
+        className='bg-background rounded-3xl shadow-[0_30px_100px_-20px_rgba(15,23,42,0.25)] w-full max-w-2xl relative overflow-hidden max-h-[95vh] flex flex-col border border-border/50'
       >
         {/* Premium Header */}
-        <div className='bg-primary text-primary-foreground px-8 py-6 flex justify-between items-center relative overflow-hidden'>
+        <div className='bg-primary/5 dark:bg-card border-b border-border/40 px-8 py-8 flex justify-between items-center relative overflow-hidden'>
            {/* Subtle pattern overlay */}
-           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_50%)]" />
+           <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
+                style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+           />
            
           <div className="relative z-10">
-            <h3 className='text-2xl font-bold font-heading tracking-tight'>
-              Book Your Consultation
+            <h3 className='text-3xl font-bold font-heading text-primary tracking-tight'>
+              Book Your <span className="text-accent">Consultation</span>
             </h3>
-            <p className="text-primary-foreground/80 text-sm mt-1 font-body">
-              Expert guidance for your German home-buying journey
+            <p className="text-muted-foreground text-base mt-2 font-body max-w-md">
+              Speak with Germany&apos;s leading mortgage experts to secure your future.
             </p>
           </div>
           <button
             onClick={onClose}
-            className='relative z-10 text-primary-foreground/70 hover:text-white hover:bg-white/10 rounded-full p-2 transition-colors focus:outline-none'
+            className='relative z-10 text-muted-foreground hover:text-primary hover:bg-muted rounded-full p-2.5 transition-all duration-200 focus:outline-none'
           >
             <X className='w-6 h-6' />
           </button>
         </div>
 
-        <div className='p-8 overflow-y-auto font-body'>
+        <div className='p-8 lg:p-10 overflow-y-auto font-body scrollbar-hide'>
           {!showConfirmation ? (
             <>
               <form onSubmit={handleSubmit} className='space-y-6'>
@@ -108,7 +109,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   <Label className="text-foreground/80 font-medium">Preferred Contact Method *</Label>
                   <RadioGroup
                     defaultValue='email'
-                    className='grid grid-cols-3 gap-0 p-1 bg-muted/50 rounded-xl'
+                    className='grid grid-cols-3 gap-1 p-1 bg-secondary/80 dark:bg-card border border-border/40 rounded-2xl'
                     onValueChange={setContactMethod}
                     value={contactMethod}
                   >
@@ -117,7 +118,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                             <RadioGroupItem value={method} id={`contact-${method}`} className="peer sr-only" />
                             <Label 
                                 htmlFor={`contact-${method}`} 
-                                className="flex items-center justify-center w-full py-2.5 rounded-lg cursor-pointer text-sm font-medium text-muted-foreground transition-all peer-checked:bg-white peer-checked:text-primary peer-checked:shadow-sm"
+                                className="flex items-center justify-center w-full py-2.5 rounded-xl cursor-pointer text-sm font-bold text-muted-foreground transition-all duration-300 peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:shadow-lg dark:peer-checked:shadow-none hover:text-primary"
                             >
                                 {method.charAt(0).toUpperCase() + method.slice(1)}
                             </Label>
@@ -127,19 +128,19 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Dynamic fields based on contact method with smooth presence animation */}
-                <div className="bg-secondary/30 rounded-xl p-5 border border-border/50">
+                <div className="bg-secondary/40 dark:bg-card/40 rounded-2xl p-6 border border-border/40">
                     {contactMethod === 'email' && (
-                      <div className='space-y-2.5'>
-                        <Label htmlFor='preferredEmail' className="text-foreground/80">Preferred Email *</Label>
+                      <div className='space-y-3'>
+                        <Label htmlFor='preferredEmail' className="text-foreground/90 font-semibold mb-1 block">Preferred Email *</Label>
                         <Input
                           id='preferredEmail'
                           type='email'
                           placeholder='name@example.com'
                           required
-                          className="bg-white border-border/60 focus:border-accent focus:ring-accent/20"
+                          className="h-12 bg-background border-border/80 focus:border-accent focus:ring-accent/20 rounded-xl"
                         />
-                        <p className='text-xs text-muted-foreground'>
-                          We'll send consultation details here.
+                        <p className='text-xs text-muted-foreground font-medium'>
+                          We&apos;ll send consultation details and calendar invites here.
                         </p>
                       </div>
                     )}
@@ -152,7 +153,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                           type='tel'
                           placeholder='+49 123 456789'
                           required
-                          className="bg-white border-border/60 focus:border-accent focus:ring-accent/20"
+                          className="bg-background border-border/60 focus:border-accent focus:ring-accent/20 rounded-xl"
                         />
                          <p className='text-xs text-muted-foreground'>
                           Our advisors will call you shortly.
@@ -171,7 +172,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                           className="bg-white border-border/60 focus:border-accent focus:ring-accent/20"
                         />
                          <p className='text-xs text-muted-foreground'>
-                          We'll coordinate via WhatsApp.
+                          We&apos;ll coordinate via WhatsApp.
                         </p>
                       </div>
                     )}
@@ -201,23 +202,23 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   />
                 </div>
 
-                <div className='flex items-start gap-3 p-4 bg-emerald-50/50 dark:bg-emerald-900/10 rounded-xl border border-emerald-100/50 dark:border-emerald-900/20'>
-                  <div className="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                     <CheckCircle className="w-3 h-3" />
+                <div className='flex items-start gap-4 p-5 bg-accent/5 dark:bg-accent/10 rounded-2xl border border-accent/20'>
+                  <div className="shrink-0 mt-0.5 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                     <CheckCircle className="w-3.5 h-3.5" />
                   </div>
-                  <p className='text-xs text-muted-foreground leading-relaxed'>
-                    By scheduling, you agree to our privacy policy. Personalized guidance, no obligation. Confirmation within 24h.
+                  <p className='text-[13px] text-muted-foreground leading-relaxed font-medium'>
+                    By scheduling, you agree to our privacy policy. One-on-one expert session, no hidden costs. Confirmation within 24 hours.
                   </p>
                 </div>
 
-                <div className='pt-2'>
+                <div className='pt-4'>
                   <Button
                     type='submit'
                     size="lg"
-                    className='w-full text-base font-semibold shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all rounded-xl h-14'
+                    className='w-full text-lg font-bold shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-full h-16 bg-primary text-primary-foreground'
                   >
                     Confirm Appointment
-                    <ArrowRight className='ml-2 h-4 w-4' />
+                    <ArrowRight className='ml-3 h-5 w-5' />
                   </Button>
                 </div>
               </form>
@@ -231,7 +232,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                 Request Received!
               </h3>
               <p className='text-muted-foreground mb-8 max-w-sm leading-relaxed'>
-                We'll be in touch shortly to confirm your consultation time and details.
+                We&apos;ll be in touch shortly to confirm your consultation time and details.
               </p>
               <Button
                 onClick={onClose}

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 const CTASection = () => {
   return (
-    <section className='py-24 relative overflow-hidden bg-secondary'>
+    <section className='py-32 relative overflow-hidden bg-background'>
       {/* Background decorations */}
       <div className='absolute inset-0 overflow-hidden pointer-events-none'>
         <div className='absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3' />
@@ -22,8 +22,8 @@ const CTASection = () => {
         />
       </div>
 
-      <div className='container mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
-        <div className='max-w-4xl mx-auto text-center space-y-8'>
+      <div className='container mx-auto px-6 lg:px-12 relative z-10'>
+        <div className='max-w-5xl mx-auto text-center space-y-12'>
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -43,10 +43,10 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-primary tracking-tight leading-tight'
+            className='text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-primary tracking-tight leading-[1.1]'
           >
             Start Your Journey to <br />
-            <span className='text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary'>
+            <span className='text-transparent bg-clip-text bg-gradient-to-br from-primary via-primary to-accent relative'>
               Home Ownership
             </span>
           </motion.h2>
@@ -57,7 +57,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className='text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed'
+            className='text-xl md:text-2xl text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed font-body'
           >
             Get a comprehensive mortgage plan tailored to your needs. No hidden fees, just clear guidance.
           </motion.p>
@@ -70,23 +70,22 @@ const CTASection = () => {
             transition={{ delay: 0.3 }}
             className='flex flex-col sm:flex-row items-center justify-center gap-4 pt-4'
           >
-            <Link to='/auth'>
+            <Link to='/auth' className="group relative">
               <Button
                 size='lg'
-                className='h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 rounded-full shadow-md hover:shadow-lg transition-all md:w-auto w-full'
+                className='h-16 px-10 text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full shadow-2xl shadow-primary/20 transition-all hover:scale-[1.05] active:scale-[0.98] w-full sm:w-auto font-bold'
               >
-                Get Started Now <ArrowRight className='ml-2 w-5 h-5' />
+                Get Started Now <ArrowRight className='ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform' />
               </Button>
             </Link>
-            <Link to='/contact'>
-               <Button
-                 size='lg'
-                 variant='outline'
-                 className='h-14 px-8 text-lg border-primary/20 text-primary hover:bg-primary/5 rounded-full bg-transparent md:w-auto w-full'
-               >
-                 Schedule Call
-               </Button>
-            </Link>
+            <Button
+              size='lg'
+              variant='ghost'
+              onClick={() => window.location.href = '/contact'}
+              className='h-16 px-10 text-lg text-primary hover:bg-secondary/50 rounded-full font-semibold transition-all w-full sm:w-auto'
+            >
+              Schedule Call
+            </Button>
           </motion.div>
 
           {/* Features Grid */}
@@ -95,11 +94,11 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
-            className='grid sm:grid-cols-3 gap-8 pt-12 border-t border-border/50 mt-12'
+            className='grid sm:grid-cols-3 gap-12 pt-16 border-t border-border/20 mt-16'
           >
             <div className='text-center space-y-2'>
               <div className='flex justify-center mb-3'>
-                 <div className="p-3 bg-background rounded-2xl shadow-sm border border-border/50">
+                 <div className="p-4 bg-secondary/50 rounded-2xl border border-border/40 group-hover:bg-accent/10 transition-colors">
                     <CheckCircle className='w-6 h-6 text-accent' />
                  </div>
               </div>
@@ -108,7 +107,7 @@ const CTASection = () => {
             </div>
             <div className='text-center space-y-2'>
                <div className='flex justify-center mb-3'>
-                 <div className="p-3 bg-background rounded-2xl shadow-sm border border-border/50">
+                 <div className="p-4 bg-secondary/50 rounded-2xl border border-border/40 group-hover:bg-accent/10 transition-colors">
                     <Star className='w-6 h-6 text-accent' />
                  </div>
               </div>
@@ -117,7 +116,7 @@ const CTASection = () => {
             </div>
             <div className='text-center space-y-2'>
                <div className='flex justify-center mb-3'>
-                 <div className="p-3 bg-background rounded-2xl shadow-sm border border-border/50">
+                 <div className="p-4 bg-secondary/50 rounded-2xl border border-border/40 group-hover:bg-accent/10 transition-colors">
                     <ShieldCheck className='w-6 h-6 text-accent' />
                  </div>
               </div>
