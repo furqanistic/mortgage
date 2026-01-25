@@ -93,7 +93,7 @@ const UsersPage = () => {
       case 'Active':
         return 'bg-green-50 text-green-600'
       case 'Pending':
-        return 'bg-amber-50 text-amber-600'
+        return 'bg-slate-100 text-slate-600'
       case 'New':
         return 'bg-blue-50 text-blue-600'
       default:

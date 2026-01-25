@@ -288,13 +288,13 @@ const BlogPage = () => {
         viewport={{ once: true }}
         className="py-32 px-6 md:px-10 bg-background"
       >
-        <div className="max-w-4xl mx-auto rounded-[48px] bg-[#0A0A0A] p-12 md:p-20 text-center space-y-10 relative overflow-hidden border border-border/20 shadow-2xl">
+        <div className="max-w-4xl mx-auto rounded-[48px] bg-card dark:bg-[#0A0A0A] p-12 md:p-20 text-center space-y-10 relative overflow-hidden border border-border/20 shadow-2xl">
           <div className="absolute top-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] translate-x-1/2 translate-y-1/2" />
           
           <div className="relative z-10 space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold font-heading text-white">Subscribe to Our Market Insights</h2>
-            <p className="text-muted-foreground text-lg font-body max-w-lg mx-auto leading-relaxed">
+            <h2 className="text-4xl md:text-5xl font-bold font-heading text-foreground dark:text-white">Subscribe to Our Market Insights</h2>
+            <p className="text-muted-foreground dark:text-white/70 text-lg font-body max-w-lg mx-auto leading-relaxed">
               Stay ahead with the latest property trends and mortgage updates in Germany. 
               Delivered straight to your inbox.
             </p>
@@ -304,7 +304,7 @@ const BlogPage = () => {
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 px-8 py-5 rounded-3xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 outline-none focus:border-accent transition-all"
+              className="flex-1 px-8 py-5 rounded-3xl bg-muted dark:bg-white/5 border border-border dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder:text-gray-500 outline-none focus:border-accent transition-all"
             />
             <Button className="bg-accent hover:bg-accent/90 text-accent-foreground h-[66px] px-10 rounded-3xl font-bold text-lg shadow-xl shadow-accent/20 transition-all active:scale-95">
               Subscribe

@@ -30,9 +30,9 @@
   --muted: hsl(210 40% 96.1%);
   --muted-foreground: hsl(215.4 16.3% 46.9%);
 
-  /* Accent - Muted Gold (Success & Growth) */
-  --accent: hsl(45 60% 50%); /* More muted premium gold */
-  --accent-foreground: hsl(222 47% 11%);
+  /* Accent - Light Navy (Brand Alignment) */
+  --accent: hsl(222 47% 20%);
+  --accent-foreground: hsl(210 40% 98%);
 
   /* Success - Muted Green */
   --success: hsl(150 30% 45%);
@@ -65,22 +65,23 @@
 
   /* Primary - Deep Navy. In dark mode, we keep it dark for backgrounds,
      but we should avoid using it for text. */
-  --primary: hsl(222 47% 15%); 
+  --primary: hsl(222 47% 15%);
   --primary-foreground: hsl(0 0% 98%);
 
-  --secondary: hsl(0 0% 6%); 
+  --secondary: hsl(0 0% 6%);
   --secondary-foreground: hsl(0 0% 98%);
 
   --muted: hsl(0 0% 6%);
   /* Lightened muted text for better legibility on black */
   --muted-foreground: hsl(0 0% 75%);
 
-  --accent: hsl(45 60% 50%); /* Premium Gold */
-  --accent-foreground: hsl(222 47% 11%);
+  /* Accent - Vivid Blue for Dark Mode */
+  --accent: hsl(217 91% 60%); 
+  --accent-foreground: hsl(0 0% 100%);
 
   --border: hsl(0 0% 12%); /* Subtle borders */
   --input: hsl(0 0% 12%);
-  --ring: hsl(45 60% 50%);
+  --ring: hsl(217 91% 60%); /* Match accent */
 }
 
 @theme inline {

@@ -193,11 +193,11 @@ const AppointmentsTable = () => {
         }
       case 'Pending':
         return {
-          bg: 'bg-amber-100',
-          text: 'text-amber-700',
-          dot: 'bg-amber-500',
-          border: 'border-amber-200',
-          pill: 'bg-amber-500',
+          bg: 'bg-slate-100',
+          text: 'text-slate-700',
+          dot: 'bg-slate-500',
+          border: 'border-slate-200',
+          pill: 'bg-slate-500',
           pillText: 'text-white',
         }
       case 'Rescheduled':

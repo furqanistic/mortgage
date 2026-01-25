@@ -247,8 +247,8 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className='space-y-10'
             >
-              <div className='bg-[#080808] p-10 rounded-3xl border border-border/50'>
-                <h3 className='text-2xl font-bold font-heading text-white mb-8'>
+              <div className='bg-card dark:bg-[#080808] p-10 rounded-3xl border border-border/50 shadow-xl'>
+                <h3 className='text-2xl font-bold font-heading text-foreground dark:text-white mb-8'>
                   Office Hours
                 </h3>
                 <div className='space-y-8'>
@@ -262,10 +262,10 @@ const ContactPage = () => {
                         <Clock className='w-6 h-6 text-accent' />
                       </div>
                       <div>
-                        <p className='text-lg font-bold text-white'>
+                        <p className='text-lg font-bold text-foreground dark:text-white'>
                           {schedule.day}
                         </p>
-                        <p className='text-gray-400 font-body'>
+                        <p className='text-muted-foreground dark:text-gray-400 font-body'>
                           {schedule.hours}
                         </p>
                       </div>

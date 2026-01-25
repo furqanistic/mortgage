@@ -320,10 +320,10 @@ const PartnersPage = () => {
                   className={`whitespace-nowrap flex items-center gap-2.5 px-5 py-2.5 md:px-8 md:py-3.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
                     activeCategory === category.id
                       ? 'bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/20'
-                      : 'bg-card text-muted-foreground border-border hover:border-accent/40 hover:bg-muted/30 hover:text-foreground'
+                      : 'bg-card text-primary dark:text-foreground/80 border-border hover:border-accent/40 hover:bg-muted/30 hover:text-primary dark:hover:text-foreground'
                   }`}
                 >
-                  <span className={activeCategory === category.id ? 'text-accent dark:text-accent-foreground' : 'text-muted-foreground/70'}>
+                  <span className={activeCategory === category.id ? 'text-accent-foreground' : 'text-primary dark:text-foreground/80'}>
                     {category.icon}
                   </span>
                   {category.label}

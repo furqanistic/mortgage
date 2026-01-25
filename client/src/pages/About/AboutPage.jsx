@@ -12,7 +12,7 @@ import {
   Target,
   Users,
 } from 'lucide-react'
-import React from 'react'
+
 
 const AboutPage = () => {
   const containerVariants = {
@@ -165,7 +165,7 @@ const AboutPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-4xl lg:text-5xl font-bold font-heading text-accent mb-2">
+                  <p className="text-4xl lg:text-5xl font-bold font-heading text-white dark:text-accent mb-2">
                     {stat.value}
                   </p>
                   <p className="text-sm tracking-widest uppercase font-medium text-primary-foreground/70 dark:text-muted-foreground">
@@ -193,7 +193,7 @@ const AboutPage = () => {
                   </h2>
                   <p className="text-xl text-muted-foreground leading-relaxed">
                     We believe that everyone deserves their dream home in Germany.
-                    Through our AI-powered platform and expert guidance, we're
+                    Through our AI-powered platform and expert guidance, we&apos;re
                     making the complex journey of home buying accessible and
                     stress-free for all.
                   </p>
@@ -281,10 +281,10 @@ const AboutPage = () => {
             
             <div className="relative z-10 max-w-3xl mx-auto space-y-10">
               <h2 className="text-4xl lg:text-6xl font-bold font-heading text-white">
-                Ready to Find Your <span className="text-accent">Dream Home?</span>
+                Ready to Find Your <span className="text-blue-200 dark:text-accent">Dream Home?</span>
               </h2>
               <p className="text-xl text-white/70 leading-relaxed">
-                Let's start your journey to homeownership together. Our experts are ready to help you every step of the way.
+                Let&apos;s start your journey to homeownership together. Our experts are ready to help you every step of the way.
               </p>
               <div className="flex justify-center pt-4">
                 <Button

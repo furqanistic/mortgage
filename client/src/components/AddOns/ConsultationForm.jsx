@@ -46,8 +46,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
            />
            
           <div className="relative z-10">
-            <h3 className='text-2xl font-bold font-heading text-primary tracking-tight'>
-              Book Your <span className="text-accent">Consultation</span>
+            <h3 className='text-2xl font-bold font-heading text-primary dark:text-white tracking-tight'>
+              Book Your <span className="text-accent dark:text-blue-400">Consultation</span>
             </h3>
             <p className="text-muted-foreground text-sm mt-1 font-body">
               Expert advice to secure your future.
@@ -196,8 +196,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   />
                 </div>
 
-                <div className='flex items-start gap-3 p-3 bg-accent/5 dark:bg-accent/10 rounded-xl border border-accent/20'>
-                  <div className="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                <div className='flex items-start gap-3 p-3 bg-accent/5 dark:bg-blue-500/10 rounded-xl border border-accent/20 dark:border-blue-500/20'>
+                  <div className="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-accent/20 dark:bg-blue-500/20 flex items-center justify-center text-accent dark:text-blue-400">
                      <CheckCircle className="w-3 h-3" />
                   </div>
                   <p className='text-[11px] text-muted-foreground leading-relaxed font-medium pt-0.5'>

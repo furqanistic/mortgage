@@ -83,7 +83,7 @@ const HeroSection = () => {
                 variant='ghost'
                 size='lg'
                 onClick={openForm}
-                className='px-6 md:px-8 h-12 md:h-16 text-base md:text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all w-full sm:w-auto'
+                className='px-6 md:px-8 h-12 md:h-16 text-base md:text-lg text-foreground hover:bg-primary hover:text-primary-foreground rounded-full font-semibold transition-all w-full sm:w-auto'
               >
                 Free Consultation
               </Button>
