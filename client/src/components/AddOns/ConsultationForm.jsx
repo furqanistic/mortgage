@@ -36,80 +36,96 @@ const ConsultationForm = ({ isOpen, onClose }) => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className='bg-background rounded-3xl shadow-[0_30px_100px_-20px_rgba(15,23,42,0.25)] w-full max-w-2xl relative overflow-hidden max-h-[95vh] flex flex-col border border-border/50'
+        className='bg-background rounded-3xl shadow-2xl w-full max-w-lg relative overflow-hidden max-h-[95vh] flex flex-col border border-border/50'
       >
-        {/* Premium Header */}
-        <div className='bg-primary/5 dark:bg-card border-b border-border/40 px-8 py-8 flex justify-between items-center relative overflow-hidden'>
+        {/* Premium Header - Compact */}
+        <div className='bg-primary/5 dark:bg-card border-b border-border/40 px-6 py-5 flex justify-between items-center relative overflow-hidden'>
            {/* Subtle pattern overlay */}
            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
-                style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+                style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '16px 16px' }} 
            />
            
           <div className="relative z-10">
-            <h3 className='text-3xl font-bold font-heading text-primary tracking-tight'>
+            <h3 className='text-2xl font-bold font-heading text-primary tracking-tight'>
               Book Your <span className="text-accent">Consultation</span>
             </h3>
-            <p className="text-muted-foreground text-base mt-2 font-body max-w-md">
-              Speak with Germany&apos;s leading mortgage experts to secure your future.
+            <p className="text-muted-foreground text-sm mt-1 font-body">
+              Expert advice to secure your future.
             </p>
           </div>
           <button
             onClick={onClose}
-            className='relative z-10 text-muted-foreground hover:text-primary hover:bg-muted rounded-full p-2.5 transition-all duration-200 focus:outline-none'
+            className='relative z-10 text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-full p-2 transition-all duration-200 focus:outline-none'
           >
-            <X className='w-6 h-6' />
+            <X className='w-5 h-5' />
           </button>
         </div>
 
-        <div className='p-8 lg:p-10 overflow-y-auto font-body scrollbar-hide'>
+        <div className='p-6 overflow-y-auto font-body scrollbar-hide'>
           {!showConfirmation ? (
             <>
-              <form onSubmit={handleSubmit} className='space-y-6'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                  <div className='space-y-2.5'>
-                    <Label htmlFor='firstName' className="text-foreground/80 font-medium">First Name *</Label>
+              <form onSubmit={handleSubmit} className='space-y-4'>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='firstName' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">First Name</Label>
                     <Input
                       id='firstName'
-                      placeholder='e.g. Thomas'
+                      placeholder='Thomas'
                       required
-                      className="h-12 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-xl"
+                      className="h-10 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-lg text-sm"
                     />
                   </div>
 
-                  <div className='space-y-2.5'>
-                    <Label htmlFor='lastName' className="text-foreground/80 font-medium">Last Name *</Label>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='lastName' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Last Name</Label>
                     <Input
                       id='lastName'
-                      placeholder='e.g. Weber'
+                      placeholder='Weber'
                       required
-                      className="h-12 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-xl"
+                      className="h-10 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-lg text-sm"
                     />
                   </div>
                 </div>
 
-                <div className='space-y-2.5'>
-                  <Label htmlFor='residency' className="text-foreground/80 font-medium">
-                    Current Residency Status *
-                  </Label>
-                  <Select required>
-                    <SelectTrigger id='residency' className="h-12 bg-muted/30 border-input focus:ring-accent/20 rounded-xl">
-                      <SelectValue placeholder='Select your status' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='citizen'>German Citizen</SelectItem>
-                      <SelectItem value='permanent'>Permanent Resident</SelectItem>
-                      <SelectItem value='temporary'>Temporary Resident</SelectItem>
-                      <SelectItem value='eu'>EU Citizen</SelectItem>
-                      <SelectItem value='other'>Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {/* Grouped Residency and Language */}
+                <div className='grid grid-cols-2 gap-4'>
+                    <div className='space-y-1.5'>
+                      <Label htmlFor='residency' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">
+                        Residency
+                      </Label>
+                      <Select required>
+                        <SelectTrigger id='residency' className="h-10 bg-muted/30 border-input focus:ring-accent/20 rounded-lg text-sm">
+                          <SelectValue placeholder='Select status' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value='citizen'>German Citizen</SelectItem>
+                          <SelectItem value='permanent'>Permanent Resident</SelectItem>
+                          <SelectItem value='temporary'>Temporary Resident</SelectItem>
+                          <SelectItem value='eu'>EU Citizen</SelectItem>
+                          <SelectItem value='other'>Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className='space-y-1.5'>
+                      <Label htmlFor='language' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Language</Label>
+                      <Select required>
+                        <SelectTrigger id='language' className="h-10 bg-muted/30 border-input focus:ring-accent/20 rounded-lg text-sm">
+                          <SelectValue placeholder='Select language' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value='german'>German / Deutsch</SelectItem>
+                          <SelectItem value='english'>English</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                 </div>
 
-                <div className='space-y-3'>
-                  <Label className="text-foreground/80 font-medium">Preferred Contact Method *</Label>
+                <div className='space-y-2'>
+                  <Label className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Contact Method</Label>
                   <RadioGroup
                     defaultValue='email'
-                    className='grid grid-cols-3 gap-1 p-1 bg-secondary/80 dark:bg-card border border-border/40 rounded-2xl'
+                    className='grid grid-cols-3 gap-1 p-1 bg-secondary/50 dark:bg-card border border-border/40 rounded-xl'
                     onValueChange={setContactMethod}
                     value={contactMethod}
                   >
@@ -118,7 +134,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                             <RadioGroupItem value={method} id={`contact-${method}`} className="peer sr-only" />
                             <Label 
                                 htmlFor={`contact-${method}`} 
-                                className="flex items-center justify-center w-full py-2.5 rounded-xl cursor-pointer text-sm font-bold text-muted-foreground transition-all duration-300 peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:shadow-lg dark:peer-checked:shadow-none hover:text-primary"
+                                className="flex items-center justify-center w-full py-2 rounded-lg cursor-pointer text-xs font-bold text-muted-foreground transition-all duration-300 peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:shadow-sm hover:text-primary"
                             >
                                 {method.charAt(0).toUpperCase() + method.slice(1)}
                             </Label>
@@ -127,117 +143,95 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   </RadioGroup>
                 </div>
 
-                {/* Dynamic fields based on contact method with smooth presence animation */}
-                <div className="bg-secondary/40 dark:bg-card/40 rounded-2xl p-6 border border-border/40">
+                {/* Dynamic fields based on contact method */}
+                <div className="bg-secondary/30 dark:bg-card/30 rounded-xl p-4 border border-border/30">
                     {contactMethod === 'email' && (
-                      <div className='space-y-3'>
-                        <Label htmlFor='preferredEmail' className="text-foreground/90 font-semibold mb-1 block">Preferred Email *</Label>
+                      <div className='space-y-1.5'>
+                        <Label htmlFor='preferredEmail' className="text-foreground/90 font-medium text-xs">Preferred Email</Label>
                         <Input
                           id='preferredEmail'
                           type='email'
                           placeholder='name@example.com'
                           required
-                          className="h-12 bg-background border-border/80 focus:border-accent focus:ring-accent/20 rounded-xl"
+                          className="h-10 bg-background border-border/80 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
                         />
-                        <p className='text-xs text-muted-foreground font-medium'>
-                          We&apos;ll send consultation details and calendar invites here.
-                        </p>
                       </div>
                     )}
 
                     {contactMethod === 'phone' && (
-                      <div className='space-y-2.5'>
-                        <Label htmlFor='phoneNumber' className="text-foreground/80">Phone Number *</Label>
+                      <div className='space-y-1.5'>
+                        <Label htmlFor='phoneNumber' className="text-foreground/80 text-xs">Phone Number</Label>
                         <Input
                           id='phoneNumber'
                           type='tel'
                           placeholder='+49 123 456789'
                           required
-                          className="bg-background border-border/60 focus:border-accent focus:ring-accent/20 rounded-xl"
+                          className="h-10 bg-background border-border/60 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
                         />
-                         <p className='text-xs text-muted-foreground'>
-                          Our advisors will call you shortly.
-                        </p>
                       </div>
                     )}
 
                     {contactMethod === 'whatsapp' && (
-                      <div className='space-y-2.5'>
-                        <Label htmlFor='whatsappNumber' className="text-foreground/80">WhatsApp Number *</Label>
+                      <div className='space-y-1.5'>
+                        <Label htmlFor='whatsappNumber' className="text-foreground/80 text-xs">WhatsApp Number</Label>
                         <Input
                           id='whatsappNumber'
                           type='tel'
                           placeholder='+49 123 456789'
                           required
-                          className="bg-white border-border/60 focus:border-accent focus:ring-accent/20"
+                          className="h-10 bg-white border-border/60 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
                         />
-                         <p className='text-xs text-muted-foreground'>
-                          We&apos;ll coordinate via WhatsApp.
-                        </p>
                       </div>
                     )}
                 </div>
 
-                <div className='space-y-2.5'>
-                  <Label htmlFor='language' className="text-foreground/80 font-medium">Preferred Language *</Label>
-                  <Select required>
-                    <SelectTrigger id='language' className="h-12 bg-muted/30 border-input focus:ring-accent/20 rounded-xl">
-                      <SelectValue placeholder='Select language' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='german'>German / Deutsch</SelectItem>
-                      <SelectItem value='english'>English</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className='space-y-2.5'>
-                  <Label htmlFor='message' className="text-foreground/80 font-medium">
-                    How can we help? <span className="text-muted-foreground font-normal">(Optional)</span>
+                <div className='space-y-1.5'>
+                  <Label htmlFor='message' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">
+                    Message <span className="text-muted-foreground font-normal normal-case">(Optional)</span>
                   </Label>
                   <Textarea
                     id='message'
                     placeholder='Tell us about your goals...'
-                    className='min-h-[100px] bg-muted/30 border-input focus:border-accent focus:ring-accent/20 rounded-xl resize-none'
+                    className='min-h-[80px] bg-muted/30 border-input focus:border-accent focus:ring-accent/20 rounded-lg resize-none text-sm'
                   />
                 </div>
 
-                <div className='flex items-start gap-4 p-5 bg-accent/5 dark:bg-accent/10 rounded-2xl border border-accent/20'>
-                  <div className="shrink-0 mt-0.5 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">
-                     <CheckCircle className="w-3.5 h-3.5" />
+                <div className='flex items-start gap-3 p-3 bg-accent/5 dark:bg-accent/10 rounded-xl border border-accent/20'>
+                  <div className="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                     <CheckCircle className="w-3 h-3" />
                   </div>
-                  <p className='text-[13px] text-muted-foreground leading-relaxed font-medium'>
-                    By scheduling, you agree to our privacy policy. One-on-one expert session, no hidden costs. Confirmation within 24 hours.
+                  <p className='text-[11px] text-muted-foreground leading-relaxed font-medium pt-0.5'>
+                    By scheduling, you agree to our privacy policy. One-on-one session, no hidden costs.
                   </p>
                 </div>
 
-                <div className='pt-4'>
+                <div className='pt-2'>
                   <Button
                     type='submit'
                     size="lg"
-                    className='w-full text-lg font-bold shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-full h-16 bg-primary text-primary-foreground'
+                    className='w-full text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-12 bg-primary text-primary-foreground'
                   >
                     Confirm Appointment
-                    <ArrowRight className='ml-3 h-5 w-5' />
+                    <ArrowRight className='ml-2 h-4 w-4' />
                   </Button>
                 </div>
               </form>
             </>
           ) : (
-            <div className='flex flex-col items-center justify-center py-12 text-center'>
-              <div className='w-20 h-20 bg-emerald-50 dark:bg-emerald-900/20 rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500'>
-                <CheckCircle className='h-10 w-10 text-emerald-600 dark:text-emerald-400' />
+            <div className='flex flex-col items-center justify-center py-8 text-center'>
+              <div className='w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-full flex items-center justify-center mb-4 animate-in zoom-in duration-500'>
+                <CheckCircle className='h-8 w-8 text-emerald-600 dark:text-emerald-400' />
               </div>
-              <h3 className='text-2xl font-bold text-foreground mb-3 font-heading'>
+              <h3 className='text-xl font-bold text-foreground mb-2 font-heading'>
                 Request Received!
               </h3>
-              <p className='text-muted-foreground mb-8 max-w-sm leading-relaxed'>
-                We&apos;ll be in touch shortly to confirm your consultation time and details.
+              <p className='text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed'>
+                We&apos;ll be in touch shortly to confirm your consultation.
               </p>
               <Button
                 onClick={onClose}
                 variant="outline"
-                className='px-8 rounded-xl border-primary/20 hover:bg-muted'
+                className='px-6 h-10 rounded-xl border-primary/20 hover:bg-muted text-sm'
               >
                 Return to Site
               </Button>
