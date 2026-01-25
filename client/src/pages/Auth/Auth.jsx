@@ -253,7 +253,7 @@ const Auth = () => {
                         </label>
                       </div>
 
-                      <Button className="w-full h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
+                      <Button className="w-full h-12 md:h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-base md:text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
                         type="submit" disabled={loading}>
                         {loading ? "Signing in..." : <div className="flex items-center gap-2">Sign In <ArrowRight className="w-5 h-5" /></div>}
                       </Button>
@@ -307,7 +307,7 @@ const Auth = () => {
                         </span>
                       </label>
 
-                      <Button className="w-full h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
+                      <Button className="w-full h-12 md:h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-base md:text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
                         type="submit" disabled={loading}>
                         {loading ? "Creating Account..." : <div className="flex items-center gap-2">Create Account <ChevronRight className="w-5 h-5" /></div>}
                       </Button>

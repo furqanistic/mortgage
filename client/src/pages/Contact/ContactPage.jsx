@@ -63,7 +63,7 @@ const ContactPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className='pt-32 pb-24 px-6 md:px-10'>
+      <section className='pt-24 pb-16 md:pt-32 md:pb-24 px-6 md:px-10'>
         <div className='max-w-7xl mx-auto'>
           <motion.div
             variants={containerVariants}
@@ -78,7 +78,7 @@ const ContactPage = () => {
               </span>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className='text-5xl md:text-7xl font-bold font-heading text-foreground leading-tight'>
+            <motion.h1 variants={itemVariants} className='text-4xl sm:text-5xl md:text-7xl font-bold font-heading text-foreground leading-tight'>
               Let&apos;s Start Your{' '}
               <span className='text-accent'>Journey</span>
             </motion.h1>
@@ -92,14 +92,14 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Options */}
-      <section className='py-24 px-6 md:px-10 bg-background'>
+      <section className='py-16 md:py-24 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <motion.div
             variants={containerVariants}
             initial='hidden'
             whileInView='visible'
             viewport={{ once: true }}
-            className='grid md:grid-cols-3 gap-10'
+            className='grid md:grid-cols-3 gap-6 md:gap-10'
           >
             {[
               {
@@ -124,15 +124,15 @@ const ContactPage = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className='bg-card dark:bg-[#080808] p-10 rounded-3xl border border-border/50 shadow-xl hover:border-accent/40 transition-all duration-300 group'
+                className='bg-card dark:bg-[#080808] p-6 md:p-10 rounded-3xl border border-border/50 shadow-xl hover:border-accent/40 transition-all duration-300 group'
               >
-                <div className='p-4 rounded-2xl bg-accent/10 inline-block mb-8 transform group-hover:scale-110 transition-transform'>
-                  <contact.icon className='w-8 h-8 text-accent' />
+                <div className='p-3 md:p-4 rounded-2xl bg-accent/10 inline-block mb-4 md:mb-8 transform group-hover:scale-110 transition-transform'>
+                  <contact.icon className='w-6 h-6 md:w-8 md:h-8 text-accent' />
                 </div>
-                <h3 className='text-2xl font-bold font-heading text-foreground dark:text-white mb-4'>
+                <h3 className='text-2xl font-bold font-heading text-foreground dark:text-white mb-2 md:mb-4'>
                   {contact.title}
                 </h3>
-                <p className='text-lg text-muted-foreground dark:text-gray-400 mb-4 font-body'>
+                <p className='text-lg text-muted-foreground dark:text-gray-400 mb-2 md:mb-4 font-body'>
                   {contact.info}
                 </p>
                 <p className='text-sm font-semibold text-accent uppercase tracking-wider font-body'>
@@ -145,7 +145,7 @@ const ContactPage = () => {
       </section>
 
       {/* Form & Info Section */}
-      <section className='py-32 px-6 md:px-10 bg-background'>
+      <section className='py-16 md:py-32 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <div className='grid lg:grid-cols-2 gap-24'>
             {/* Form */}
@@ -232,7 +232,7 @@ const ContactPage = () => {
                 </div>
                 <Button
                   type='submit'
-                  className='bg-accent hover:bg-accent/90 text-accent-foreground h-16 px-10 rounded-2xl w-full text-lg font-bold shadow-lg shadow-accent/20 transition-all hover:scale-[1.02]'
+                  className='bg-accent hover:bg-accent/90 text-accent-foreground h-12 md:h-16 px-6 md:px-10 rounded-2xl w-full text-base md:text-lg font-bold shadow-lg shadow-accent/20 transition-all hover:scale-[1.02]'
                 >
                   Send Message
                   <Send className='w-5 h-5 ml-3' />
@@ -297,7 +297,7 @@ const ContactPage = () => {
       </section>
 
       {/* Map Section */}
-      <section className='py-24 px-6 md:px-10 bg-background'>
+      <section className='py-16 md:py-24 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -305,7 +305,7 @@ const ContactPage = () => {
             viewport={{ once: true }}
             className='rounded-[40px] overflow-hidden shadow-2xl border border-border/20'
           >
-            <div className='aspect-[21/9] w-full'>
+            <div className='aspect-square sm:aspect-video md:aspect-[21/9] w-full'>
               <iframe
                 src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2436.7433372844675!2d13.5842685!3d52.3569402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a838af000eba8b%3A0x8db91df7ade18b76!2sKr%C3%A4uterpl.%205%2C%2015732%20Schulzendorf%2C%20Germany!5e0!3m2!1sen!2s!4v1740498946518!5m2!1sen!2s'
                 width='100%'
@@ -326,7 +326,7 @@ const ContactPage = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className='py-32 px-6 md:px-10 bg-background text-center'
+        className='py-16 md:py-32 px-6 md:px-10 bg-background text-center'
       >
         <div className='max-w-4xl mx-auto space-y-10'>
           <h2 className='text-4xl md:text-6xl font-bold font-heading text-foreground'>
@@ -336,7 +336,7 @@ const ContactPage = () => {
             Take the first step towards your dream home today.
           </p>
           <Button
-            className='bg-accent text-accent-foreground h-16 px-12 rounded-2xl text-lg font-bold hover:scale-105 transition-all shadow-xl dark:shadow-accent/20'
+            className='bg-accent text-accent-foreground h-12 md:h-16 w-full sm:w-auto px-6 md:px-12 rounded-2xl text-base md:text-lg font-bold hover:scale-105 transition-all shadow-xl dark:shadow-accent/20'
             onClick={() => {}}
           >
             Get Started Now
