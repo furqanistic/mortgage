@@ -94,18 +94,29 @@ const SuccessStories = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-8"
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.2}
+                        onDragEnd={(e, { offset }) => {
+                          const swipe = offset.x; // positive = right, negative = left
+                          if (swipe < -50) {
+                             setActiveStory((prev) => (prev + 1) % stories.length);
+                          } else if (swipe > 50) {
+                             setActiveStory((prev) => (prev - 1 + stories.length) % stories.length);
+                          }
+                        }}
+                        className="space-y-8 touch-pan-y cursor-grab active:cursor-grabbing"
                     >
                          <div className="relative">
-                             <Quote className="absolute -top-12 -left-12 w-24 h-24 text-accent/5 rotate-180 pointer-events-none" />
+                             <Quote className="absolute -top-8 -left-2 md:-top-12 md:-left-12 w-16 h-16 md:w-24 md:h-24 text-accent/5 rotate-180 pointer-events-none" />
                               <h3 className="text-xl md:text-3xl lg:text-4xl font-medium leading-[1.4] text-foreground italic relative z-10 font-body">
                                   &ldquo;{stories[activeStory].quote}&rdquo;
                               </h3>
                          </div>
                          
-                         <div className="flex items-center gap-4">
-                             <Avatar className="w-16 h-16 border-2 border-primary/10">
-                                 <AvatarImage src={stories[activeStory].image} />
+                         <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+                             <Avatar className="w-16 h-16 md:w-16 md:h-16 border-2 border-primary/10">
+                                 <AvatarImage src={stories[activeStory].image} className="object-cover" />
                                  <AvatarFallback>U</AvatarFallback>
                              </Avatar>
                              <div>
@@ -114,29 +125,29 @@ const SuccessStories = () => {
                              </div>
                          </div>
                          
-                         <div className="grid grid-cols-3 gap-8 p-10 bg-card rounded-[2.5rem] border border-border/50 shadow-inner mt-12">
-                             <div className="space-y-1">
+                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 p-6 md:p-10 bg-card rounded-[2rem] md:rounded-[2.5rem] border border-border/50 shadow-inner mt-8 md:mt-12 backdrop-blur-sm">
+                             <div className="space-y-1 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-start border-b sm:border-b-0 border-border/10 pb-4 sm:pb-0 last:border-0 last:pb-0">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Time to Buy</p>
-                                 <p className="text-2xl font-bold text-foreground">{stories[activeStory].stats.time}</p>
+                                 <p className="text-xl md:text-2xl font-bold text-foreground">{stories[activeStory].stats.time}</p>
                              </div>
-                             <div className="space-y-1">
+                             <div className="space-y-1 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-start border-b sm:border-b-0 border-border/10 pb-4 sm:pb-0 last:border-0 last:pb-0">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Savings</p>
-                                 <p className="text-2xl font-bold text-accent">{stories[activeStory].property.savings}</p>
+                                 <p className="text-xl md:text-2xl font-bold text-accent">{stories[activeStory].property.savings}</p>
                              </div>
-                             <div className="space-y-1">
+                             <div className="space-y-1 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-start">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Equity Built</p>
-                                 <p className="text-2xl font-bold text-foreground">{stories[activeStory].stats.equity}</p>
+                                 <p className="text-xl md:text-2xl font-bold text-foreground">{stories[activeStory].stats.equity}</p>
                              </div>
                          </div>
                     </motion.div>
                 </AnimatePresence>
                 
-                <div className="flex gap-2 pt-4">
+                <div className="flex justify-center md:justify-start gap-3 pt-4">
                     {stories.map((_, idx) => (
                         <button 
                             key={idx}
                             onClick={() => setActiveStory(idx)}
-                            className={`h-2 rounded-full transition-all duration-300 ${activeStory === idx ? 'w-8 bg-primary' : 'w-2 bg-primary/20 hover:bg-primary/40'}`}
+                            className={`h-2.5 md:h-2 rounded-full transition-all duration-300 ${activeStory === idx ? 'w-8 bg-primary' : 'w-2.5 md:w-2 bg-primary/20 hover:bg-primary/40'}`}
                             aria-label={`Go to story ${idx + 1}`}
                         />
                     ))}

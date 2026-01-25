@@ -15,7 +15,7 @@ const HeroSection = () => {
   const closeForm = () => setIsFormOpen(false)
 
   return (
-    <section className='relative min-h-[90vh] lg:min-h-[95vh] flex items-center bg-background overflow-hidden pt-12 lg:pt-0'>
+    <section className='relative min-h-[80vh] lg:min-h-[95vh] flex items-center bg-background overflow-hidden pt-8 lg:pt-0'>
       {/* Dynamic Background */}
       <div className='absolute inset-0 pointer-events-none'>
         <div className="absolute top-[-10%] right-[-5%] w-[70vw] h-[70vw] bg-primary/5 rounded-full blur-[120px]" />
@@ -39,7 +39,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className='lg:col-span-7 space-y-8 md:space-y-12'
+            className='lg:col-span-7 space-y-6 md:space-y-12'
           >
             {/* Elegant Badge */}
             <motion.div
@@ -55,27 +55,27 @@ const HeroSection = () => {
             </motion.div>
 
             {/* Master Heading */}
-            <div className="space-y-4">
-              <h1 className='text-4xl sm:text-7xl lg:text-8xl font-bold font-heading text-foreground leading-[1.0] lg:leading-[0.95] tracking-tight'>
+            <div className="space-y-3 md:space-y-4">
+              <h1 className='text-4xl sm:text-7xl lg:text-8xl font-bold font-heading text-foreground leading-[1.1] lg:leading-[0.95] tracking-tight'>
                 Experience <br />
                 <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
                   True Ownership
                 </span>
               </h1>
-              <p className='text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl font-body'>
+              <p className='text-base sm:text-xl text-muted-foreground leading-relaxed max-w-xl font-body'>
                 From first-time buyers to seasoned investors, we provide the clarity and confidence you need to navigate the German real estate market.
               </p>
             </div>
 
             {/* Strategic CTAs */}
-            <div className='flex flex-wrap gap-6 items-center'>
-              <Link to='/auth' className="group relative">
+            <div className='flex flex-col sm:flex-row gap-3 items-center w-full sm:w-auto'>
+              <Link to='/auth' className="w-full sm:w-auto">
                 <Button
                   size='lg'
-                  className='px-6 md:px-10 h-12 md:h-16 text-base md:text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-primary/20 w-full sm:w-auto'
+                  className='w-full sm:w-auto px-4 md:px-10 h-12 md:h-16 text-base md:text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-primary/20'
                 >
-                  Start Your Journey
-                  <ArrowRight className='ml-2 md:ml-3 w-4 md:w-5 h-4 md:h-5 group-hover:translate-x-1 transition-transform' />
+                  Get Started
+                  <ArrowRight className='ml-1.5 md:ml-3 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform' />
                 </Button>
               </Link>
 
@@ -83,21 +83,21 @@ const HeroSection = () => {
                 variant='ghost'
                 size='lg'
                 onClick={openForm}
-                className='px-6 md:px-8 h-12 md:h-16 text-base md:text-lg text-foreground hover:bg-primary hover:text-primary-foreground rounded-full font-semibold transition-all w-full sm:w-auto'
+                className='w-full sm:w-auto px-4 md:px-8 h-12 md:h-16 text-base md:text-lg text-foreground hover:bg-primary hover:text-primary-foreground rounded-full font-semibold transition-all'
               >
-                Free Consultation
+                Consult Free
               </Button>
             </div>
 
-            <div className='pt-8 border-t border-border/20 flex flex-wrap gap-x-12 gap-y-6'>
+            <div className='pt-6 border-t border-border/20 grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-6'>
               {[
-                { label: 'Verified Process', icon: CheckCircle },
+                { label: 'Verified', icon: CheckCircle },
                 { label: 'Instant Pre-approval', icon: TrendingUp },
-                { label: 'Direct Advisor Access', icon: Star }
+                { label: 'Direct Advisor', icon: Star }
               ].map((item, i) => (
-                <div key={i} className='flex items-center gap-2.5 group'>
-                  <item.icon className='w-4 h-4 text-accent transition-transform group-hover:scale-110' />
-                  <span className="text-xs font-bold text-muted-foreground tracking-wider uppercase">{item.label}</span>
+                <div key={i} className='flex items-center gap-2 group'>
+                  <item.icon className='w-4 h-4 sm:w-3.5 sm:h-3.5 text-accent transition-transform group-hover:scale-110' />
+                  <span className="text-[10px] sm:text-[10px] font-bold text-muted-foreground tracking-wider uppercase whitespace-nowrap">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -111,7 +111,7 @@ const HeroSection = () => {
             className='lg:col-span-5 relative mt-16 lg:mt-0'
           >
              {/* Architectural Frame */}
-             <div className="relative aspect-[4/5] w-full max-w-[480px] mx-auto group">
+             <div className="relative aspect-square sm:aspect-[4/5] w-full max-w-[480px] mx-auto group">
                 {/* Decorative Elements */}
                 <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-accent/20 rounded-tl-[3rem]" />
                 <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-primary/20 rounded-br-[3rem]" />
@@ -125,22 +125,20 @@ const HeroSection = () => {
                   
                   {/* Sophisticated Overlay */}
                   <div className='absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent opacity-40' />
-                  
-                  {/* Live Stats Card */}
-                   <motion.div 
+                                    <motion.div 
                       initial={{ y: 40, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 1, duration: 0.8 }}
-                      className='absolute bottom-6 left-6 right-6 glass p-6 rounded-2xl border border-white/20 dark:border-white/5'
+                      className='absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 glass p-4 sm:p-6 rounded-2xl border border-white/20 dark:border-white/5'
                    >
                       <div className='flex justify-between items-center'>
-                          <div className="space-y-1">
-                              <p className='text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Current Best Rate</p>
-                              <p className='text-4xl font-bold text-foreground tracking-tighter'>3.42<span className="text-xl">%</span></p>
+                          <div className="space-y-0.5 sm:space-y-1">
+                              <p className='text-[8px] sm:text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Best Rate</p>
+                              <p className='text-lg sm:text-4xl font-bold text-foreground tracking-tighter'>3.42<span className="text-sm sm:text-xl">%</span></p>
                           </div>
-                          <div className="text-right space-y-1">
-                               <p className='text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Avg. Saving</p>
-                               <p className='text-3xl font-bold text-accent tracking-tighter'>€12.5k</p>
+                          <div className="text-right space-y-0.5 sm:space-y-1">
+                               <p className='text-[8px] sm:text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Avg. Saving</p>
+                               <p className='text-lg sm:text-3xl font-bold text-accent tracking-tighter'>€12.5k</p>
                           </div>
                       </div>
                    </motion.div>
