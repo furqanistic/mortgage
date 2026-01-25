@@ -43,7 +43,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
+            className='text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
           >
             Start Your Journey to <br />
             <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
@@ -68,9 +68,9 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className='flex flex-col sm:flex-row items-center justify-center gap-4 pt-4'
+            className='flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 w-full sm:w-auto'
           >
-            <Link to='/auth' className="group relative">
+            <Link to='/auth' className="group relative w-full sm:w-auto">
               <Button
                 size='lg'
                 className='h-16 px-10 text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full shadow-2xl shadow-primary/20 transition-all hover:scale-[1.05] active:scale-[0.98] w-full sm:w-auto font-bold'
@@ -94,7 +94,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
-            className='grid sm:grid-cols-3 gap-12 pt-16 border-t border-border/20 mt-16'
+            className='grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 pt-16 border-t border-border/20 mt-16'
           >
             <div className='text-center space-y-2'>
               <div className='flex justify-center mb-3'>
