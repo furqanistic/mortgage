@@ -22,7 +22,7 @@ const SuccessStories = () => {
         location: 'Munich, Schwabing',
         price: '€850,000',
         savings: '€12,400',
-        image: 'https://images.unsplash.com/photo-1512918760383-edce13a350c9?q=80&w=1974&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1974&auto=format&fit=crop'
       },
       stats: { roi: '+12%', equity: '€125k', time: '3 Weeks' }
     },
@@ -37,7 +37,7 @@ const SuccessStories = () => {
         location: 'Berlin, Mitte',
         price: '€2.1M',
         savings: '€45,000',
-        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2053&auto=format&fit=crop'
       },
       stats: { roi: '+8.5%', equity: '€450k', time: '5 Weeks' }
     },
@@ -52,7 +52,7 @@ const SuccessStories = () => {
             location: 'Hamburg, HafenCity',
             price: '€620,000',
             savings: '€8,500',
-            image: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=2070&auto=format&fit=crop' // Modern loft interior
+            image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=2070&auto=format&fit=crop' // Modern loft interior
         },
         stats: { roi: '+15%', equity: '€95k', time: '4 Weeks' }
     }

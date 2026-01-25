@@ -1,3 +1,4 @@
+// File: client/src/pages/Properties/PropertiesPage.jsx
 // PropertiesPage.js
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
@@ -35,7 +36,7 @@ const mockProperties = [
     bathrooms: 1,
     type: 'Apartment',
     image:
-      'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.unsplash.com/photo-1574362848149-11496d93e7c7?q=80&w=1260&auto=format&fit=crop',
     features: ['Balcony', 'Parking', 'Elevator'],
     yearBuilt: 2018,
   },
@@ -49,7 +50,7 @@ const mockProperties = [
     bathrooms: 2,
     type: 'House',
     image:
-      'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1260&auto=format&fit=crop',
     features: ['Garden', 'Garage', 'Basement'],
     yearBuilt: 2012,
   },
@@ -63,7 +64,7 @@ const mockProperties = [
     bathrooms: 3,
     type: 'Villa',
     image:
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1476&q=80',
+      'https://images.unsplash.com/photo-1600596542815-22b829377651?q=80&w=1476&auto=format&fit=crop',
     features: ['Garden', 'Pool', 'Terrace', 'Smart Home'],
     yearBuilt: 2020,
   },
@@ -77,7 +78,7 @@ const mockProperties = [
     bathrooms: 1,
     type: 'Apartment',
     image:
-      'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1260&auto=format&fit=crop',
     features: ['Open Floor Plan', 'High Ceilings', 'City View'],
     yearBuilt: 2015,
   },
@@ -91,7 +92,7 @@ const mockProperties = [
     bathrooms: 1,
     type: 'House',
     image:
-      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1592&q=80',
+      'https://images.unsplash.com/photo-1480074568708-e7b720bb6fce?q=80&w=1592&auto=format&fit=crop',
     features: ['Garden', 'Fireplace', 'Wooden Floors'],
     yearBuilt: 1995,
   },
@@ -105,7 +106,7 @@ const mockProperties = [
     bathrooms: 2,
     type: 'Apartment',
     image:
-      'https://images.pexels.com/photos/323775/pexels-photo-323775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1260&auto=format&fit=crop',
     features: ['River View', 'Terrace', 'Underground Parking'],
     yearBuilt: 2017,
   },

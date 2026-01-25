@@ -30,7 +30,7 @@ const blogPosts = [
     category: 'Financing',
     date: 'Feb 18, 2025',
     readTime: '5 min',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1559599238-308793637427?q=80&w=2011&auto=format&fit=crop',
     featured: true,
   },
   {
@@ -40,7 +40,7 @@ const blogPosts = [
     category: 'Guides',
     date: 'Feb 10, 2025',
     readTime: '8 min',
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1373&q=80',
+    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1373&q=80',
     featured: true,
   },
   {
@@ -50,7 +50,7 @@ const blogPosts = [
     category: 'Taxes',
     date: 'Feb 5, 2025',
     readTime: '6 min',
-    image: 'https://images.unsplash.com/photo-1554224155-169641357599?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop',
     featured: false,
   },
   {
@@ -60,7 +60,7 @@ const blogPosts = [
     category: 'Buying',
     date: 'Jan 28, 2025',
     readTime: '4 min',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://images.unsplash.com/photo-1600596542815-22b829377651?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     featured: false,
   },
   {
@@ -70,7 +70,7 @@ const blogPosts = [
     category: 'Financing',
     date: 'Jan 20, 2025',
     readTime: '7 min',
-    image: 'https://images.unsplash.com/photo-1581578731522-745d05ad9a2d?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop',
     featured: false,
   },
   {
@@ -80,7 +80,7 @@ const blogPosts = [
     category: 'Market Trends',
     date: 'Jan 15, 2025',
     readTime: '5 min',
-    image: 'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    image: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
     featured: false,
   },
 ]

@@ -49,7 +49,7 @@ const HeroSection = () => {
               className='inline-flex items-center space-x-3 px-4 py-1.5 bg-secondary/30 backdrop-blur-sm rounded-full border border-border/40'
             >
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className='text-[10px] sm:text-xs font-bold text-muted-foreground tracking-[0.2em] uppercase'>
+              <span className='text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-[0.2em] font-heading  uppercase'>
                 Premier Mortgage Expertise in Germany
               </span>
             </motion.div>

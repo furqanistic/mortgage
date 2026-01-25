@@ -234,14 +234,14 @@ const AboutPage = () => {
                 <div className="space-y-6">
                   <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      src="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      src="https://images.unsplash.com/photo-1560930950-5cc58e277975?q=80&w=1200"
                       alt="Modern German architecture"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
                   <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      src="https://images.pexels.com/photos/8082319/pexels-photo-8082319.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load"
+                      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200"
                       alt="Interior design"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                     />
@@ -250,14 +250,14 @@ const AboutPage = () => {
                 <div className="space-y-6 pt-12">
                   <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      src="https://images.pexels.com/photos/5644337/pexels-photo-5644337.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load"
+                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200"
                       alt="Consultation session"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
                   <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      src="https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      src="https://images.unsplash.com/photo-1575908539614-0d196fa53506?q=80&w=1200"
                       alt="Happy family in new home"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                     />
