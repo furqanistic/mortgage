@@ -293,7 +293,7 @@ const BlogPage = () => {
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] translate-x-1/2 translate-y-1/2" />
           
           <div className="relative z-10 space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold font-heading text-foreground">Subscribe to Our Market Insights</h2>
+            <h2 className="text-4xl md:text-5xl font-bold font-heading text-white">Subscribe to Our Market Insights</h2>
             <p className="text-muted-foreground text-lg font-body max-w-lg mx-auto leading-relaxed">
               Stay ahead with the latest property trends and mortgage updates in Germany. 
               Delivered straight to your inbox.

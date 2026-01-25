@@ -74,12 +74,12 @@ const ContactPage = () => {
             <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700'>
               <MessageSquare className='w-4 h-4 text-accent' />
               <span className='text-sm font-semibold tracking-wide text-muted-foreground uppercase'>
-                We're Here to Help
+                We&apos;re Here to Help
               </span>
             </motion.div>
 
             <motion.h1 variants={itemVariants} className='text-5xl md:text-7xl font-bold font-heading text-foreground leading-tight'>
-              Let's Start Your{' '}
+              Let&apos;s Start Your{' '}
               <span className='text-accent'>Journey</span>
             </motion.h1>
 
@@ -129,10 +129,10 @@ const ContactPage = () => {
                 <div className='p-4 rounded-2xl bg-muted/50 inline-block mb-8 transform hover:scale-110 transition-transform'>
                   <contact.icon className='w-8 h-8 text-accent' />
                 </div>
-                <h3 className='text-2xl font-bold font-heading text-foreground mb-4'>
+                <h3 className='text-2xl font-bold font-heading text-white mb-4'>
                   {contact.title}
                 </h3>
-                <p className='text-lg text-muted-foreground mb-4 font-body'>
+                <p className='text-lg text-gray-400 mb-4 font-body'>
                   {contact.info}
                 </p>
                 <p className='text-sm font-semibold text-accent uppercase tracking-wider font-body'>
@@ -248,7 +248,7 @@ const ContactPage = () => {
               className='space-y-10'
             >
               <div className='bg-[#080808] p-10 rounded-3xl border border-border/50'>
-                <h3 className='text-2xl font-bold font-heading text-foreground mb-8'>
+                <h3 className='text-2xl font-bold font-heading text-white mb-8'>
                   Office Hours
                 </h3>
                 <div className='space-y-8'>
@@ -258,14 +258,14 @@ const ContactPage = () => {
                     { day: 'Sunday', hours: 'Closed' },
                   ].map((schedule, index) => (
                     <div key={index} className='flex items-start gap-6'>
-                      <div className='p-3 rounded-xl bg-accent/10'>
+                      <div className='p-3 rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20'>
                         <Clock className='w-6 h-6 text-accent' />
                       </div>
                       <div>
-                        <p className='text-lg font-bold text-foreground'>
+                        <p className='text-lg font-bold text-white'>
                           {schedule.day}
                         </p>
-                        <p className='text-muted-foreground font-body'>
+                        <p className='text-gray-400 font-body'>
                           {schedule.hours}
                         </p>
                       </div>

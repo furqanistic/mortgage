@@ -138,7 +138,7 @@ const MortgageCalculator = () => {
        {/* Background */}
        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
        <div className='absolute inset-0 opacity-[0.02]' 
-           style={{ backgroundImage: 'radial-gradient(#061A33 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
+           style={{ backgroundImage: 'radial-gradient(var(--border) 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
        />
 
       <div className='container mx-auto px-4 max-w-7xl relative z-10'>
@@ -214,7 +214,7 @@ const MortgageCalculator = () => {
                       <div className="space-y-4">
                           <div className="flex justify-between">
                               <label className="text-sm font-medium text-foreground/80">Duration</label>
-                              <span className="text-sm font-bold text-primary">{formData.duration} Years</span>
+                              <span className="text-sm font-bold text-foreground">{formData.duration} Years</span>
                           </div>
                           <Slider value={[formData.duration]} min={5} max={35} step={1} onValueChange={v => setFormData({...formData, duration: v[0]})} 
                               className="py-2" />
@@ -276,7 +276,7 @@ const MortgageCalculator = () => {
                              
                              <div className="relative z-10 text-center">
                                  <p className="text-primary-foreground/80 dark:text-muted-foreground font-medium mb-1">Estimated Monthly Payment</p>
-                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-foreground">
+                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-white">
                                      {results.isCashBuy ? '€0' : `€${Number(results.monthlyPayment).toLocaleString()}`}
                                  </div>
                                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${results.isCashBuy ? 'bg-green-500/20 border-green-500/30 text-green-100' : (results.isAffordable ? 'bg-green-500/20 border-green-500/30 text-green-100' : 'bg-red-500/20 border-red-500/30 text-red-100')}`}>

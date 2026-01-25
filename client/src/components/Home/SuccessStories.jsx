@@ -99,7 +99,7 @@ const SuccessStories = () => {
                          <div className="relative">
                              <Quote className="absolute -top-12 -left-12 w-24 h-24 text-accent/5 rotate-180 pointer-events-none" />
                              <h3 className="text-3xl md:text-4xl font-medium leading-[1.4] text-foreground italic relative z-10 font-body">
-                                 "{stories[activeStory].quote}"
+                                 &ldquo;{stories[activeStory].quote}&rdquo;
                              </h3>
                          </div>
                          

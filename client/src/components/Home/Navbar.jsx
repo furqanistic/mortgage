@@ -29,7 +29,7 @@ import {
   Mail,
   ChevronRight
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -94,7 +94,7 @@ const Navbar = () => {
           <div className='flex justify-between items-center text-[10px] sm:text-xs tracking-wide'>
              
              <div className="hidden lg:flex items-center gap-4">
-                <span className="text-primary-foreground/70 uppercase tracking-widest font-bold">Expert Mortgage Advice</span>
+                <span className="text-muted-foreground uppercase tracking-widest font-extrabold opacity-70">Expert Mortgage Advice</span>
              </div>
 
              <div className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 w-full lg:w-auto">

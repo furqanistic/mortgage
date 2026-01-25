@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, ShieldCheck, Star } from 'lucide-react'
-import React from 'react'
+
 import { Link } from 'react-router-dom'
 
 const CTASection = () => {
@@ -82,7 +82,7 @@ const CTASection = () => {
               size='lg'
               variant='ghost'
               onClick={() => window.location.href = '/contact'}
-              className='h-16 px-10 text-lg text-primary hover:bg-secondary/50 rounded-full font-semibold transition-all w-full sm:w-auto'
+              className='h-16 px-10 text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all w-full sm:w-auto'
             >
               Schedule Call
             </Button>
