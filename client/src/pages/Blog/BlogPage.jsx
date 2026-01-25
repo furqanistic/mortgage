@@ -158,10 +158,10 @@ const BlogPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-muted border border-border"
+            className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-accent/10 border border-accent/20"
           >
             <BookOpen className="w-4 h-4 text-accent" />
-            <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+            <span className="text-xs font-bold tracking-widest text-accent uppercase">
               Baufiking Insights
             </span>
           </motion.div>

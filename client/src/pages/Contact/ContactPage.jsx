@@ -71,9 +71,9 @@ const ContactPage = () => {
             animate='visible'
             className='text-center space-y-10'
           >
-            <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700'>
+            <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-6 py-2 rounded-full bg-accent/10 border border-accent/20'>
               <MessageSquare className='w-4 h-4 text-accent' />
-              <span className='text-sm font-semibold tracking-wide text-muted-foreground uppercase'>
+              <span className='text-sm font-semibold tracking-wide text-accent uppercase'>
                 We&apos;re Here to Help
               </span>
             </motion.div>
@@ -124,15 +124,15 @@ const ContactPage = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className='bg-[#080808] p-10 rounded-3xl border border-border/50 shadow-xl hover:border-accent/40 transition-all duration-300'
+                className='bg-card dark:bg-[#080808] p-10 rounded-3xl border border-border/50 shadow-xl hover:border-accent/40 transition-all duration-300 group'
               >
-                <div className='p-4 rounded-2xl bg-muted/50 inline-block mb-8 transform hover:scale-110 transition-transform'>
+                <div className='p-4 rounded-2xl bg-accent/10 inline-block mb-8 transform group-hover:scale-110 transition-transform'>
                   <contact.icon className='w-8 h-8 text-accent' />
                 </div>
-                <h3 className='text-2xl font-bold font-heading text-white mb-4'>
+                <h3 className='text-2xl font-bold font-heading text-foreground dark:text-white mb-4'>
                   {contact.title}
                 </h3>
-                <p className='text-lg text-gray-400 mb-4 font-body'>
+                <p className='text-lg text-muted-foreground dark:text-gray-400 mb-4 font-body'>
                   {contact.info}
                 </p>
                 <p className='text-sm font-semibold text-accent uppercase tracking-wider font-body'>

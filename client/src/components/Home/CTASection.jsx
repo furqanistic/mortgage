@@ -29,10 +29,10 @@ const CTASection = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className='inline-flex items-center gap-2 px-4 py-2 bg-background/50 backdrop-blur-sm rounded-full border border-border shadow-sm'
+            className='inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-sm rounded-full border border-accent/20 shadow-sm'
           >
             <ShieldCheck className='w-4 h-4 text-accent' />
-            <span className='text-sm font-medium text-foreground/80'>
+            <span className='text-sm font-medium text-accent'>
               Trusted by 5,000+ Homeowners
             </span>
           </motion.div>
@@ -82,7 +82,7 @@ const CTASection = () => {
               size='lg'
               variant='ghost'
               onClick={() => window.location.href = '/contact'}
-              className='h-16 px-10 text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all w-full sm:w-auto'
+              className='h-16 px-10 text-lg text-foreground hover:bg-primary hover:text-primary-foreground rounded-full font-semibold transition-all w-full sm:w-auto'
             >
               Schedule Call
             </Button>

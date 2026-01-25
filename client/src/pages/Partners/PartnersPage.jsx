@@ -357,7 +357,7 @@ const PartnersPage = () => {
                     <div className="absolute top-4 right-4 z-10">
                       <div className="flex items-center gap-1.5 bg-accent/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-accent/20">
                         <Star className="h-3.5 w-3.5 text-accent fill-accent" />
-                        <span className="text-xs font-semibold text-accent-foreground dark:text-accent tracking-wide">Featured</span>
+                        <span className="text-xs font-semibold text-accent tracking-wide">Featured</span>
                       </div>
                     </div>
                   )}

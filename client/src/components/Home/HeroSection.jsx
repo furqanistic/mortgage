@@ -46,10 +46,10 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className='inline-flex items-center space-x-3 px-4 py-1.5 bg-secondary/30 backdrop-blur-sm rounded-full border border-border/40'
+              className='inline-flex items-center space-x-3 px-4 py-1.5 bg-accent/10 backdrop-blur-sm rounded-full border border-accent/20'
             >
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className='text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-[0.2em] font-heading  uppercase'>
+              <span className='text-[10px] sm:text-xs font-semibold text-accent tracking-[0.2em] font-heading  uppercase'>
                 Premier Mortgage Expertise in Germany
               </span>
             </motion.div>

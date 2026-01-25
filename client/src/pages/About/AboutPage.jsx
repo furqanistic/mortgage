@@ -82,10 +82,10 @@ const AboutPage = () => {
               <div className="space-y-10">
                 <motion.div
                   variants={itemVariants}
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/10 dark:border-accent/20 bg-primary/5 dark:bg-accent/5"
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/20 bg-accent/10"
                 >
                   <Star className="w-4 h-4 text-accent" />
-                  <span className="text-xs font-semibold tracking-wider uppercase text-primary dark:text-accent">
+                  <span className="text-xs font-semibold tracking-wider uppercase text-accent">
                     Trusted by 15,000+ Homebuyers
                   </span>
                 </motion.div>
@@ -153,7 +153,7 @@ const AboutPage = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="py-24 bg-primary text-primary-foreground dark:bg-accent/5 relative overflow-hidden">
+        <section className="py-24 bg-accent/5 dark:bg-accent/5 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-24">
               {stats.map((stat, index) => (
@@ -165,10 +165,10 @@ const AboutPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-4xl lg:text-5xl font-bold font-heading text-white dark:text-accent mb-2">
+                  <p className="text-4xl lg:text-5xl font-bold font-heading text-primary dark:text-accent mb-2">
                     {stat.value}
                   </p>
-                  <p className="text-sm tracking-widest uppercase font-medium text-primary-foreground/70 dark:text-muted-foreground">
+                  <p className="text-sm tracking-widest uppercase font-medium text-muted-foreground">
                     {stat.label}
                   </p>
                 </motion.div>
@@ -274,16 +274,16 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-7xl mx-auto rounded-[3rem] bg-primary dark:bg-accent/10 p-12 lg:p-24 text-center relative overflow-hidden"
+            className="max-w-7xl mx-auto rounded-[3rem] bg-accent/5 dark:bg-accent/10 p-12 lg:p-24 text-center relative overflow-hidden"
           >
             {/* Background Accent */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_70%)] opacity-20" />
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_70%)] opacity-10" />
             
             <div className="relative z-10 max-w-3xl mx-auto space-y-10">
-              <h2 className="text-4xl lg:text-6xl font-bold font-heading text-white">
-                Ready to Find Your <span className="text-blue-200 dark:text-accent">Dream Home?</span>
+              <h2 className="text-4xl lg:text-6xl font-bold font-heading text-foreground dark:text-white">
+                Ready to Find Your <span className="text-accent">Dream Home?</span>
               </h2>
-              <p className="text-xl text-white/70 leading-relaxed">
+              <p className="text-xl text-muted-foreground dark:text-white/70 leading-relaxed">
                 Let&apos;s start your journey to homeownership together. Our experts are ready to help you every step of the way.
               </p>
               <div className="flex justify-center pt-4">
