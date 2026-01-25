@@ -92,7 +92,7 @@ const AboutPage = () => {
 
                 <motion.h1 
                   variants={itemVariants}
-                  className="text-5xl lg:text-7xl font-bold font-heading leading-[1.1] text-foreground"
+                  className="text-3xl sm:text-5xl lg:text-7xl font-bold font-heading leading-[1.1] text-foreground"
                 >
                   Making Home <br />
                   <span className="text-accent">Ownership</span> Simple
@@ -108,7 +108,7 @@ const AboutPage = () => {
 
                 <motion.div variants={itemVariants} className="flex flex-wrap gap-5">
                   <Button
-                    className="bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground hover:opacity-90 transition-all h-14 px-10 rounded-full text-lg font-medium shadow-xl shadow-primary/10 dark:shadow-accent/10"
+                    className="bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground hover:opacity-90 transition-all h-12 md:h-14 px-6 md:px-10 rounded-full text-base md:text-lg font-medium shadow-xl shadow-primary/10 dark:shadow-accent/10 w-full sm:w-auto"
                     onClick={() => {}}
                   >
                     Start Your Journey
@@ -274,21 +274,21 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-7xl mx-auto rounded-[3rem] bg-accent/5 dark:bg-accent/10 p-12 lg:p-24 text-center relative overflow-hidden"
+            className="max-w-7xl mx-auto rounded-[3rem] bg-accent/5 dark:bg-accent/10 p-6 md:p-12 lg:p-24 text-center relative overflow-hidden"
           >
             {/* Background Accent */}
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_70%)] opacity-10" />
             
             <div className="relative z-10 max-w-3xl mx-auto space-y-10">
-              <h2 className="text-4xl lg:text-6xl font-bold font-heading text-foreground dark:text-white">
+              <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-heading text-foreground dark:text-white">
                 Ready to Find Your <span className="text-accent">Dream Home?</span>
               </h2>
-              <p className="text-xl text-muted-foreground dark:text-white/70 leading-relaxed">
+              <p className="text-lg lg:text-xl text-muted-foreground dark:text-white/70 leading-relaxed">
                 Let&apos;s start your journey to homeownership together. Our experts are ready to help you every step of the way.
               </p>
               <div className="flex justify-center pt-4">
                 <Button
-                  className="bg-accent text-accent-foreground hover:bg-background hover:text-foreground transition-all h-16 px-12 rounded-full text-lg font-bold shadow-2xl shadow-black/20"
+                  className="bg-accent text-accent-foreground hover:bg-background hover:text-foreground transition-all h-12 md:h-16 px-6 md:px-12 rounded-full text-base md:text-lg font-bold shadow-2xl shadow-black/20 w-full sm:w-auto"
                   onClick={() => {}}
                 >
                   Schedule a Consultation
