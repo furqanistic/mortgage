@@ -118,8 +118,8 @@ const HeroSection = () => {
                 
                 <div className='relative z-10 w-full h-full rounded-[2.5rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(15,23,42,0.15)] bg-muted'>
                   <img
-                    src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop'
-                    alt='Modern Home Concept'
+                    src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop'
+                    alt='Modern German Penthouse'
                     className='w-full h-full object-cover transform hover:scale-[1.03] transition-transform duration-[2s] ease-out'
                   />
                   
