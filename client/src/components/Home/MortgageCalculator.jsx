@@ -143,10 +143,10 @@ const MortgageCalculator = () => {
 
       <div className='container mx-auto px-4 max-w-7xl relative z-10'>
         <div className='text-center mb-16'>
-           <div className='inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-bold uppercase tracking-wider mb-4'>
+           <div className='inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-accent text-xs font-bold uppercase tracking-wider mb-4'>
              <Calculator className='w-4 h-4' /> Mortgage Calculator
            </div>
-           <h2 className='text-4xl md:text-5xl font-bold text-primary mb-4'>Plan Your Investment</h2>
+           <h2 className='text-4xl md:text-5xl font-bold text-foreground mb-4'>Plan Your Investment</h2>
            <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
               Calculate your buying potential with real-time German market data.
            </p>
@@ -157,7 +157,7 @@ const MortgageCalculator = () => {
           <div className='lg:col-span-5 space-y-6'>
              <Card className='border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300'>
                  <CardHeader className="border-b border-border/50 pb-4">
-                     <CardTitle className="text-xl text-primary flex items-center gap-2">
+                     <CardTitle className="text-xl text-foreground flex items-center gap-2">
                         <Users className="w-5 h-5 text-accent" /> Your Profile
                      </CardTitle>
                  </CardHeader>
@@ -206,7 +206,7 @@ const MortgageCalculator = () => {
 
              <Card className='border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300'>
                  <CardHeader className="border-b border-border/50 pb-4">
-                     <CardTitle className="text-xl text-primary flex items-center gap-2">
+                     <CardTitle className="text-xl text-foreground flex items-center gap-2">
                         <Scale className="w-5 h-5 text-accent" /> Loan Details
                      </CardTitle>
                  </CardHeader>
@@ -271,12 +271,12 @@ const MortgageCalculator = () => {
                         className="space-y-6"
                      >
                          {/* Mortgage Monthly Card */}
-                         <div className="relative overflow-hidden rounded-3xl bg-primary dark:bg-secondary/50 text-primary-foreground dark:text-foreground p-8 border border-white/10 shadow-lg dark:shadow-none">
+                         <div className="relative overflow-hidden rounded-3xl bg-primary dark:bg-[#0A0A0A] text-primary-foreground dark:text-foreground p-8 border border-white/10 shadow-lg dark:shadow-none">
                              <div className="absolute top-0 right-0 p-32 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                              
                              <div className="relative z-10 text-center">
-                                 <p className="text-primary-foreground/80 dark:text-foreground/80 font-medium mb-1">Estimated Monthly Payment</p>
-                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+                                 <p className="text-primary-foreground/80 dark:text-muted-foreground font-medium mb-1">Estimated Monthly Payment</p>
+                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-foreground">
                                      {results.isCashBuy ? '€0' : `€${Number(results.monthlyPayment).toLocaleString()}`}
                                  </div>
                                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${results.isCashBuy ? 'bg-green-500/20 border-green-500/30 text-green-100' : (results.isAffordable ? 'bg-green-500/20 border-green-500/30 text-green-100' : 'bg-red-500/20 border-red-500/30 text-red-100')}`}>
@@ -288,7 +288,7 @@ const MortgageCalculator = () => {
                          {/* Breakdown Grid */}
                          <div className="grid sm:grid-cols-2 gap-4">
                              <div className="bg-white dark:bg-card p-6 rounded-2xl border border-border/60 shadow-sm">
-                                <h4 className="flex items-center gap-2 font-semibold text-primary mb-4">
+                                <h4 className="flex items-center gap-2 font-semibold text-foreground mb-4">
                                     <Building className="w-5 h-5 text-accent" /> Buying Costs
                                 </h4>
                                 <div className="space-y-3 text-sm">
@@ -318,7 +318,7 @@ const MortgageCalculator = () => {
                              </div>
 
                              <div className="bg-white dark:bg-card p-6 rounded-2xl border border-border/60 shadow-sm">
-                                <h4 className="flex items-center gap-2 font-semibold text-primary mb-4">
+                                <h4 className="flex items-center gap-2 font-semibold text-foreground mb-4">
                                     <Landmark className="w-5 h-5 text-accent" /> Loan Summary
                                 </h4>
                                 <div className="space-y-3 text-sm">

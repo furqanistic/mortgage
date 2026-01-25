@@ -49,20 +49,20 @@ const HeroSection = () => {
               className='inline-flex items-center space-x-3 px-4 py-1.5 bg-secondary/30 backdrop-blur-sm rounded-full border border-border/40'
             >
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className='text-[10px] sm:text-xs font-bold text-primary/70 tracking-[0.2em] uppercase'>
+              <span className='text-[10px] sm:text-xs font-bold text-muted-foreground tracking-[0.2em] uppercase'>
                 Premier Mortgage Expertise in Germany
               </span>
             </motion.div>
 
             {/* Master Heading */}
             <div className="space-y-4">
-              <h1 className='text-6xl sm:text-7xl lg:text-8xl font-bold font-heading text-primary leading-[0.95] tracking-tight'>
+              <h1 className='text-6xl sm:text-7xl lg:text-8xl font-bold font-heading text-foreground leading-[0.95] tracking-tight'>
                 Experience <br />
-                <span className='text-transparent bg-clip-text bg-gradient-to-br from-primary via-primary to-accent relative'>
+                <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
                   True Ownership
                 </span>
               </h1>
-              <p className='text-lg sm:text-xl text-muted-foreground/80 leading-relaxed max-w-xl font-body'>
+              <p className='text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl font-body'>
                 From first-time buyers to seasoned investors, we provide the clarity and confidence you need to navigate the German real estate market.
               </p>
             </div>
@@ -83,13 +83,12 @@ const HeroSection = () => {
                 variant='ghost'
                 size='lg'
                 onClick={openForm}
-                className='px-8 h-16 text-lg text-primary hover:bg-secondary/50 rounded-full font-semibold transition-all'
+                className='px-8 h-16 text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all'
               >
                 Free Consultation
               </Button>
             </div>
 
-            {/* Micro-Trust Indicators */}
             <div className='pt-8 border-t border-border/20 flex flex-wrap gap-x-12 gap-y-6'>
               {[
                 { label: 'Verified Process', icon: CheckCircle },
@@ -98,7 +97,7 @@ const HeroSection = () => {
               ].map((item, i) => (
                 <div key={i} className='flex items-center gap-2.5 group'>
                   <item.icon className='w-4 h-4 text-accent transition-transform group-hover:scale-110' />
-                  <span className="text-xs font-bold text-primary/60 tracking-wider uppercase">{item.label}</span>
+                  <span className="text-xs font-bold text-muted-foreground tracking-wider uppercase">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -137,7 +136,7 @@ const HeroSection = () => {
                       <div className='flex justify-between items-center'>
                           <div className="space-y-1">
                               <p className='text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Current Best Rate</p>
-                              <p className='text-4xl font-bold text-primary tracking-tighter'>3.42<span className="text-xl">%</span></p>
+                              <p className='text-4xl font-bold text-foreground tracking-tighter'>3.42<span className="text-xl">%</span></p>
                           </div>
                           <div className="text-right space-y-1">
                                <p className='text-[10px] text-foreground/40 font-bold uppercase tracking-widest'>Avg. Saving</p>
@@ -154,12 +153,12 @@ const HeroSection = () => {
                   className="absolute -top-4 -right-8 glass-card border-accent/20 px-4 py-3 rounded-xl shadow-xl z-20 hidden sm:block"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                    <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center text-success">
                       <TrendingUp className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="text-[10px] font-bold text-muted-foreground uppercase">Applications</p>
-                      <p className="text-sm font-bold text-primary">+124 Today</p>
+                      <p className="text-sm font-bold text-foreground">+124 Today</p>
                     </div>
                   </div>
                 </motion.div>

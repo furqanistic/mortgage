@@ -43,10 +43,10 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-primary tracking-tight leading-[1.1]'
+            className='text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
           >
             Start Your Journey to <br />
-            <span className='text-transparent bg-clip-text bg-gradient-to-br from-primary via-primary to-accent relative'>
+            <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
               Home Ownership
             </span>
           </motion.h2>

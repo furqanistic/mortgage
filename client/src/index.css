@@ -31,12 +31,12 @@
   --muted-foreground: hsl(215.4 16.3% 46.9%);
 
   /* Accent - Muted Gold (Success & Growth) */
-  --accent: hsl(43 74% 49%);
+  --accent: hsl(45 60% 50%); /* More muted premium gold */
   --accent-foreground: hsl(222 47% 11%);
 
-  /* Optional Success/Growth Green */
-  --success: hsl(142.1 76.2% 36.3%);
-  --success-foreground: hsl(355.7 100% 97.3%);
+  /* Success - Muted Green */
+  --success: hsl(150 30% 45%);
+  --success-foreground: hsl(210 40% 98%);
 
   --destructive: hsl(0 84.2% 60.2%);
   --destructive-foreground: hsl(210 40% 98%);
@@ -53,32 +53,34 @@
 }
 
 .dark {
-  /* Base Colors - Dark Mode */
-  --background: hsl(222 47% 11%); /* Deep Navy Background */
-  --foreground: hsl(210 40% 98%); /* Off-white Text */
+  /* Base Colors - Dark Mode - DEEP PREMIUM BLACK (Manara Aesthetic) */
+  --background: hsl(0 0% 2%); /* Deepest Black */
+  --foreground: hsl(0 0% 98%); /* Crisp White Text */
 
-  --card: hsl(222 47% 13%);
-  --card-foreground: hsl(210 40% 98%);
+  --card: hsl(0 0% 4%); /* Subtle Gray for Cards */
+  --card-foreground: hsl(0 0% 98%);
 
-  --popover: hsl(222 47% 13%);
-  --popover-foreground: hsl(210 40% 98%);
+  --popover: hsl(0 0% 4%);
+  --popover-foreground: hsl(0 0% 98%);
 
-  /* Primary - Lighter Blue for Contrast */
-  --primary: hsl(210 40% 98%);
-  --primary-foreground: hsl(222 47% 11%);
+  /* Primary - Deep Navy. In dark mode, we keep it dark for backgrounds,
+     but we should avoid using it for text. */
+  --primary: hsl(222 47% 15%); 
+  --primary-foreground: hsl(0 0% 98%);
 
-  --secondary: hsl(217.2 32.6% 17.5%);
-  --secondary-foreground: hsl(210 40% 98%);
+  --secondary: hsl(0 0% 6%); 
+  --secondary-foreground: hsl(0 0% 98%);
 
-  --muted: hsl(217.2 32.6% 17.5%);
-  --muted-foreground: hsl(215 20.2% 65.1%);
+  --muted: hsl(0 0% 6%);
+  /* Lightened muted text for better legibility on black */
+  --muted-foreground: hsl(0 0% 75%);
 
-  --accent: hsl(43 74% 49%); /* Keep Gold for accents */
+  --accent: hsl(45 60% 50%); /* Premium Gold */
   --accent-foreground: hsl(222 47% 11%);
 
-  --border: hsl(217.2 32.6% 17.5%);
-  --input: hsl(217.2 32.6% 17.5%);
-  --ring: hsl(212.7 26.8% 83.9%);
+  --border: hsl(0 0% 12%); /* Subtle borders */
+  --input: hsl(0 0% 12%);
+  --ring: hsl(45 60% 50%);
 }
 
 @theme inline {
@@ -138,7 +140,7 @@
     @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-sm;
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-accent;
   }
   .section-padding {
     @apply py-20 px-6 md:px-12 lg:px-24;

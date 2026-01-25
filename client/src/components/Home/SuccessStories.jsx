@@ -73,10 +73,10 @@ const SuccessStories = () => {
 
       <div className='container mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
         <div className='text-center mb-16'>
-           <div className='inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-primary text-xs font-bold uppercase tracking-wider mb-4'>
+           <div className='inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-accent text-xs font-bold uppercase tracking-wider mb-4'>
              <Star className='w-4 h-4 fill-current text-accent' /> Success Stories
            </div>
-           <h2 className='text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-primary mb-6 tracking-tight'>
+           <h2 className='text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-foreground mb-6 tracking-tight'>
              Real Results, <span className="text-accent">Real Homes</span>
            </h2>
            <p className='text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-body'>
@@ -109,7 +109,7 @@ const SuccessStories = () => {
                                  <AvatarFallback>U</AvatarFallback>
                              </Avatar>
                              <div>
-                                 <p className="font-bold text-lg text-primary">{stories[activeStory].name}</p>
+                                 <p className="font-bold text-lg text-foreground">{stories[activeStory].name}</p>
                                  <p className="text-muted-foreground">{stories[activeStory].role}</p>
                              </div>
                          </div>
@@ -117,7 +117,7 @@ const SuccessStories = () => {
                          <div className="grid grid-cols-3 gap-8 p-10 bg-card rounded-[2.5rem] border border-border/50 shadow-inner mt-12">
                              <div className="space-y-1">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Time to Buy</p>
-                                 <p className="text-2xl font-bold text-primary">{stories[activeStory].stats.time}</p>
+                                 <p className="text-2xl font-bold text-foreground">{stories[activeStory].stats.time}</p>
                              </div>
                              <div className="space-y-1">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Savings</p>
@@ -125,7 +125,7 @@ const SuccessStories = () => {
                              </div>
                              <div className="space-y-1">
                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Equity Built</p>
-                                 <p className="text-2xl font-bold text-primary">{stories[activeStory].stats.equity}</p>
+                                 <p className="text-2xl font-bold text-foreground">{stories[activeStory].stats.equity}</p>
                              </div>
                          </div>
                     </motion.div>
@@ -189,7 +189,7 @@ const SuccessStories = () => {
                         </div>
                         <div>
                             <p className="text-sm text-muted-foreground font-medium">Market Value Increase</p>
-                            <p className="text-2xl font-bold text-primary">{stories[activeStory].stats.roi}</p>
+                            <p className="text-2xl font-bold text-foreground">{stories[activeStory].stats.roi}</p>
                         </div>
                     </div>
                 </motion.div>

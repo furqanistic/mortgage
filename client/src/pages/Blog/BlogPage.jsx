@@ -18,8 +18,6 @@ import {
   Calendar,
   Clock,
   Search,
-  ChevronRight,
-  TrendingUp,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -87,17 +85,7 @@ const blogPosts = [
   },
 ]
 
-// Updated Category Icons with Navy/Gold theme
-const getCategoryIcon = (category) => {
-  const iconClass = 'w-4 h-4 text-[#D4AF37]'
-  const bgClass = 'p-2 rounded-xl bg-[#D4AF37]/10'
-  
-  switch (category) {
-    case 'Financing': return <div className={bgClass}><TrendingUp className={iconClass} /></div>
-    case 'Guides': return <div className={bgClass}><BookOpen className={iconClass} /></div>
-    default: return <div className={bgClass}><BookOpen className={iconClass} /></div>
-  }
-}
+
 
 const BlogCard = ({ post, index }) => (
   <motion.div
@@ -107,31 +95,31 @@ const BlogCard = ({ post, index }) => (
     transition={{ duration: 0.6, delay: index * 0.1 }}
     className="group"
   >
-    <Card className="h-full bg-white dark:bg-[#0A192F]/50 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[32px] overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-none hover:border-[#D4AF37] transition-all duration-500">
+    <Card className="h-full bg-card dark:bg-[#080808] backdrop-blur-xl border border-border/50 rounded-[32px] overflow-hidden shadow-xl hover:border-accent/50 transition-all duration-500">
       <div className="relative overflow-hidden h-60">
         <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
         <div className="absolute top-4 left-4">
-          <span className="px-4 py-1.5 rounded-full bg-white/90 dark:bg-[#0A192F]/80 backdrop-blur-md text-[#0A192F] dark:text-[#D4AF37] text-xs font-bold uppercase tracking-widest border border-[#D4AF37]/20">
+          <span className="px-4 py-1.5 rounded-full bg-background/90 backdrop-blur-md text-foreground text-xs font-bold uppercase tracking-widest border border-accent/20">
             {post.category}
           </span>
         </div>
       </div>
       <CardHeader className="space-y-4 px-8 pt-8">
-        <div className="flex items-center gap-4 text-xs font-semibold text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-4 text-xs font-semibold text-muted-foreground">
           <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
           <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime} read</span>
         </div>
-        <CardTitle className="text-2xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight group-hover:text-[#D4AF37] transition-colors">
+        <CardTitle className="text-2xl font-bold font-heading text-foreground leading-tight group-hover:text-accent transition-colors">
           {post.title}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-8 flex-1">
-        <CardDescription className="text-gray-600 dark:text-gray-400 font-body leading-relaxed line-clamp-3">
+        <CardDescription className="text-muted-foreground font-body leading-relaxed line-clamp-3">
           {post.excerpt}
         </CardDescription>
       </CardContent>
       <CardFooter className="px-8 pb-8 pt-4">
-        <Button variant="link" className="px-0 text-[#0A192F] dark:text-[#D4AF37] font-bold text-sm tracking-wide group/btn">
+        <Button variant="link" className="px-0 text-foreground font-bold text-sm tracking-wide group/btn hover:text-accent">
           READ MORE <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
         </Button>
       </CardFooter>
@@ -161,7 +149,7 @@ const BlogPage = () => {
   }, [searchQuery, activeCategory])
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A192F] transition-colors duration-500">
+    <div className="min-h-screen bg-background transition-colors duration-500">
       <Navbar />
 
       {/* Hero Header */}
@@ -170,10 +158,10 @@ const BlogPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+            className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-muted border border-border"
           >
-            <BookOpen className="w-4 h-4 text-[#D4AF37]" />
-            <span className="text-xs font-bold tracking-widest text-[#0A192F] dark:text-gray-300 uppercase">
+            <BookOpen className="w-4 h-4 text-accent" />
+            <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
               Baufiking Insights
             </span>
           </motion.div>
@@ -182,16 +170,16 @@ const BlogPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight"
+            className="text-5xl md:text-7xl font-bold font-heading text-foreground leading-tight"
           >
-            Knowledge for Your <span className="text-[#D4AF37]">Next Chapter</span>
+            Knowledge for Your <span className="text-accent">Next Chapter</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-body"
+            className="text-xl text-muted-foreground max-w-2xl mx-auto font-body"
           >
             Expert advice and market insights on the German mortgage landscape.
           </motion.p>
@@ -199,15 +187,15 @@ const BlogPage = () => {
       </section>
 
       {/* Filters & Search - Premium Styling */}
-      <section className="sticky top-20 z-30 py-6 bg-white/80 dark:bg-[#0A192F]/80 backdrop-blur-xl border-y border-slate-100 dark:border-slate-800">
+      <section className="sticky top-20 z-30 py-6 bg-background/80 backdrop-blur-xl border-y border-border">
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full md:w-auto">
-            <TabsList className="h-auto flex flex-wrap p-1 gap-2 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <TabsList className="h-auto flex flex-wrap p-1 gap-2 bg-muted rounded-2xl border border-border">
               {categories.map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}
-                  className="rounded-xl px-6 py-2.5 font-bold text-sm capitalize data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                  className="rounded-xl px-6 py-2.5 font-bold text-sm capitalize data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all"
                 >
                   {category}
                 </TabsTrigger>
@@ -216,13 +204,13 @@ const BlogPage = () => {
           </Tabs>
 
           <div className="relative w-full md:w-80 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
             <input
               type="text"
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-6 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none text-sm"
+              className="w-full pl-12 pr-6 py-3.5 rounded-2xl bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none text-sm"
             />
           </div>
         </div>
@@ -232,10 +220,10 @@ const BlogPage = () => {
       <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto">
         <div className="space-y-12">
           <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold font-heading text-[#0A192F] dark:text-white">
+            <h2 className="text-3xl font-bold font-heading text-foreground">
               {searchQuery ? 'Search Results' : activeCategory !== 'all' ? `${activeCategory} Articles` : 'Featured Insights'}
             </h2>
-            <div className="h-px flex-1 mx-8 bg-slate-100 dark:bg-slate-800 hidden md:block" />
+            <div className="h-px flex-1 mx-8 bg-border hidden md:block" />
           </div>
 
           <AnimatePresence mode="wait">
@@ -247,13 +235,13 @@ const BlogPage = () => {
                 exit={{ opacity: 0 }}
                 className="text-center py-32 space-y-6"
               >
-                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-gray-300">
+                <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
                   <Search className="w-10 h-10" />
                 </div>
-                <p className="text-xl text-gray-500 font-body">No articles found matching your criteria.</p>
+                <p className="text-xl text-muted-foreground font-body">No articles found matching your criteria.</p>
                 <Button 
                   onClick={() => { setSearchQuery(''); setActiveCategory('all'); }} 
-                  className="bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl px-8 h-12 font-bold"
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl px-8 h-12 font-bold"
                 >
                   Reset Filters
                 </Button>
@@ -274,17 +262,17 @@ const BlogPage = () => {
 
           {/* Pagination Placeholder (Updated Style) */}
           {filteredPosts.length > 0 && (
-            <div className="flex justify-center mt-20 pt-10 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-center mt-20 pt-10 border-t border-border">
               <div className="flex gap-3">
-                <Button variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 text-gray-400" disabled>
+                <Button variant="outline" className="rounded-xl border-border text-muted-foreground" disabled>
                   Previous
                 </Button>
                 {[1, 2, 3].map(p => (
-                  <Button key={p} className={`w-10 h-10 rounded-xl font-bold ${p === 1 ? 'bg-[#D4AF37] text-white shadow-lg shadow-[#D4AF37]/20' : 'bg-transparent text-gray-500 hover:text-[#D4AF37]'}`}>
+                  <Button key={p} className={`w-10 h-10 rounded-xl font-bold ${p === 1 ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/20' : 'bg-transparent text-muted-foreground hover:text-accent'}`}>
                     {p}
                   </Button>
                 ))}
-                <Button variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 font-bold hover:text-[#D4AF37]">
+                <Button variant="outline" className="rounded-xl border-border font-bold hover:text-accent">
                   Next
                 </Button>
               </div>
@@ -298,15 +286,15 @@ const BlogPage = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="py-32 px-6 md:px-10 bg-slate-50 dark:bg-slate-900/50"
+        className="py-32 px-6 md:px-10 bg-background"
       >
-        <div className="max-w-4xl mx-auto rounded-[48px] bg-[#0A192F] p-12 md:p-20 text-center space-y-10 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] translate-x-1/2 translate-y-1/2" />
+        <div className="max-w-4xl mx-auto rounded-[48px] bg-[#0A0A0A] p-12 md:p-20 text-center space-y-10 relative overflow-hidden border border-border/20 shadow-2xl">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] translate-x-1/2 translate-y-1/2" />
           
           <div className="relative z-10 space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold font-heading text-white">Subscribe to Our Market Insights</h2>
-            <p className="text-gray-300 text-lg font-body max-w-lg mx-auto leading-relaxed">
+            <h2 className="text-4xl md:text-5xl font-bold font-heading text-foreground">Subscribe to Our Market Insights</h2>
+            <p className="text-muted-foreground text-lg font-body max-w-lg mx-auto leading-relaxed">
               Stay ahead with the latest property trends and mortgage updates in Germany. 
               Delivered straight to your inbox.
             </p>
@@ -316,9 +304,9 @@ const BlogPage = () => {
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 px-8 py-5 rounded-3xl bg-white/10 border border-white/20 text-white placeholder:text-gray-500 outline-none focus:border-[#D4AF37] transition-all"
+              className="flex-1 px-8 py-5 rounded-3xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 outline-none focus:border-accent transition-all"
             />
-            <Button className="bg-[#D4AF37] hover:bg-[#B8962E] text-white h-[66px] px-10 rounded-3xl font-bold text-lg shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-95">
+            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground h-[66px] px-10 rounded-3xl font-bold text-lg shadow-xl shadow-accent/20 transition-all active:scale-95">
               Subscribe
             </Button>
           </form>

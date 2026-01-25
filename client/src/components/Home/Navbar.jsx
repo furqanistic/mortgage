@@ -89,22 +89,22 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 font-body">
       {/* Top Banner - Premium & Compact */}
-      <div className='bg-[#0A192F] text-white py-2 overflow-hidden border-b border-[#D4AF37]/10'>
+      <div className='bg-background text-foreground py-2 overflow-hidden border-b border-border/20'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center text-[10px] sm:text-xs tracking-wide'>
              
              <div className="hidden lg:flex items-center gap-4">
-                <span className="text-gray-400 uppercase tracking-widest font-bold">Expert Mortgage Advice</span>
+                <span className="text-primary-foreground/70 uppercase tracking-widest font-bold">Expert Mortgage Advice</span>
              </div>
 
              <div className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 w-full lg:w-auto">
-                <a href="tel:+4915171618082" className="flex items-center gap-2 group text-gray-300 hover:text-[#D4AF37] transition-colors">
-                  <Phone className="w-3 h-3 text-[#D4AF37]" />
+                <a href="tel:+4915171618082" className="flex items-center gap-2 group text-muted-foreground hover:text-accent transition-colors">
+                  <Phone className="w-3 h-3 text-accent" />
                   <span className="font-semibold font-heading">+49 151 71618082</span>
                 </a>
                 
-                <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-2 group text-gray-300 hover:text-[#D4AF37] transition-colors">
-                  <Mail className="w-3 h-3 text-[#D4AF37]" />
+                <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-2 group text-muted-foreground hover:text-accent transition-colors">
+                  <Mail className="w-3 h-3 text-accent" />
                   <span>ravinder.singh@baufiking.de</span>
                 </a>
              </div>
@@ -117,7 +117,7 @@ const Navbar = () => {
         className={`transition-all duration-500 ${
           isScrolled
             ? 'glass border-none shadow-lg py-2'
-            : 'border-b border-border/40 bg-white/80 dark:bg-[#0A192F]/80 py-4 backdrop-blur-md'
+            : 'border-b border-border/40 bg-background/80 backdrop-blur-md'
         }`}
       >
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -140,16 +140,16 @@ const Navbar = () => {
                   key={index}
                   to={item.path}
                   className={`group relative flex items-center px-4 py-2 text-sm font-bold font-heading transition-all duration-300
-                    ${
+                      ${
                       location.pathname === item.path
-                        ? 'text-[#0A192F] dark:text-[#D4AF37]'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-[#D4AF37] dark:hover:text-[#D4AF37]'
+                        ? 'text-primary dark:text-accent'
+                        : 'text-muted-foreground hover:text-accent dark:hover:text-accent'
                     }`}
                 >
                   <span className='z-10 relative'>{item.label}</span>
                   {/* Active Indicator */}
                   {location.pathname === item.path && (
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#D4AF37] rounded-full" />
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-accent rounded-full" />
                   )}
                 </Link>
               ))}
@@ -162,7 +162,7 @@ const Navbar = () => {
               {!isAuthenticated ? (
                 <Link
                   to='/auth'
-                  className='ml-4 px-6 py-2.5 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-full font-bold text-sm shadow-lg shadow-[#D4AF37]/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center gap-2'
+                  className='ml-4 px-6 py-2.5 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full font-bold text-sm shadow-lg shadow-accent/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center gap-2'
                 >
                   <User className="w-4 h-4" />
                   <span>Login</span>
@@ -173,17 +173,17 @@ const Navbar = () => {
                     <div className='flex items-center space-x-2 px-1.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-transparent'>
                       <Avatar className='h-8 w-8 border border-white dark:border-slate-600 shadow-sm'>
                         <AvatarImage src='' />
-                        <AvatarFallback className='bg-[#0A192F] text-[#D4AF37] font-bold text-xs'>
+                        <AvatarFallback className='bg-primary text-accent font-bold text-xs'>
                           {getUserInitials()}
                         </AvatarFallback>
                       </Avatar>
-                      <span className='font-bold font-heading text-sm text-[#0A192F] dark:text-white pr-2 hidden lg:inline-block max-w-[100px] truncate'>
+                      <span className='font-bold font-heading text-sm text-primary dark:text-foreground pr-2 hidden lg:inline-block max-w-[100px] truncate'>
                         {currentUser?.name || 'User'}
                       </span>
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end' className='w-56 glass-card mt-2 p-2'>
-                    <DropdownMenuLabel className="font-heading text-[#0A192F] dark:text-[#D4AF37]">
+                    <DropdownMenuLabel className="font-heading text-primary dark:text-accent">
                       Hello, {currentUser?.name.split(' ')[0] || 'User'}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-slate-200 dark:bg-slate-700" />
@@ -205,27 +205,27 @@ const Navbar = () => {
               <Sheet>
                 <SheetTrigger asChild>
                   <button
-                    className='p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[#0A192F] dark:text-white hover:bg-[#D4AF37] hover:text-white dark:hover:bg-[#D4AF37] dark:hover:text-[#0A192F] transition-all duration-300 border border-transparent'
+                    className='p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-primary dark:text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground transition-all duration-300 border border-transparent'
                   >
                     <Menu className='h-5 w-5' />
                   </button>
                 </SheetTrigger>
-                <SheetContent side='right' className='w-[300px] sm:w-[350px] p-0 border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0A192F]'>
+                <SheetContent side='right' className='w-[300px] sm:w-[350px] p-0 border-l border-border bg-background'>
                   <div className="flex flex-col h-full">
-                    <div className="p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-black/20">
+                    <div className="p-8 border-b border-border bg-muted/50">
                       <Link to='/'>
                         <img src='/Logo.svg' alt='Baufiking' className='h-10 mb-6' />
                       </Link>
                       
                       {isAuthenticated ? (
-                        <div className='flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700'>
-                          <Avatar className='h-12 w-12 border-2 border-[#D4AF37]'>
-                            <AvatarFallback className='bg-[#0A192F] text-[#D4AF37] font-bold'>
+                        <div className='flex items-center gap-4 bg-background p-4 rounded-2xl shadow-sm border border-border'>
+                          <Avatar className='h-12 w-12 border-2 border-accent'>
+                            <AvatarFallback className='bg-primary text-accent font-bold'>
                               {getUserInitials()}
                             </AvatarFallback>
                           </Avatar>
                           <div className='overflow-hidden'>
-                            <p className='font-heading font-bold text-[#0A192F] dark:text-white truncate'>
+                            <p className='font-heading font-bold text-foreground truncate'>
                               {currentUser?.name || 'User'}
                             </p>
                             <button onClick={handleLogout} className="text-xs font-medium text-red-500 hover:underline">
@@ -234,10 +234,10 @@ const Navbar = () => {
                           </div>
                         </div>
                       ) : (
-                         <div className="bg-[#0A192F] dark:bg-slate-800 rounded-2xl p-6 text-center space-y-4 relative overflow-hidden">
-                           <div className="absolute top-0 right-0 w-20 h-20 bg-[#D4AF37]/20 rounded-full blur-xl -translate-y-1/2 translate-x-1/2" />
-                           <h3 className="text-white font-heading font-bold text-lg relative z-10">Start Your Journey</h3>
-                           <Link to='/auth' className="block w-full py-3 bg-[#D4AF37] text-white font-bold rounded-xl shadow-lg shadow-[#D4AF37]/20 relative z-10 active:scale-95 transition-all">
+                         <div className="bg-primary rounded-2xl p-6 text-center space-y-4 relative overflow-hidden">
+                           <div className="absolute top-0 right-0 w-20 h-20 bg-accent/20 rounded-full blur-xl -translate-y-1/2 translate-x-1/2" />
+                           <h3 className="text-primary-foreground font-heading font-bold text-lg relative z-10">Start Your Journey</h3>
+                           <Link to='/auth' className="block w-full py-3 bg-accent text-accent-foreground font-bold rounded-xl shadow-lg shadow-accent/20 relative z-10 active:scale-95 transition-all">
                              Login / Register
                            </Link>
                          </div>
@@ -251,15 +251,15 @@ const Navbar = () => {
                           to={item.path}
                           className={`flex items-center justify-between px-4 py-4 rounded-xl transition-all duration-300 group
                             ${location.pathname === item.path
-                                ? 'bg-[#0A192F] dark:bg-white text-white dark:text-[#0A192F] font-bold shadow-lg shadow-[#0A192F]/10 dark:shadow-white/5'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-[#0A192F] dark:hover:text-white'
+                                ? 'bg-primary text-accent font-bold shadow-lg shadow-primary/10'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`}
                         >
                           <div className="flex items-center gap-4">
                             <item.icon className="w-5 h-5" />
                             <span className='font-heading text-sm'>{item.label}</span>
                           </div>
-                          <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${location.pathname === item.path ? 'opacity-100 text-[#D4AF37] dark:text-[#0A192F]' : ''}`} />
+                          <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${location.pathname === item.path ? 'opacity-100 text-accent' : ''}`} />
                         </Link>
                       ))}
                     </div>

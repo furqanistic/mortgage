@@ -145,14 +145,14 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A192F] transition-colors duration-500 overflow-x-hidden">
+    <div className="min-h-screen bg-background transition-colors duration-500 overflow-x-hidden">
       <Navbar />
       
       <div className='relative min-h-[calc(100vh-140px)] flex items-center justify-center p-6 md:p-10'>
         {/* Decorative background elements - Subtle & Premium */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-[#D4AF37]/5 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-[10%] -right-[5%] w-[40%] h-[40%] bg-[#0A192F]/10 dark:bg-[#D4AF37]/5 rounded-full blur-[120px]" />
+          <div className="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-accent/5 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-[10%] -right-[5%] w-[40%] h-[40%] bg-primary/10 dark:bg-accent/5 rounded-full blur-[120px]" />
         </div>
 
         <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-16 items-center z-10">
@@ -166,15 +166,15 @@ const Auth = () => {
           >
             <motion.div variants={itemVariants} className="space-y-6">
               <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-                <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
-                <span className="text-xs font-bold tracking-widest text-[#0A192F] dark:text-gray-300 uppercase">
+                <ShieldCheck className="w-4 h-4 text-accent" />
+                <span className="text-xs font-bold tracking-widest text-primary dark:text-gray-300 uppercase">
                   Secure Portal
                 </span>
               </div>
-              <h1 className="text-5xl xl:text-7xl font-bold font-heading text-[#0A192F] dark:text-white leading-tight">
-                Unlock Your <span className="text-[#D4AF37]">German Home</span>
+              <h1 className="text-5xl xl:text-7xl font-bold font-heading text-primary dark:text-white leading-tight">
+                Unlock Your <span className="text-accent">German Home</span>
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 font-body leading-relaxed max-w-lg">
+              <p className="text-lg text-muted-foreground font-body leading-relaxed max-w-lg">
                 Your AI-powered mortgage journey starts here. Expert advice, 
                 premium solutions, and transparent guidance every step of the way.
               </p>
@@ -187,11 +187,11 @@ const Auth = () => {
               ].map((feature, i) => (
                 <div key={i} className="flex flex-col gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700">
-                    <feature.icon className="w-6 h-6 text-[#D4AF37]" />
+                    <feature.icon className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#0A192F] dark:text-white">{feature.title}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{feature.desc}</p>
+                    <h3 className="font-bold text-primary dark:text-white">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">{feature.desc}</p>
                   </div>
                 </div>
               ))}
@@ -204,13 +204,13 @@ const Auth = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Card className="p-8 md:p-12 bg-white dark:bg-[#0A192F]/50 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[40px] shadow-2xl shadow-slate-200/50 dark:shadow-none">
+            <Card className="p-8 md:p-12 bg-white/80 dark:bg-[#080808]/80 backdrop-blur-xl border border-border/50 rounded-[40px] shadow-2xl dark:shadow-none transition-all duration-300">
               <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="h-auto grid w-full grid-cols-2 p-1 bg-gray-100 dark:bg-slate-800 rounded-sm mb-12 border border-slate-200 dark:border-white/10">
-                  <TabsTrigger value="login" className="rounded-xl py-2.5 font-bold text-sm data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300">
+                <TabsList className="h-auto grid w-full grid-cols-2 p-1.5 bg-muted/50 rounded-2xl mb-12 border border-border">
+                  <TabsTrigger value="login" className="rounded-xl py-3 font-bold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
                     Login
                   </TabsTrigger>
-                  <TabsTrigger value="signup" className="rounded-xl py-2.5 font-bold text-sm data-[state=active]:bg-[#D4AF37] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300">
+                  <TabsTrigger value="signup" className="rounded-xl py-3 font-bold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
                     Register
                   </TabsTrigger>
                 </TabsList>
@@ -226,34 +226,34 @@ const Auth = () => {
                     >
                       <div className="space-y-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
+                          <label className="text-sm font-bold text-muted-foreground ml-1">Email Address</label>
                           <div className="relative group">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
                             <Input id="email" type="email" placeholder="name@example.com" value={loginData.email} onChange={handleLoginChange}
-                              className="w-full pl-12 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                              className="w-full pl-12 h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                           </div>
                         </div>
 
                         <div className="space-y-2">
                           <div className="flex justify-between items-center ml-1">
-                            <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Password</label>
-                            <button type="button" className="text-xs font-bold text-[#D4AF37] hover:underline">Forgot?</button>
+                            <label className="text-sm font-bold text-muted-foreground">Password</label>
+                            <button type="button" className="text-xs font-bold text-accent hover:underline">Forgot?</button>
                           </div>
                           <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#D4AF37] transition-colors" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
                             <Input id="password" type="password" placeholder="••••••••" value={loginData.password} onChange={handleLoginChange}
-                              className="w-full pl-12 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                              className="w-full pl-12 h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                           </div>
                         </div>
 
                         <label className="flex items-center gap-3 cursor-pointer group">
                           <input type="checkbox" id="rememberMe" checked={loginData.rememberMe} onChange={handleLoginChange}
-                            className="w-5 h-5 rounded-lg border-2 border-slate-200 dark:border-slate-700 text-[#D4AF37] focus:ring-[#D4AF37] transition-all cursor-pointer" />
-                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors">Remember me on this device</span>
+                            className="w-5 h-5 rounded-lg border-2 border-border text-accent focus:ring-accent transition-all cursor-pointer" />
+                          <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">Remember me on this device</span>
                         </label>
                       </div>
 
-                      <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl text-lg font-bold shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-[0.98]" 
+                      <Button className="w-full h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
                         type="submit" disabled={loading}>
                         {loading ? "Signing in..." : <div className="flex items-center gap-2">Sign In <ArrowRight className="w-5 h-5" /></div>}
                       </Button>
@@ -270,44 +270,44 @@ const Auth = () => {
                     >
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">First Name</label>
+                          <label className="text-sm font-bold text-muted-foreground ml-1">First Name</label>
                           <Input id="firstName" placeholder="John" value={signupData.firstName} onChange={handleSignupChange}
-                            className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                            className="w-full h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Last Name</label>
+                          <label className="text-sm font-bold text-muted-foreground ml-1">Last Name</label>
                           <Input id="lastName" placeholder="Doe" value={signupData.lastName} onChange={handleSignupChange}
-                            className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                            className="w-full h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
+                        <label className="text-sm font-bold text-muted-foreground ml-1">Email Address</label>
                         <Input id="email" type="email" placeholder="your@email.com" value={signupData.email} onChange={handleSignupChange}
-                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                          className="w-full h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Password</label>
+                        <label className="text-sm font-bold text-muted-foreground ml-1">Password</label>
                         <Input id="password" type="password" placeholder="••••••••" value={signupData.password} onChange={handleSignupChange}
-                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                          className="w-full h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Confirm Password</label>
+                        <label className="text-sm font-bold text-muted-foreground ml-1">Confirm Password</label>
                         <Input id="confirmPassword" type="password" placeholder="••••••••" value={signupData.confirmPassword} onChange={handleSignupChange}
-                          className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border-transparent focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] dark:text-white transition-all outline-none" required />
+                          className="w-full h-14 rounded-2xl bg-white/50 dark:bg-muted border-transparent focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none" required />
                       </div>
 
                       <label className="flex items-start gap-3 cursor-pointer group">
                         <input type="checkbox" id="terms" checked={signupData.terms} onChange={handleSignupChange}
-                          className="w-5 h-5 mt-0.5 rounded-lg border-2 border-slate-200 dark:border-slate-700 text-[#D4AF37] focus:ring-[#D4AF37] transition-all cursor-pointer" required />
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                          I agree to the <button type="button" className="text-[#D4AF37] font-bold">Terms of Service</button> and <button type="button" className="text-[#D4AF37] font-bold">Privacy Policy</button>
+                          className="w-5 h-5 mt-0.5 rounded-lg border-2 border-border text-accent focus:ring-accent transition-all cursor-pointer" required />
+                        <span className="text-xs font-medium text-muted-foreground">
+                          I agree to the <button type="button" className="text-accent font-bold">Terms of Service</button> and <button type="button" className="text-accent font-bold">Privacy Policy</button>
                         </span>
                       </label>
 
-                      <Button className="w-full h-16 bg-[#D4AF37] hover:bg-[#B8962E] text-white rounded-2xl text-lg font-bold shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-[0.98]" 
+                      <Button className="w-full h-16 bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl text-lg font-bold shadow-xl shadow-accent/20 transition-all active:scale-[0.98]" 
                         type="submit" disabled={loading}>
                         {loading ? "Creating Account..." : <div className="flex items-center gap-2">Create Account <ChevronRight className="w-5 h-5" /></div>}
                       </Button>

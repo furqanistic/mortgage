@@ -140,11 +140,11 @@ const RoadmapSection = () => {
         {/* Section Header */}
         <div className='text-center mb-20'>
           <div className='inline-flex items-center justify-center space-x-2 mb-6'>
-            <span className='px-4 py-1.5 bg-accent/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider'>
+            <span className='px-4 py-1.5 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-wider'>
               The Process
             </span>
           </div>
-          <h2 className='text-4xl sm:text-5xl font-bold text-primary mb-6'>
+          <h2 className='text-4xl sm:text-5xl font-bold text-foreground mb-6'>
             Follow Your Path Home
           </h2>
           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
@@ -183,7 +183,7 @@ const RoadmapSection = () => {
                                  {/* Label Positioned Absolute to not affect flex layout */}
                                  <div className={`absolute top-20 left-1/2 -translate-x-1/2 w-32 text-center transition-all duration-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-60 hover:opacity-100'}`}>
                                      <p className={`text-xs font-bold uppercase tracking-wide mb-1 ${isActive ? 'text-accent' : 'text-muted-foreground'}`}>Step {index + 1}</p>
-                                     <p className={`text-sm font-semibold ${isActive ? 'text-primary' : 'text-foreground'}`}>{step.title}</p>
+                                     <p className={`text-sm font-semibold ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>{step.title}</p>
                                  </div>
                              </button>
 
@@ -217,7 +217,7 @@ const RoadmapSection = () => {
                    </div>
                    
                    <div>
-                       <h3 className="text-3xl font-bold text-primary mb-2">{steps[activeStep].title}</h3>
+                       <h3 className="text-3xl font-bold text-foreground mb-2">{steps[activeStep].title}</h3>
                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-medium">
                            ⏱️ Est. {steps[activeStep].timeframe}
                        </div>
@@ -236,8 +236,8 @@ const RoadmapSection = () => {
                    <div className="grid gap-3">
                        {steps[activeStep].details.map((detail, idx) => (
                            <div key={idx} className="flex items-start gap-3 p-3 bg-background rounded-lg border border-border/50 shadow-sm">
-                               <div className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                   <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                               <div className="mt-0.5 w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                                   <CheckCircle className="w-3.5 h-3.5 text-accent" />
                                </div>
                                <span className="text-sm font-medium text-foreground/80">{detail}</span>
                            </div>

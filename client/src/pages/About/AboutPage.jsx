@@ -63,14 +63,14 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="font-body selection:bg-[#C5A059]/30">
+    <div className="font-body selection:bg-accent/30">
       <Navbar />
-      <main className="min-h-screen bg-white dark:bg-[#000d1a] transition-colors duration-500">
+      <main className="min-h-screen bg-background transition-colors duration-500">
         
         {/* Hero Section */}
         <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden">
           {/* Subtle Background Glow */}
-          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-[#C5A059]/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.div
@@ -82,25 +82,25 @@ const AboutPage = () => {
               <div className="space-y-10">
                 <motion.div
                   variants={itemVariants}
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#001F3F]/10 dark:border-[#C5A059]/20 bg-[#001F3F]/5 dark:bg-[#C5A059]/5"
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/10 dark:border-accent/20 bg-primary/5 dark:bg-accent/5"
                 >
-                  <Star className="w-4 h-4 text-[#C5A059]" />
-                  <span className="text-xs font-semibold tracking-wider uppercase text-[#001F3F] dark:text-[#C5A059]">
+                  <Star className="w-4 h-4 text-accent" />
+                  <span className="text-xs font-semibold tracking-wider uppercase text-primary dark:text-accent">
                     Trusted by 15,000+ Homebuyers
                   </span>
                 </motion.div>
 
                 <motion.h1 
                   variants={itemVariants}
-                  className="text-5xl lg:text-7xl font-bold font-heading leading-[1.1] text-[#001F3F] dark:text-white"
+                  className="text-5xl lg:text-7xl font-bold font-heading leading-[1.1] text-foreground"
                 >
                   Making Home <br />
-                  <span className="text-[#C5A059]">Ownership</span> Simple
+                  <span className="text-accent">Ownership</span> Simple
                 </motion.h1>
 
                 <motion.p 
                   variants={itemVariants}
-                  className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl"
+                  className="text-xl text-muted-foreground leading-relaxed max-w-xl"
                 >
                   We combine AI innovation with expert guidance to transform
                   your German home buying journey into a seamless experience.
@@ -108,7 +108,7 @@ const AboutPage = () => {
 
                 <motion.div variants={itemVariants} className="flex flex-wrap gap-5">
                   <Button
-                    className="bg-[#001F3F] dark:bg-[#C5A059] text-white dark:text-[#000d1a] hover:opacity-90 transition-all h-14 px-10 rounded-full text-lg font-medium shadow-xl shadow-[#001F3F]/10 dark:shadow-[#C5A059]/10"
+                    className="bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground hover:opacity-90 transition-all h-14 px-10 rounded-full text-lg font-medium shadow-xl shadow-primary/10 dark:shadow-accent/10"
                     onClick={() => {}}
                   >
                     Start Your Journey
@@ -118,7 +118,7 @@ const AboutPage = () => {
               </div>
 
               <motion.div variants={itemVariants} className="relative group">
-                <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#001F3F]/5 dark:bg-[#C5A059]/5 border border-[#001F3F]/10 dark:border-[#C5A059]/20 shadow-2xl">
+                <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-primary/5 dark:bg-accent/5 border border-primary/10 dark:border-accent/20 shadow-2xl">
                   <img
                     src="/Logo.svg"
                     alt="About Baufiking"
@@ -131,17 +131,17 @@ const AboutPage = () => {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 1, duration: 0.5 }}
-                  className="absolute -bottom-8 -left-8 bg-white dark:bg-[#001F3F] shadow-2xl p-8 rounded-3xl border border-slate-100 dark:border-white/10 hidden md:block"
+                  className="absolute -bottom-8 -left-8 bg-card shadow-2xl p-8 rounded-3xl border border-border hidden md:block"
                 >
                   <div className="flex items-center gap-5">
-                    <div className="p-3 bg-[#C5A059]/10 rounded-2xl">
-                      <Award className="w-8 h-8 text-[#C5A059]" />
+                    <div className="p-3 bg-accent/10 rounded-2xl">
+                      <Award className="w-8 h-8 text-accent" />
                     </div>
                     <div>
-                      <p className="text-lg font-bold text-[#001F3F] dark:text-white">
+                      <p className="text-lg font-bold text-foreground">
                         Top Rated
                       </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                      <p className="text-sm text-muted-foreground">
                         in Property Tech
                       </p>
                     </div>
@@ -153,7 +153,7 @@ const AboutPage = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="py-24 bg-[#001F3F] text-white dark:bg-[#C5A059]/5 relative overflow-hidden">
+        <section className="py-24 bg-primary text-primary-foreground dark:bg-accent/5 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-24">
               {stats.map((stat, index) => (
@@ -165,10 +165,10 @@ const AboutPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-4xl lg:text-5xl font-bold font-heading text-[#C5A059] mb-2">
+                  <p className="text-4xl lg:text-5xl font-bold font-heading text-accent mb-2">
                     {stat.value}
                   </p>
-                  <p className="text-sm tracking-widest uppercase font-medium text-white/70 dark:text-slate-400">
+                  <p className="text-sm tracking-widest uppercase font-medium text-primary-foreground/70 dark:text-muted-foreground">
                     {stat.label}
                   </p>
                 </motion.div>
@@ -188,10 +188,10 @@ const AboutPage = () => {
                 className="space-y-12"
               >
                 <div className="space-y-6">
-                  <h2 className="text-4xl lg:text-5xl font-bold font-heading text-[#001F3F] dark:text-white">
+                  <h2 className="text-4xl lg:text-5xl font-bold font-heading text-foreground">
                     Our Mission
                   </h2>
-                  <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-xl text-muted-foreground leading-relaxed">
                     We believe that everyone deserves their dream home in Germany.
                     Through our AI-powered platform and expert guidance, we're
                     making the complex journey of home buying accessible and
@@ -207,16 +207,16 @@ const AboutPage = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      className="group flex items-start gap-6 p-6 rounded-3xl border border-transparent hover:border-[#001F3F]/10 dark:hover:border-[#C5A059]/20 hover:bg-[#001F3F]/5 dark:hover:bg-[#C5A059]/5 transition-all duration-300"
+                      className="group flex items-start gap-6 p-6 rounded-3xl border border-transparent hover:border-primary/10 dark:hover:border-accent/20 hover:bg-primary/5 dark:hover:bg-accent/5 transition-all duration-300"
                     >
-                      <div className="shrink-0 p-4 rounded-2xl bg-[#001F3F]/5 dark:bg-[#C5A059]/10 text-[#001F3F] dark:text-[#C5A059] group-hover:bg-[#001F3F] dark:group-hover:bg-[#C5A059] group-hover:text-white dark:group-hover:text-[#000d1a] transition-colors">
+                      <div className="shrink-0 p-4 rounded-2xl bg-primary/5 dark:bg-accent/10 text-primary dark:text-accent group-hover:bg-primary dark:group-hover:bg-accent group-hover:text-primary-foreground dark:group-hover:text-accent-foreground transition-colors">
                         <feature.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-[#001F3F] dark:text-white mb-1">
+                        <h3 className="text-xl font-bold text-foreground mb-1">
                           {feature.title}
                         </h3>
-                        <p className="text-slate-600 dark:text-slate-400">
+                        <p className="text-muted-foreground">
                           {feature.description}
                         </p>
                       </div>
@@ -274,21 +274,21 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-7xl mx-auto rounded-[3rem] bg-[#001F3F] dark:bg-[#C5A059]/10 p-12 lg:p-24 text-center relative overflow-hidden"
+            className="max-w-7xl mx-auto rounded-[3rem] bg-primary dark:bg-accent/10 p-12 lg:p-24 text-center relative overflow-hidden"
           >
             {/* Background Accent */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,#C5A059/10,transparent_50%)]" />
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_70%)] opacity-20" />
             
             <div className="relative z-10 max-w-3xl mx-auto space-y-10">
               <h2 className="text-4xl lg:text-6xl font-bold font-heading text-white">
-                Ready to Find Your <span className="text-[#C5A059]">Dream Home?</span>
+                Ready to Find Your <span className="text-accent">Dream Home?</span>
               </h2>
               <p className="text-xl text-white/70 leading-relaxed">
                 Let's start your journey to homeownership together. Our experts are ready to help you every step of the way.
               </p>
               <div className="flex justify-center pt-4">
                 <Button
-                  className="bg-[#C5A059] text-[#001F3F] hover:bg-white hover:text-[#001F3F] transition-all h-16 px-12 rounded-full text-lg font-bold shadow-2xl shadow-black/20"
+                  className="bg-accent text-accent-foreground hover:bg-background hover:text-foreground transition-all h-16 px-12 rounded-full text-lg font-bold shadow-2xl shadow-black/20"
                   onClick={() => {}}
                 >
                   Schedule a Consultation

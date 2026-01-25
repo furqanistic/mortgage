@@ -13,7 +13,7 @@ import {
   Phone,
   Send,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -59,7 +59,7 @@ const ContactPage = () => {
   }
 
   return (
-    <div className='min-h-screen bg-white dark:bg-[#0A192F] transition-colors duration-500'>
+    <div className='min-h-screen bg-background transition-colors duration-500'>
       <Navbar />
       
       {/* Hero Section */}
@@ -72,18 +72,18 @@ const ContactPage = () => {
             className='text-center space-y-10'
           >
             <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700'>
-              <MessageSquare className='w-4 h-4 text-[#D4AF37]' />
-              <span className='text-sm font-semibold tracking-wide text-gray-600 dark:text-gray-300 uppercase'>
+              <MessageSquare className='w-4 h-4 text-accent' />
+              <span className='text-sm font-semibold tracking-wide text-muted-foreground uppercase'>
                 We're Here to Help
               </span>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className='text-5xl md:text-7xl font-bold font-heading text-gray-900 dark:text-white leading-tight'>
+            <motion.h1 variants={itemVariants} className='text-5xl md:text-7xl font-bold font-heading text-foreground leading-tight'>
               Let's Start Your{' '}
-              <span className='text-[#D4AF37]'>Journey</span>
+              <span className='text-accent'>Journey</span>
             </motion.h1>
 
-            <motion.p variants={itemVariants} className='text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-body leading-relaxed'>
+            <motion.p variants={itemVariants} className='text-xl text-muted-foreground max-w-2xl mx-auto font-body leading-relaxed'>
               Have questions about buying a home in Germany? Our team of
               experts is here to guide you every step of the way.
             </motion.p>
@@ -92,7 +92,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Options */}
-      <section className='py-24 px-6 md:px-10 bg-slate-50 dark:bg-slate-900/50'>
+      <section className='py-24 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <motion.div
             variants={containerVariants}
@@ -124,18 +124,18 @@ const ContactPage = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className='bg-white dark:bg-[#0A192F]/50 p-10 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none hover:border-[#D4AF37] transition-all duration-300'
+                className='bg-[#080808] p-10 rounded-3xl border border-border/50 shadow-xl hover:border-accent/40 transition-all duration-300'
               >
-                <div className='p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 inline-block mb-8 transform hover:scale-110 transition-transform'>
-                  <contact.icon className='w-8 h-8 text-[#D4AF37]' />
+                <div className='p-4 rounded-2xl bg-muted/50 inline-block mb-8 transform hover:scale-110 transition-transform'>
+                  <contact.icon className='w-8 h-8 text-accent' />
                 </div>
-                <h3 className='text-2xl font-bold font-heading text-gray-900 dark:text-white mb-4'>
+                <h3 className='text-2xl font-bold font-heading text-foreground mb-4'>
                   {contact.title}
                 </h3>
-                <p className='text-lg text-gray-600 dark:text-gray-400 mb-4 font-body'>
+                <p className='text-lg text-muted-foreground mb-4 font-body'>
                   {contact.info}
                 </p>
-                <p className='text-sm font-semibold text-[#D4AF37] uppercase tracking-wider font-body'>
+                <p className='text-sm font-semibold text-accent uppercase tracking-wider font-body'>
                   {contact.action}
                 </p>
               </motion.div>
@@ -145,7 +145,7 @@ const ContactPage = () => {
       </section>
 
       {/* Form & Info Section */}
-      <section className='py-32 px-6 md:px-10 bg-white dark:bg-[#0A192F]'>
+      <section className='py-32 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <div className='grid lg:grid-cols-2 gap-24'>
             {/* Form */}
@@ -155,13 +155,13 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className='space-y-12'
             >
-              <h2 className='text-4xl font-bold font-heading text-gray-900 dark:text-white'>
+              <h2 className='text-4xl font-bold font-heading text-foreground'>
                 Send Us a Message
               </h2>
               <form onSubmit={handleSubmit} className='space-y-8'>
                 <div className='grid md:grid-cols-2 gap-8'>
                   <div className='space-y-3'>
-                    <label className='text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1'>
+                    <label className='text-sm font-semibold text-muted-foreground ml-1'>
                       Name
                     </label>
                     <input
@@ -170,12 +170,12 @@ const ContactPage = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder='Your name'
-                      className='w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-[#D4AF37] dark:text-white transition-all outline-none'
+                      className='w-full px-6 py-4 rounded-2xl bg-muted border-none focus:ring-2 focus:ring-accent transition-all outline-none'
                       required
                     />
                   </div>
                   <div className='space-y-3'>
-                    <label className='text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1'>
+                    <label className='text-sm font-semibold text-muted-foreground ml-1'>
                       Email
                     </label>
                     <input
@@ -184,13 +184,13 @@ const ContactPage = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder='your@email.com'
-                      className='w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-[#D4AF37] dark:text-white transition-all outline-none'
+                      className='w-full px-6 py-4 rounded-2xl bg-muted border-none focus:ring-2 focus:ring-accent transition-all outline-none'
                       required
                     />
                   </div>
                 </div>
                 <div className='space-y-3'>
-                  <label className='text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1'>
+                  <label className='text-sm font-semibold text-muted-foreground ml-1'>
                     Phone
                   </label>
                   <input
@@ -199,11 +199,11 @@ const ContactPage = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder='+49 ...'
-                    className='w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-[#D4AF37] dark:text-white transition-all outline-none'
+                    className='w-full px-6 py-4 rounded-2xl bg-muted border-none focus:ring-2 focus:ring-accent transition-all outline-none'
                   />
                 </div>
                 <div className='space-y-3'>
-                  <label className='text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1'>
+                  <label className='text-sm font-semibold text-muted-foreground ml-1'>
                     Subject
                   </label>
                   <input
@@ -212,12 +212,12 @@ const ContactPage = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     placeholder='How can we help?'
-                    className='w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-[#D4AF37] dark:text-white transition-all outline-none'
+                    className='w-full px-6 py-4 rounded-2xl bg-muted border-none focus:ring-2 focus:ring-accent transition-all outline-none'
                     required
                   />
                 </div>
                 <div className='space-y-3'>
-                  <label className='text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1'>
+                  <label className='text-sm font-semibold text-muted-foreground ml-1'>
                     Message
                   </label>
                   <textarea
@@ -226,13 +226,13 @@ const ContactPage = () => {
                     onChange={handleChange}
                     placeholder='Tell us more about your requirements...'
                     rows={6}
-                    className='w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-[#D4AF37] dark:text-white transition-all outline-none resize-none'
+                    className='w-full px-6 py-4 rounded-2xl bg-muted border-none focus:ring-2 focus:ring-accent transition-all outline-none resize-none'
                     required
                   />
                 </div>
                 <Button
                   type='submit'
-                  className='bg-[#D4AF37] hover:bg-[#B8962E] text-white h-16 px-10 rounded-2xl w-full text-lg font-bold shadow-lg shadow-[#D4AF37]/20 transition-all hover:scale-[1.02]'
+                  className='bg-accent hover:bg-accent/90 text-accent-foreground h-16 px-10 rounded-2xl w-full text-lg font-bold shadow-lg shadow-accent/20 transition-all hover:scale-[1.02]'
                 >
                   Send Message
                   <Send className='w-5 h-5 ml-3' />
@@ -247,8 +247,8 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className='space-y-10'
             >
-              <div className='bg-slate-50 dark:bg-slate-900/50 p-10 rounded-3xl border border-slate-100 dark:border-slate-800'>
-                <h3 className='text-2xl font-bold font-heading text-gray-900 dark:text-white mb-8'>
+              <div className='bg-[#080808] p-10 rounded-3xl border border-border/50'>
+                <h3 className='text-2xl font-bold font-heading text-foreground mb-8'>
                   Office Hours
                 </h3>
                 <div className='space-y-8'>
@@ -258,14 +258,14 @@ const ContactPage = () => {
                     { day: 'Sunday', hours: 'Closed' },
                   ].map((schedule, index) => (
                     <div key={index} className='flex items-start gap-6'>
-                      <div className='p-3 rounded-xl bg-[#D4AF37]/10'>
-                        <Clock className='w-6 h-6 text-[#D4AF37]' />
+                      <div className='p-3 rounded-xl bg-accent/10'>
+                        <Clock className='w-6 h-6 text-accent' />
                       </div>
                       <div>
-                        <p className='text-lg font-bold text-gray-900 dark:text-white'>
+                        <p className='text-lg font-bold text-foreground'>
                           {schedule.day}
                         </p>
-                        <p className='text-gray-600 dark:text-gray-400 font-body'>
+                        <p className='text-muted-foreground font-body'>
                           {schedule.hours}
                         </p>
                       </div>
@@ -274,17 +274,17 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className='bg-[#0A192F] dark:bg-slate-900/50 p-10 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden group'>
-                <div className='absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/10 blur-3xl rounded-full' />
-                <h3 className='text-2xl font-bold font-heading text-white mb-6'>
+              <div className='bg-primary/5 p-10 rounded-3xl border border-border shadow-2xl relative overflow-hidden group'>
+                <div className='absolute right-0 top-0 w-32 h-32 bg-accent/10 blur-3xl rounded-full' />
+                <h3 className='text-2xl font-bold font-heading text-foreground mb-6'>
                   Book a Consultation
                 </h3>
-                <p className='text-gray-300 mb-10 text-lg font-body leading-relaxed'>
+                <p className='text-muted-foreground mb-10 text-lg font-body leading-relaxed'>
                   Schedule a one-on-one consultation with our property experts
                   to discuss your home buying journey.
                 </p>
                 <Button
-                  className='bg-[#D4AF37] hover:bg-[#B8962E] text-white h-14 px-8 rounded-2xl w-full text-base font-bold transition-all'
+                  className='bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8 rounded-2xl w-full text-base font-bold transition-all'
                   onClick={() => {}}
                 >
                   Schedule Now
@@ -297,13 +297,13 @@ const ContactPage = () => {
       </section>
 
       {/* Map Section */}
-      <section className='py-24 px-6 md:px-10 bg-slate-50 dark:bg-slate-900/50'>
+      <section className='py-24 px-6 md:px-10 bg-background'>
         <div className='max-w-7xl mx-auto'>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className='rounded-[40px] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800'
+            className='rounded-[40px] overflow-hidden shadow-2xl border border-border/20'
           >
             <div className='aspect-[21/9] w-full'>
               <iframe
@@ -326,17 +326,17 @@ const ContactPage = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className='py-32 px-6 md:px-10 bg-white dark:bg-[#0A192F] text-center'
+        className='py-32 px-6 md:px-10 bg-background text-center'
       >
         <div className='max-w-4xl mx-auto space-y-10'>
-          <h2 className='text-4xl md:text-6xl font-bold font-heading text-gray-900 dark:text-white'>
+          <h2 className='text-4xl md:text-6xl font-bold font-heading text-foreground'>
             Ready to Start Your Journey?
           </h2>
-          <p className='text-xl text-gray-600 dark:text-gray-400 font-body max-w-2xl mx-auto'>
+          <p className='text-xl text-muted-foreground font-body max-w-2xl mx-auto'>
             Take the first step towards your dream home today.
           </p>
           <Button
-            className='bg-[#0A192F] dark:bg-[#D4AF37] text-white dark:text-[#0A192F] h-16 px-12 rounded-2xl text-lg font-bold hover:scale-105 transition-all shadow-xl dark:shadow-[#D4AF37]/20'
+            className='bg-accent text-accent-foreground h-16 px-12 rounded-2xl text-lg font-bold hover:scale-105 transition-all shadow-xl dark:shadow-accent/20'
             onClick={() => {}}
           >
             Get Started Now
