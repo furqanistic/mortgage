@@ -300,7 +300,7 @@ const PartnersPage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-5 py-3 bg-card border border-border rounded-xl text-sm font-medium text-foreground hover:border-accent/40 transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3 bg-card border border-border rounded-xl text-sm font-medium text-foreground hover:border-accent/40 transition-all"
               >
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <span>Filters</span>
@@ -317,7 +317,7 @@ const PartnersPage = () => {
                   whileHover={{ y: -2 }}
                   whileTap={{ y: 0 }}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center gap-2.5 px-8 py-3.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
+                  className={`whitespace-nowrap flex items-center gap-2.5 px-5 py-2.5 md:px-8 md:py-3.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
                     activeCategory === category.id
                       ? 'bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/20'
                       : 'bg-card text-muted-foreground border-border hover:border-accent/40 hover:bg-muted/30 hover:text-foreground'
@@ -515,7 +515,7 @@ const PartnersPage = () => {
                 onClick={() => (window.location.href = '/auth')}
                 whileHover={{ scale: 1.02, x: 5 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-10 py-5 bg-accent text-accent-foreground font-bold rounded-xl flex items-center gap-3 hover:shadow-xl hover:shadow-accent/20 transition-all"
+                className="group px-6 py-4 md:px-10 md:py-5 bg-accent text-accent-foreground font-bold rounded-xl flex items-center gap-3 hover:shadow-xl hover:shadow-accent/20 transition-all w-full md:w-auto justify-center md:justify-start"
               >
                 Apply for Partnership
                 <ArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />

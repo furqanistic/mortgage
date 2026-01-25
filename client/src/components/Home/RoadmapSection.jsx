@@ -132,7 +132,7 @@ const RoadmapSection = () => {
   ]
 
   return (
-    <section className='py-24 relative overflow-hidden bg-background'>
+    <section className='py-12 md:py-24 bg-background relative overflow-hidden'>
       {/* Background Elements */}
       <div className='absolute inset-0 bg-primary/2 -z-10' />
       

@@ -67,7 +67,7 @@ const SuccessStories = () => {
   }, [stories.length])
 
   return (
-    <section className='py-32 bg-background relative overflow-hidden transition-colors duration-300'>
+    <section className='py-12 md:py-24 bg-background relative overflow-hidden transition-colors duration-300'>
        {/* Background Decoration */}
        <div className='absolute top-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none' />
 
@@ -84,7 +84,7 @@ const SuccessStories = () => {
            </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             {/* Left: Testimonial & Stats */}
             <div className="space-y-8">
                 <AnimatePresence mode="wait">
@@ -98,9 +98,9 @@ const SuccessStories = () => {
                     >
                          <div className="relative">
                              <Quote className="absolute -top-12 -left-12 w-24 h-24 text-accent/5 rotate-180 pointer-events-none" />
-                             <h3 className="text-3xl md:text-4xl font-medium leading-[1.4] text-foreground italic relative z-10 font-body">
-                                 &ldquo;{stories[activeStory].quote}&rdquo;
-                             </h3>
+                              <h3 className="text-xl md:text-3xl lg:text-4xl font-medium leading-[1.4] text-foreground italic relative z-10 font-body">
+                                  &ldquo;{stories[activeStory].quote}&rdquo;
+                              </h3>
                          </div>
                          
                          <div className="flex items-center gap-4">

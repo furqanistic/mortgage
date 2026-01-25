@@ -134,7 +134,7 @@ const MortgageCalculator = () => {
   }
 
   return (
-    <div className='relative min-h-screen bg-background py-24 overflow-hidden'> 
+    <div className='relative min-h-screen bg-background py-12 md:py-24 overflow-hidden'> 
        {/* Background */}
        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
        <div className='absolute inset-0 opacity-[0.02]' 
@@ -154,7 +154,7 @@ const MortgageCalculator = () => {
 
         <div className='grid lg:grid-cols-12 gap-8 items-start'>
           {/* Form Side */}
-          <div className='lg:col-span-5 space-y-6'>
+           <div className='lg:col-span-5 space-y-4 md:space-y-6'>
              <Card className='border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300'>
                  <CardHeader className="border-b border-border/50 pb-4">
                      <CardTitle className="text-xl text-foreground flex items-center gap-2">
@@ -271,7 +271,7 @@ const MortgageCalculator = () => {
                         className="space-y-6"
                      >
                          {/* Mortgage Monthly Card */}
-                         <div className="relative overflow-hidden rounded-3xl bg-primary dark:bg-[#0A0A0A] text-primary-foreground dark:text-foreground p-8 border border-white/10 shadow-lg dark:shadow-none">
+                          <div className="relative overflow-hidden rounded-3xl bg-primary dark:bg-[#0A0A0A] text-white p-6 md:p-8 border border-white/10 shadow-lg dark:shadow-none">
                              <div className="absolute top-0 right-0 p-32 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                              
                              <div className="relative z-10 text-center">

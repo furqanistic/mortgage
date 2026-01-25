@@ -15,7 +15,7 @@ const HeroSection = () => {
   const closeForm = () => setIsFormOpen(false)
 
   return (
-    <section className='relative min-h-[95vh] flex items-center bg-background overflow-hidden pt-20 lg:pt-0'>
+    <section className='relative min-h-[90vh] lg:min-h-[95vh] flex items-center bg-background overflow-hidden pt-12 lg:pt-0'>
       {/* Dynamic Background */}
       <div className='absolute inset-0 pointer-events-none'>
         <div className="absolute top-[-10%] right-[-5%] w-[70vw] h-[70vw] bg-primary/5 rounded-full blur-[120px]" />
@@ -39,7 +39,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className='lg:col-span-7 space-y-12'
+            className='lg:col-span-7 space-y-8 md:space-y-12'
           >
             {/* Elegant Badge */}
             <motion.div
@@ -56,7 +56,7 @@ const HeroSection = () => {
 
             {/* Master Heading */}
             <div className="space-y-4">
-              <h1 className='text-6xl sm:text-7xl lg:text-8xl font-bold font-heading text-foreground leading-[0.95] tracking-tight'>
+              <h1 className='text-4xl sm:text-7xl lg:text-8xl font-bold font-heading text-foreground leading-[1.0] lg:leading-[0.95] tracking-tight'>
                 Experience <br />
                 <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
                   True Ownership
@@ -72,10 +72,10 @@ const HeroSection = () => {
               <Link to='/auth' className="group relative">
                 <Button
                   size='lg'
-                  className='px-10 h-16 text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-primary/20'
+                  className='px-6 md:px-10 h-12 md:h-16 text-base md:text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-primary/20 w-full sm:w-auto'
                 >
                   Start Your Journey
-                  <ArrowRight className='ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform' />
+                  <ArrowRight className='ml-2 md:ml-3 w-4 md:w-5 h-4 md:h-5 group-hover:translate-x-1 transition-transform' />
                 </Button>
               </Link>
 
@@ -83,7 +83,7 @@ const HeroSection = () => {
                 variant='ghost'
                 size='lg'
                 onClick={openForm}
-                className='px-8 h-16 text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all'
+                className='px-6 md:px-8 h-12 md:h-16 text-base md:text-lg text-foreground hover:bg-white/5 rounded-full font-semibold transition-all w-full sm:w-auto'
               >
                 Free Consultation
               </Button>

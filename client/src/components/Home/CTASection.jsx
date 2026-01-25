@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 const CTASection = () => {
   return (
-    <section className='py-32 relative overflow-hidden bg-background'>
+    <section className='py-16 md:py-32 relative overflow-hidden bg-background'>
       {/* Background decorations */}
       <div className='absolute inset-0 overflow-hidden pointer-events-none'>
         <div className='absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3' />
@@ -43,7 +43,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
+            className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
           >
             Start Your Journey to <br />
             <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
