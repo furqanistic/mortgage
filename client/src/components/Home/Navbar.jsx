@@ -26,8 +26,7 @@ import {
   User,
   Users,
   Phone,
-  Mail,
-  ChevronRight
+  Mail
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -210,65 +209,64 @@ const Navbar = () => {
                     <Menu className='h-5 w-5' />
                   </button>
                 </SheetTrigger>
-                <SheetContent side='right' className='w-[300px] sm:w-[350px] p-0 border-l border-border bg-background'>
-                  <div className="flex flex-col h-full">
-                    <div className="p-8 border-b border-border bg-muted/50">
-                      <Link to='/'>
-                        <img src='/Logo.svg' alt='Baufiking' className='h-10 mb-6' />
-                      </Link>
-                      
-                      {isAuthenticated ? (
-                        <div className='flex items-center gap-4 bg-background p-4 rounded-2xl shadow-sm border border-border'>
-                          <Avatar className='h-12 w-12 border-2 border-accent'>
-                            <AvatarFallback className='bg-primary text-accent font-bold'>
-                              {getUserInitials()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className='overflow-hidden'>
-                            <p className='font-heading font-bold text-foreground truncate'>
-                              {currentUser?.name || 'User'}
-                            </p>
-                            <button onClick={handleLogout} className="text-xs font-medium text-red-500 hover:underline">
-                              Sign out
-                            </button>
-                          </div>
+                <SheetContent side='right' className='w-[300px] sm:w-[350px] p-0 border-l border-border bg-background flex flex-col'>
+                  <div className="p-6 border-b border-border bg-muted/30">
+                    <div className="flex items-center justify-between mb-8">
+                       <Link to='/'>
+                         <img src='/Logo.svg' alt='Baufiking' className='h-8' />
+                       </Link>
+                    </div>
+                    
+                    {isAuthenticated ? (
+                      <div className='flex items-center gap-3 bg-background p-3 rounded-xl shadow-sm border border-border'>
+                        <Avatar className='h-10 w-10 border-2 border-accent'>
+                          <AvatarFallback className='bg-primary text-accent font-bold'>
+                            {getUserInitials()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className='overflow-hidden flex-1'>
+                          <p className='font-heading font-bold text-foreground truncate text-sm'>
+                            {currentUser?.name || 'User'}
+                          </p>
+                          <button onClick={handleLogout} className="text-xs font-medium text-red-500 hover:underline">
+                            Sign out
+                          </button>
                         </div>
-                      ) : (
-                         <div className="bg-primary rounded-2xl p-6 text-center space-y-4 relative overflow-hidden">
-                           <div className="absolute top-0 right-0 w-20 h-20 bg-accent/20 rounded-full blur-xl -translate-y-1/2 translate-x-1/2" />
-                           <h3 className="text-primary-foreground font-heading font-bold text-lg relative z-10">Start Your Journey</h3>
-                           <Link to='/auth' className="block w-full py-3 bg-accent text-accent-foreground font-bold rounded-xl shadow-lg shadow-accent/20 relative z-10 active:scale-95 transition-all">
-                             Login / Register
-                           </Link>
-                         </div>
-                      )}
-                    </div>
-                    
-                    <div className='flex-1 overflow-y-auto py-8 px-6 space-y-2'>
-                      {navItems.map((item, index) => (
-                        <Link
-                          key={index}
-                          to={item.path}
-                          className={`flex items-center justify-between px-4 py-4 rounded-xl transition-all duration-300 group
-                            ${location.pathname === item.path
-                                ? 'bg-primary text-accent font-bold shadow-lg shadow-primary/10'
-                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                            }`}
-                        >
-                          <div className="flex items-center gap-4">
-                            <item.icon className="w-5 h-5" />
-                            <span className='font-heading text-sm'>{item.label}</span>
-                          </div>
-                          <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${location.pathname === item.path ? 'opacity-100 text-accent' : ''}`} />
-                        </Link>
-                      ))}
-                    </div>
-                    
-                    <div className="p-8 border-t border-slate-100 dark:border-slate-800 text-center">
-                      <p className="text-xs text-slate-400 dark:text-slate-600 font-medium">
-                        © 2025 Baufiking v2.0
-                      </p>
-                    </div>
+                      </div>
+                    ) : (
+                       <Link to='/auth' className="flex items-center justify-center w-full py-3 bg-primary text-primary-foreground font-bold rounded-xl shadow-sm hover:bg-primary/90 transition-all text-sm gap-2">
+                         <User className="w-4 h-4 text-accent" />
+                         Login / Register
+                       </Link>
+                    )}
+                  </div>
+                  
+                  <div className='flex-1 overflow-y-auto py-6 px-4 space-y-1'>
+                    {navItems.map((item, index) => (
+                      <Link
+                        key={index}
+                        to={item.path}
+                        className={`flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 group
+                          ${location.pathname === item.path
+                              ? 'text-foreground font-bold bg-accent/5'
+                              : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                          }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <item.icon className={`w-4 h-4 ${location.pathname === item.path ? 'text-accent' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                          <span className='font-heading text-sm'>{item.label}</span>
+                        </div>
+                        {location.pathname === item.path && (
+                           <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  <div className="p-6 border-t border-border mt-auto">
+                     <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest font-semibold">
+                       Expert Mortgage Advice
+                     </p>
                   </div>
                 </SheetContent>
               </Sheet>
