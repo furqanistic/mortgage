@@ -140,7 +140,7 @@ const RoadmapSection = () => {
         {/* Section Header */}
         <div className='text-center mb-20'>
           <div className='inline-flex items-center justify-center space-x-2 mb-6'>
-            <span className='px-4 py-1.5 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-wider'>
+            <span className='px-4 py-1.5 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-wider border border-accent/20'>
               The Process
             </span>
           </div>

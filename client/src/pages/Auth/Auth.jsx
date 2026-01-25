@@ -165,9 +165,9 @@ const Auth = () => {
             className="hidden lg:flex flex-col space-y-12"
           >
             <motion.div variants={itemVariants} className="space-y-6">
-              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-accent/10 border border-accent/20">
                 <ShieldCheck className="w-4 h-4 text-accent" />
-                <span className="text-xs font-bold tracking-widest text-primary dark:text-gray-300 uppercase">
+                <span className="text-xs font-bold tracking-widest text-accent uppercase">
                   Secure Portal
                 </span>
               </div>

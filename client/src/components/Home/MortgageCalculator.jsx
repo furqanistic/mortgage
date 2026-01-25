@@ -270,16 +270,16 @@ const MortgageCalculator = () => {
                         initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                         className="space-y-6"
                      >
-                         {/* Mortgage Monthly Card */}
-                          <div className="relative overflow-hidden rounded-3xl bg-primary dark:bg-[#0A0A0A] text-white p-6 md:p-8 border border-white/10 shadow-lg dark:shadow-none">
+                          {/* Mortgage Monthly Card */}
+                          <div className="relative overflow-hidden rounded-3xl bg-accent/5 dark:bg-[#0A0A0A] p-6 md:p-8 border border-accent/20 dark:border-white/10 shadow-sm dark:shadow-none">
                              <div className="absolute top-0 right-0 p-32 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                              
                              <div className="relative z-10 text-center">
-                                 <p className="text-primary-foreground/80 dark:text-muted-foreground font-medium mb-1">Estimated Monthly Payment</p>
-                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-white">
+                                 <p className="text-muted-foreground dark:text-muted-foreground font-medium mb-1">Estimated Monthly Payment</p>
+                                 <div className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-primary dark:text-white">
                                      {results.isCashBuy ? '€0' : `€${Number(results.monthlyPayment).toLocaleString()}`}
                                  </div>
-                                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${results.isCashBuy ? 'bg-green-500/20 border-green-500/30 text-green-100' : (results.isAffordable ? 'bg-green-500/20 border-green-500/30 text-green-100' : 'bg-red-500/20 border-red-500/30 text-red-100')}`}>
+                                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${results.isCashBuy ? 'bg-green-500/20 border-green-500/30 text-green-700 dark:text-green-100' : (results.isAffordable ? 'bg-green-100/50 dark:bg-green-500/20 border-green-200 dark:border-green-500/30 text-green-700 dark:text-green-100' : 'bg-red-100/50 dark:bg-red-500/20 border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-100')}`}>
                                      {results.isCashBuy ? 'Full Cash Purchase (No Loan Needed)' : (results.isAffordable ? 'Affordable within 40% rule' : 'Exceeds recommended 40% income')}
                                  </div>
                              </div>
