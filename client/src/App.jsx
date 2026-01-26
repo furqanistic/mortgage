@@ -2,12 +2,13 @@
 import { Toaster } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
+    Navigate,
+    Outlet,
+    Route,
+    Routes,
+    useLocation,
 } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import AboutPage from './pages/About/AboutPage'
 import AdminPage from './pages/Admin/AdminPage'
 import Appointments from './pages/Admin/Appointments'
@@ -59,10 +60,13 @@ const RedirectIfAuthenticated = () => {
 }
 
 const App = () => {
+  const location = useLocation()
+  
   return (
-    <BrowserRouter>
+    <>
+      <ScrollToTop />
       <Toaster position='top-center' />
-      <Routes>
+      <Routes key={location.pathname}>
         {/* Public routes */}
         <Route path='/' element={<HomePage />} />
         <Route path='/about' element={<AboutPage />} />
@@ -85,7 +89,7 @@ const App = () => {
         {/* Catch-all route for any undefined routes - redirect to auth page */}
         <Route path='*' element={<Navigate to='/auth' replace />} />
       </Routes>
-    </BrowserRouter>
+    </>
   )
 }
 

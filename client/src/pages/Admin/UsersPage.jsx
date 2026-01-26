@@ -3,29 +3,37 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
-  ChevronLeft,
-  ChevronRight,
-  Download,
-  Filter,
-  MoreHorizontal,
-  Search,
-  UserPlus,
-  Users,
+    ChevronLeft,
+    ChevronRight,
+    Download,
+    Filter,
+    MoreHorizontal,
+    Search,
+    UserPlus,
+    Users,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 
 const UsersPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const mainElement = document.querySelector('main')
+    if (mainElement) {
+      mainElement.scrollTo(0, 0)
+    }
+  }, [currentPage])
 
   // Sample user data
   const users = [

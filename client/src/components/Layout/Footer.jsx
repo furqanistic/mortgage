@@ -1,189 +1,152 @@
 // File: client/src/components/layout/Footer.jsx
-// File: client/src/components/layout/Footer.jsx
 import { motion } from 'framer-motion'
 import {
-  Building,
-  Calculator,
-  Github,
-  Globe,
-  Home,
-  Instagram,
-  Mail,
-  MessageCircle,
-  Phone,
-  Twitter,
-  Users,
+    Building,
+    Calculator,
+    Github,
+    Globe,
+    Home,
+    Instagram,
+    Mail,
+    MessageCircle,
+    Phone,
+    Twitter,
+    Users,
 } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
   const navItems = [
-    { icon: Home, label: 'Home', href: '/' },
-    { icon: Calculator, label: 'Calculate', href: '/calculate' },
-    { icon: Building, label: 'Properties', href: '/properties' },
-    { icon: Users, label: 'Partners', href: '/partners' },
-    { icon: MessageCircle, label: 'Contact', href: '/contact' },
+    { label: 'Home', href: '/' },
+    { label: 'Calculators', href: '/properties' }, // Properties has the calc in this project structure
+    { label: 'About', href: '/about' },
+    { label: 'Partners', href: '/partners' },
+    { label: 'Contact', href: '/contact' },
   ]
 
   const fadeInUpVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 },
   }
 
   return (
-    <footer className='bg-background border-t border-border'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-6'>
-          {/* Company Info */}
+    <footer className='bg-background border-t border-border mt-auto'>
+      <div className='max-w-7xl mx-auto px-6 lg:px-8 py-8 sm:py-12'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12'>
+          {/* Brand Column */}
           <motion.div
             initial='hidden'
             whileInView='visible'
             viewport={{ once: true }}
             variants={fadeInUpVariants}
-            transition={{ duration: 0.5 }}
             className='space-y-6'
           >
-            <div className="flex items-center gap-2">
-                <img src='/Logo.svg' alt='Baufiking Logo' className='h-8' />
-            </div>
-            <p className='text-sm text-muted-foreground leading-relaxed'>
-              Simplifying home buying in Germany with expert guidance and
-              premium financial solutions.
+            <img src='/Logo.svg' alt='Baufiking' className='h-8 w-auto' />
+            <p className='text-sm text-muted-foreground leading-relaxed max-w-xs'>
+              Engineering the future of German homeownership through data-driven mortgage solutions.
             </p>
-            <div className='flex space-x-3'>
-              {[Globe, Twitter, Instagram, Github].map((Icon, index) => (
-                <motion.a
-                  key={index}
-                  href='#'
-                  whileHover={{ scale: 1.1, backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}
-                  whileTap={{ scale: 0.95 }}
-                  className='p-2 bg-secondary text-secondary-foreground rounded-full transition-all duration-300'
-                >
-                  <Icon className='w-4 h-4' />
-                </motion.a>
+            <div className='flex gap-3'>
+              {[Globe, Twitter, Instagram].map((Icon, i) => (
+                <a key={i} href='#' className='w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all'>
+                  <Icon size={16} />
+                </a>
               ))}
             </div>
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.div
-            initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true }}
-            variants={fadeInUpVariants}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className='space-y-6'
-          >
-            <h3 className='text-lg font-bold font-heading text-foreground'>
-              Quick Links
-            </h3>
-            <ul className='space-y-3'>
-              {navItems.map((item, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  className='flex items-center'
-                >
-                  <Link
-                    to={item.href}
-                    className='text-sm text-muted-foreground hover:text-accent transition-colors flex items-center gap-2'
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent/50" />
-                    {item.label}
-                      </Link>
-                </motion.li>
-                  ))}
-                </ul>
-          </motion.div>
+          {/* Links & Contact - Grid on Mobile to stay compact */}
+          <div className='grid grid-cols-2 lg:grid-cols-2 gap-8 lg:col-span-2'>
+            <motion.div
+              initial='hidden'
+              whileInView='visible'
+              viewport={{ once: true }}
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.1 }}
+              className='space-y-4'
+            >
+              <h4 className='text-sm font-black uppercase tracking-widest text-foreground'>Platform</h4>
+              <ul className='space-y-2.5'>
+                {navItems.map((item, i) => (
+                  <li key={i}>
+                    <Link to={item.href} className='text-sm text-muted-foreground hover:text-accent transition-colors font-medium'>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
 
-          {/* Contact Info */}
-          <motion.div
-            initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true }}
-            variants={fadeInUpVariants}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className='space-y-6'
-          >
-            <h3 className='text-lg font-bold font-heading text-foreground'>
-              Contact Us
-            </h3>
-            <ul className='space-y-4'>
-              <li className='flex items-start space-x-3'>
-                <Phone className='w-5 h-5 text-accent mt-0.5' />
-                <span className='text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer'>
-                    +49 151 7161 8082
-                </span>
-              </li>
-              <li className='flex items-start space-x-3'>
-                <Mail className='w-5 h-5 text-accent mt-0.5' />
-                <span className='text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer'>
-                  ravinder.singh@baufiking.de
-                </span>
-              </li>
-              <li className='flex items-start space-x-3'>
-                 <Building className='w-5 h-5 text-accent mt-0.5' />
-                 <span className='text-sm text-muted-foreground'>
-                    München, Germany
-                 </span>
-              </li>
-            </ul>
-          </motion.div>
+            <motion.div
+              initial='hidden'
+              whileInView='visible'
+              viewport={{ once: true }}
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.2 }}
+              className='space-y-4'
+            >
+              <h4 className='text-sm font-black uppercase tracking-widest text-foreground'>Connection</h4>
+              <ul className='space-y-3'>
+                <li className='flex items-center gap-2 group cursor-pointer text-muted-foreground hover:text-accent transition-colors'>
+                  <Phone size={14} className='text-accent' />
+                  <span className='text-sm font-medium'>+49 151 7161</span>
+                </li>
+                <li className='flex items-center gap-2 group cursor-pointer text-muted-foreground hover:text-accent transition-colors'>
+                  <Mail size={14} className='text-accent' />
+                  <span className='text-sm font-medium truncate'>hello@baufiking</span>
+                </li>
+                <li className='flex items-center gap-2 text-muted-foreground'>
+                  <Building size={14} className='text-accent' />
+                  <span className='text-sm font-medium'>Munich, DE</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
 
-          {/* Newsletter */}
+          {/* Newsletter - Stacked or hidden on very small if needed, but keeping it compact */}
           <motion.div
             initial='hidden'
             whileInView='visible'
             viewport={{ once: true }}
             variants={fadeInUpVariants}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className='space-y-6'
+            transition={{ delay: 0.3 }}
+            className='space-y-4'
           >
-            <h3 className='text-lg font-bold font-heading text-foreground'>
-              Stay Updated
-            </h3>
-            <p className='text-sm text-muted-foreground'>
-              Subscribe to our newsletter for the latest market insights.
-            </p>
-            <form className='space-y-3' onSubmit={(e) => e.preventDefault()}>
-              <input
-                type='email'
-                placeholder='Enter your email'
-                className='w-full px-4 py-2.5 rounded-xl bg-muted border border-border 
-                         focus:outline-none focus:ring-1 focus:ring-accent transition-all
-                         placeholder-muted-foreground text-sm'
+            <h4 className='text-sm font-black uppercase tracking-widest text-foreground'>Intelligence</h4>
+            <p className='text-sm text-muted-foreground font-medium'>Monthly market reports & rate alerts.</p>
+            <form className='flex gap-2' onSubmit={e => e.preventDefault()}>
+              <input 
+                type="email" 
+                placeholder="Email" 
+                className='flex-1 h-10 px-4 rounded-xl bg-secondary border-none text-xs outline-none focus:ring-1 focus:ring-accent transition-all'
               />
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className='w-full px-4 py-2.5 bg-accent text-accent-foreground rounded-xl
-                         hover:bg-accent/90 transition-colors text-sm font-semibold shadow-lg shadow-accent/20'
-              >
-                Subscribe
-              </motion.button>
+              <button className='h-10 w-10 flex items-center justify-center bg-primary text-primary-foreground rounded-xl shadow-lg shadow-primary/10 hover:scale-105 active:scale-95 transition-all'>
+                <ArrowRight size={16} />
+              </button>
             </form>
           </motion.div>
-          </div>
+        </div>
 
         {/* Bottom Bar */}
-        <motion.div
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true }}
-          variants={fadeInUpVariants}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className='border-t border-border/60 mt-6 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground'
-        >
-          <p>© {new Date().getFullYear()} Baufiking. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-              <Link to="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-accent transition-colors">Terms of Service</Link>
+        <div className='mt-12 sm:mt-16 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-6'>
+          <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>
+            © {new Date().getFullYear()} Baufiking Ecosystem.
+          </p>
+          <div className='flex gap-8'>
+            <Link to='/privacy' className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-accent transition-colors'>Privacy</Link>
+            <Link to='/terms' className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-accent transition-colors'>Terms</Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   )
 }
+
+// Arrow icon for the newsletter button since it's not imported
+const ArrowRight = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14m-7-7 7 7-7 7" />
+  </svg>
+)
 
 export default Footer

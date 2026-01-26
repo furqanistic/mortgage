@@ -1,21 +1,21 @@
 // File: client/src/pages/Partners/PartnersPage.jsx
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
-  ArrowRight,
-  Award,
-  Briefcase,
-  Building,
-  CheckCircle,
-  ExternalLink,
-  Filter,
-  MapPin,
-  Search,
-  Shield,
-  Star,
-  Users,
-  X,
+    ArrowRight,
+    Award,
+    Briefcase,
+    Building,
+    CheckCircle,
+    ExternalLink,
+    MapPin,
+    Search,
+    Shield,
+    Star,
+    Users,
+    X,
+    Zap,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -23,29 +23,29 @@ const PartnersPage = () => {
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [showSearch, setShowSearch] = useState(false)
-  const searchRef = useRef(null)
   const [isInView, setIsInView] = useState(false)
+  const searchRef = useRef(null)
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 500], [0, 100])
 
   // Partner categories
   const categories = [
-    { id: 'all', label: 'All Partners', icon: <Building size={18} /> },
-    { id: 'finance', label: 'Banking', icon: <Briefcase size={18} /> },
-    { id: 'brokers', label: 'Real Estate', icon: <Building size={18} /> },
-    { id: 'legal', label: 'Legal Services', icon: <Shield size={18} /> },
-    { id: 'inspection', label: 'Inspection', icon: <CheckCircle size={18} /> },
+    { id: 'all', label: 'All', icon: <Building size={16} /> },
+    { id: 'finance', label: 'Banking', icon: <Briefcase size={16} /> },
+    { id: 'brokers', label: 'Real Estate', icon: <Building size={16} /> },
+    { id: 'legal', label: 'Legal', icon: <Shield size={16} /> },
+    { id: 'inspection', label: 'Inspect', icon: <CheckCircle size={16} /> },
   ]
 
-  // Featured partners
-  const featuredPartners = [
+  // Mock data for partners
+  const allPartners = [
     {
       id: 1,
       name: 'Deutsche Bank',
       category: 'finance',
-      description:
-        "Germany's leading bank offering competitive mortgage solutions with exclusive Baufiking rates.",
+      description: "Germany's leading bank offering competitive mortgage solutions with exclusive Baufiking rates.",
       logo: 'DB',
-      logoUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Deutsche_Bank_logo_without_wordmark.svg/1024px-Deutsche_Bank_logo_without_wordmark.svg.png',
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Deutsche_Bank_logo_without_wordmark.svg/1024px-Deutsche_Bank_logo_without_wordmark.svg.png',
       rating: 4.8,
       reviews: 426,
       featured: true,
@@ -55,11 +55,9 @@ const PartnersPage = () => {
       id: 2,
       name: 'Commerzbank',
       category: 'finance',
-      description:
-        'Established financial institution with diverse mortgage products tailored for first-time buyers.',
+      description: 'Established financial institution with diverse mortgage products tailored for first-time buyers.',
       logo: 'CB',
-      logoUrl:
-        'https://companieslogo.com/img/orig/CBK.F-2e335f15.png?t=1720244491',
+      logoUrl: 'https://companieslogo.com/img/orig/CBK.F-2e335f15.png?t=1720244491',
       rating: 4.7,
       reviews: 385,
       featured: true,
@@ -69,30 +67,21 @@ const PartnersPage = () => {
       id: 3,
       name: 'Sparkasse',
       category: 'finance',
-      description:
-        'Local banking network with deep understanding of regional property markets across Germany.',
+      description: 'Local banking network with deep understanding of regional property markets across Germany.',
       logo: 'SP',
-      logoUrl:
-        'https://images.seeklogo.com/logo-png/13/1/sparkasse-logo-png_seeklogo-130014.png',
+      logoUrl: 'https://images.seeklogo.com/logo-png/13/1/sparkasse-logo-png_seeklogo-130014.png',
       rating: 4.9,
       reviews: 512,
       featured: true,
       location: 'Nationwide',
     },
-  ]
-
-  // All partners
-  const allPartners = [
-    ...featuredPartners,
     {
       id: 4,
       name: 'DKB',
       category: 'finance',
-      description:
-        'Digital banking leader offering competitive mortgage rates with a streamlined online application process.',
+      description: 'Digital banking leader offering competitive mortgage rates with a streamlined online application process.',
       logo: 'DKB',
-      logoUrl:
-        'https://play-lh.googleusercontent.com/Ks2wR3vsbHjM-qVLGOWrTAvpCSQbExc0_RJvt0JXHesqJGIhHR6d5iSwVrkifs49oA',
+      logoUrl: 'https://play-lh.googleusercontent.com/Ks2wR3vsbHjM-qVLGOWrTAvpCSQbExc0_RJvt0JXHesqJGIhHR6d5iSwVrkifs49oA',
       rating: 4.6,
       reviews: 318,
       featured: false,
@@ -102,11 +91,9 @@ const PartnersPage = () => {
       id: 5,
       name: 'Volksbank',
       category: 'finance',
-      description:
-        'Cooperative banking group with personalized mortgage solutions and local market expertise.',
+      description: 'Cooperative banking group with personalized mortgage solutions and local market expertise.',
       logo: 'VB',
-      logoUrl:
-        'https://images.seeklogo.com/logo-png/15/2/volksbank-logo-png_seeklogo-150519.png',
+      logoUrl: 'https://images.seeklogo.com/logo-png/15/2/volksbank-logo-png_seeklogo-150519.png',
       rating: 4.7,
       reviews: 429,
       featured: false,
@@ -116,11 +103,9 @@ const PartnersPage = () => {
       id: 6,
       name: 'ING',
       category: 'finance',
-      description:
-        'Digital-first bank offering straightforward mortgage products with competitive interest rates.',
+      description: 'Digital-first bank offering straightforward mortgage products with competitive interest rates.',
       logo: 'ING',
-      logoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLTTTxWusLsdnDetJgPtmKHSEkpBwZYXKz8w&s',
+      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLTTTxWusLsdnDetJgPtmKHSEkpBwZYXKz8w&s',
       rating: 4.7,
       reviews: 375,
       featured: false,
@@ -130,11 +115,9 @@ const PartnersPage = () => {
       id: 7,
       name: 'PSD Bank',
       category: 'finance',
-      description:
-        'Regional banking group with tailored mortgage solutions for various property types.',
+      description: 'Regional banking group with tailored mortgage solutions for various property types.',
       logo: 'PSD',
-      logoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ8eJXfc82ez7frzvrV3beSSN7PKiCEHq1Kg&s',
+      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ8eJXfc82ez7frzvrV3beSSN7PKiCEHq1Kg&s',
       rating: 4.5,
       reviews: 215,
       featured: false,
@@ -144,11 +127,9 @@ const PartnersPage = () => {
       id: 8,
       name: 'Bausparkasse Schwäbisch Hall',
       category: 'finance',
-      description:
-        "Germany's largest building society specializing in home savings contracts and financing.",
+      description: "Germany's largest building society specializing in home savings contracts and financing.",
       logo: 'BSH',
-      logoUrl:
-        'https://play-lh.googleusercontent.com/a_8TkLz33oblA2NFoOdF72xqZE5qxzSY-jf-yJ6NJC3XchFABhKAA8GzKpSsW6wsf5s',
+      logoUrl: 'https://play-lh.googleusercontent.com/a_8TkLz33oblA2NFoOdF72xqZE5qxzSY-jf-yJ6NJC3XchFABhKAA8GzKpSsW6wsf5s',
       rating: 4.8,
       reviews: 356,
       featured: false,
@@ -158,11 +139,9 @@ const PartnersPage = () => {
       id: 9,
       name: 'ImmoScout24',
       category: 'brokers',
-      description:
-        "Germany's largest real estate marketplace connecting buyers with property listings.",
+      description: "Germany's largest real estate marketplace connecting buyers with property listings.",
       logo: 'IS',
-      logoUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/ImmoScout24_Logo_2020.svg/2560px-ImmoScout24_Logo_2020.svg.png',
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/ImmoScout24_Logo_2020.svg/2560px-ImmoScout24_Logo_2020.svg.png',
       rating: 4.7,
       reviews: 892,
       featured: false,
@@ -170,438 +149,270 @@ const PartnersPage = () => {
     },
   ]
 
-  // Filter partners based on active category and search term
   const filteredPartners = allPartners.filter((partner) => {
-    const matchesCategory =
-      activeCategory === 'all' || partner.category === activeCategory
-    const matchesSearch =
-      !searchTerm ||
-      partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      partner.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = activeCategory === 'all' || partner.category === activeCategory
+    const matchesSearch = !searchTerm || partner.name.toLowerCase().includes(searchTerm.toLowerCase()) || partner.description.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-      },
-    },
-  }
-
-  const cardVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 15 },
-    },
-  }
-
-  // Close search when clicking outside
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowSearch(false)
-      }
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [activeCategory])
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [searchRef])
-
-  // Handle scroll animation
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      if (scrollPosition > 100) {
-        setIsInView(true)
-      } else {
-        setIsInView(false)
-      }
+      setIsInView(window.scrollY > 300)
     }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  }
+
+  const cardVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+  }
+
   return (
-    <div className="bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300">
+    <div className='bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300'>
       <Navbar />
-      
-      <main className="flex-grow pt-32 pb-24">
-        {/* Header Section */}
-        <div className="max-w-7xl mx-auto px-8 lg:px-12 mb-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="max-w-2xl"
-            >
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-6 tracking-tight">
-                Our Trusted Partners
-              </h2>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                Discover the experts who make homeownership dreams come true. 
-                We collaborate with industry leaders to bring you the best rates and services.
-              </p>
-            </motion.div>
 
-            <div className="flex items-center gap-4">
-              <div ref={searchRef} className="relative z-20">
-                <AnimatePresence>
-                  {showSearch ? (
-                    <motion.div
-                      initial={{ width: 0, opacity: 0 }}
-                      animate={{ width: 300, opacity: 1 }}
-                      exit={{ width: 0, opacity: 0 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      className="relative"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Search partners..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        autoFocus
-                        className="w-full py-3 pl-12 pr-10 bg-card border border-border rounded-xl focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent text-card-foreground placeholder:text-muted-foreground"
-                      />
-                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                      <button
-                        onClick={() => {
-                          setSearchTerm('')
-                          setShowSearch(false)
-                        }}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-muted/50 rounded-full transition-colors"
-                      >
-                        <X className="h-4 w-4 text-muted-foreground" />
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <motion.button
-                      layoutId="search-button"
-                      onClick={() => setShowSearch(true)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="p-3 bg-card border border-border rounded-xl hover:border-accent/40 transition-all group"
-                    >
-                      <Search className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
-                    </motion.button>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3 bg-card border border-border rounded-xl text-sm font-medium text-foreground hover:border-accent/40 transition-all"
-              >
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <span>Filters</span>
-              </motion.button>
-            </div>
+      <main className='flex-grow'>
+        {/* Compact Hero Section */}
+        <section className='relative pt-8 pb-12 sm:pt-16 sm:pb-20 overflow-hidden border-b border-border/50'>
+          <div className='absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40'>
+            <motion.div style={{ y: y1 }} className='absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/20 rounded-full blur-[80px]' />
+            <motion.div style={{ y: y1 }} className='absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[60px]' />
           </div>
 
-          {/* Category Tabs */}
-          <div className="mt-10 overflow-x-auto pb-2 scrollbar-hide">
-            <div className="flex gap-3">
-              {categories.map((category) => (
-                <motion.button
-                  key={category.id}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ y: 0 }}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`whitespace-nowrap flex items-center gap-2.5 px-5 py-2.5 md:px-8 md:py-3.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
-                    activeCategory === category.id
-                      ? 'bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/20'
-                      : 'bg-card text-primary dark:text-foreground/80 border-border hover:border-accent/40 hover:bg-muted/30 hover:text-primary dark:hover:text-foreground'
-                  }`}
-                >
-                  <span className={activeCategory === category.id ? 'text-accent-foreground' : 'text-primary dark:text-foreground/80'}>
-                    {category.icon}
-                  </span>
-                  {category.label}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Partners Grid */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-          >
-            {filteredPartners.length > 0 ? (
-              filteredPartners.map((partner) => (
-                <motion.div
-                  key={partner.id}
-                  variants={cardVariants}
-                  whileHover={{ y: -8 }}
-                  className={`group relative bg-card rounded-2xl overflow-hidden border shadow-none transition-all duration-300 ${
-                    partner.featured 
-                      ? 'border-accent/60 dark:border-accent/40' 
-                      : 'border-border hover:border-accent/30'
-                  }`}
-                >
-                  {partner.featured && (
-                    <div className="absolute top-4 right-4 z-10">
-                      <div className="flex items-center gap-1.5 bg-accent/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-accent/20">
-                        <Star className="h-3.5 w-3.5 text-accent fill-accent" />
-                        <span className="text-xs font-semibold text-accent tracking-wide">Featured</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="p-10">
-                    <div className="flex items-start mb-6">
-                      <div className="relative">
-                        <div className={`w-16 h-16 rounded-2xl overflow-hidden border border-border flex items-center justify-center ${partner.logoUrl ? 'bg-white' : 'bg-muted'}`}>
-                          {partner.logoUrl ? (
-                            <img
-                              src={partner.logoUrl}
-                              alt={`${partner.name} logo`}
-                              className="w-14 h-14 object-contain"
-                            />
-                          ) : (
-                            <span className="text-2xl font-bold text-foreground">{partner.logo}</span>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="ml-5 pt-1">
-                        <h3 className="text-xl font-heading font-bold text-card-foreground group-hover:text-accent transition-colors duration-300">
-                          {partner.name}
-                        </h3>
-                        <div className="flex items-center mt-2 text-sm">
-                          <div className="flex items-center gap-1 text-foreground font-semibold">
-                            <Star className="h-4 w-4 text-accent fill-accent" />
-                            <span>{partner.rating}</span>
-                          </div>
-                          <span className="mx-2 text-border">•</span>
-                          <span className="text-muted-foreground">{partner.reviews} reviews</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3">
-                      {partner.description}
-                    </p>
-
-                    <div className="pt-6 border-t border-border flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4" />
-                        {partner.location}
-                      </div>
-
-                      <motion.button
-                        whileHover={{ x: 4 }}
-                        className="flex items-center text-sm font-semibold text-foreground hover:text-accent transition-colors"
-                      >
-                        View Profile
-                        <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                      </motion.button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
+          <div className='max-w-7xl mx-auto px-6 lg:px-8 relative z-10'>
+            <div className='text-center space-y-4 sm:space-y-6'>
               <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-primary border border-border'
+              >
+                <Zap size={12} className='text-primary' />
+                <span className='text-[10px] font-bold tracking-widest uppercase'>Trusted Partners</span>
+              </motion.div>
+
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className='text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tight leading-tight text-foreground'
+              >
+                Strategic <span className='text-accent'>Ecosystem</span>
+              </motion.h1>
+
+              <motion.p 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="col-span-full py-24 text-center"
+                className='text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'
               >
-                <div className="bg-card inline-flex items-center justify-center w-24 h-24 rounded-full mb-6 border border-border">
-                  <Search className="h-10 w-10 text-muted-foreground/50" />
+                Connecting you with Germany's top-tier financial and real estate institutions.
+              </motion.p>
+              
+              {/* Compact Filter & Search Bar */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className='max-w-3xl mx-auto mt-8 sm:mt-12 p-1.5 sm:p-2 bg-card border border-border rounded-2xl sm:rounded-full shadow-lg flex flex-col sm:flex-row items-center gap-2'
+              >
+                <div className='flex-1 w-full pl-4 flex items-center gap-2'>
+                  <Search size={18} className='text-muted-foreground' />
+                  <input
+                    type='text'
+                    placeholder='Filter by name or service...'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className='w-full py-2 bg-transparent outline-none text-sm placeholder:text-muted-foreground'
+                  />
                 </div>
-                <h3 className="text-xl font-heading font-semibold text-foreground mb-2">
-                  No partners found
-                </h3>
-                <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                  We couldn&apos;t find any partners matching your search. Try broadening your criteria or selecting a different category.
-                </p>
-                <button
-                  onClick={() => {
-                    setSearchTerm('')
-                    setActiveCategory('all')
-                  }}
-                  className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
-                >
-                  Clear all filters
-                </button>
+                
+                <div className='flex items-center gap-1.5 p-1 w-full sm:w-auto overflow-x-auto scrollbar-hide'>
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setActiveCategory(category.id)}
+                      className={`whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[11px] font-bold transition-all ${
+                        activeCategory === category.id
+                          ? 'bg-primary text-primary-foreground shadow-md'
+                          : 'hover:bg-secondary text-muted-foreground'
+                      }`}
+                    >
+                      {category.icon}
+                      {category.label}
+                    </button>
+                  ))}
+                </div>
               </motion.div>
-            )}
-          </motion.div>
-        </div>
-      </main>
+            </div>
+          </div>
+        </section>
 
-      {/* Become a Partner CTA */}
-      <section className="relative overflow-hidden bg-background text-foreground border-t border-border/50">
-        <div className="absolute inset-0 bg-background"></div>
-        
-        {/* Abstract Background Shapes */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-accent/20 to-transparent opacity-10 dark:opacity-30"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
-
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-foreground text-sm font-semibold mb-8">
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                Partner Network
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6 leading-tight">
-                Join Our Elite Network of <span className="text-accent">Financial Leaders</span>
-              </h2>
-              
-              <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-xl">
-                We&apos;re already working with Germany&apos;s top institutions including Commerzbank, Deutsche Bank, and ING. 
-                Expand your reach and connect with qualified homebuyers ready for financing.
-              </p>
-
-              <div className="grid gap-6 mb-10">
-                {[
-                  {
-                    title: 'Strategic Growth',
-                    description: 'Access a curated stream of high-intent clients.',
-                    icon: <Users className="h-5 w-5 text-accent" />,
-                  },
-                  {
-                    title: 'Seamless Integration',
-                    description: 'Modern API infrastructure for effortless connection.',
-                    icon: <CheckCircle className="h-5 w-5 text-accent" />,
-                  },
-                  {
-                    title: 'Brand Amplification',
-                    description: 'Premium positioning alongside industry giants.',
-                    icon: <Award className="h-5 w-5 text-accent" />,
-                  },
-                ].map((item, index) => (
+        {/* Partners Grid Section */}
+        <section className='py-12 sm:py-20 px-6 lg:px-8 max-w-7xl mx-auto'>
+          <motion.div
+            variants={containerVariants}
+            initial='hidden'
+            animate='visible'
+            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8'
+          >
+            <AnimatePresence mode='popLayout'>
+              {filteredPartners.length > 0 ? (
+                filteredPartners.map((partner) => (
                   <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.15 + 0.3 }}
-                    className="flex items-start gap-4"
+                    key={partner.id}
+                    layout
+                    variants={cardVariants}
+                    whileHover={{ y: -5 }}
+                    className={`group relative bg-card rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${
+                      partner.featured ? 'border-accent/40 ring-1 ring-accent/10 shadow-md' : 'border-border hover:border-accent/30'
+                    }`}
                   >
-                    <div className="flex-shrink-0 p-3 bg-card rounded-xl border border-border hover:bg-muted/50 transition-colors">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-foreground text-lg">{item.title}</h3>
-                      <p className="text-muted-foreground/80">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.button
-                onClick={() => (window.location.href = '/auth')}
-                whileHover={{ scale: 1.02, x: 5 }}
-                whileTap={{ scale: 0.98 }}
-                className="group px-6 py-4 md:px-10 md:py-5 bg-accent text-accent-foreground font-bold rounded-xl flex items-center gap-3 hover:shadow-xl hover:shadow-accent/20 transition-all w-full md:w-auto justify-center md:justify-start"
-              >
-                Apply for Partnership
-                <ArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
-            
-            <div className="hidden lg:block relative">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="relative z-10"
-              >
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-accent/20 to-transparent blur-2xl opacity-30"></div>
-                <div className="relative bg-card backdrop-blur-md rounded-3xl border border-border p-12">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="p-4 bg-accent rounded-2xl">
-                      <Building className="h-8 w-8 text-accent-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-bold text-2xl text-foreground">
-                        Application Process
-                      </h3>
-                      <p className="text-muted-foreground/80">Simple 3-step onboarding</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-8 relative">
-                    <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-accent/40 to-transparent"></div>
-                    
-                    {[
-                      {
-                        title: 'Submit Credentials',
-                        desc: 'Company details and compliance check',
-                      },
-                      {
-                        title: 'Validation',
-                        desc: 'Team review and approval within 48h',
-                      },
-                      {
-                        title: 'Initialization',
-                        desc: 'Technical setup and go-live',
-                      },
-                    ].map((step, idx) => (
-                      <div key={idx} className="relative flex items-center gap-6">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-card border-2 border-accent flex items-center justify-center text-accent font-bold text-sm z-10">
-                          0{idx + 1}
-                        </div>
-                        <div className="flex-grow p-4 rounded-xl bg-muted/20 border border-border/50 hover:bg-muted/30 transition-colors">
-                          <h4 className="font-semibold text-foreground">{step.title}</h4>
-                          <p className="text-sm text-muted-foreground/80">{step.desc}</p>
+                    {partner.featured && (
+                      <div className='absolute -top-3 right-4 z-10'>
+                        <div className='flex items-center gap-1 bg-accent text-accent-foreground px-3 py-1 rounded-full shadow-sm'>
+                          <Star size={10} className='fill-current' />
+                          <span className='text-[9px] font-black uppercase tracking-wider'>Premium</span>
                         </div>
                       </div>
-                    ))}
+                    )}
+
+                    <div className='space-y-6'>
+                      <div className='flex items-start justify-between'>
+                        <div className='w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-secondary p-3 flex items-center justify-center border border-border group-hover:scale-105 transition-transform duration-300'>
+                          {partner.logoUrl ? (
+                            <img src={partner.logoUrl} alt={partner.name} className='max-w-full max-h-full object-contain dark:brightness-110' />
+                          ) : (
+                            <span className='text-2xl font-black text-accent'>{partner.logo}</span>
+                          )}
+                        </div>
+                        <div className='text-right'>
+                          <div className='flex items-center justify-end gap-1 font-black text-xl text-foreground'>
+                            <Star size={16} className='text-amber-500 fill-amber-500' />
+                            {partner.rating}
+                          </div>
+                          <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>{partner.reviews} reviews</p>
+                        </div>
+                      </div>
+
+                      <div className='space-y-2'>
+                        <h3 className='text-xl sm:text-2xl font-heading font-black tracking-tight text-foreground group-hover:text-accent transition-colors'>
+                          {partner.name}
+                        </h3>
+                        <p className='text-sm text-muted-foreground leading-relaxed line-clamp-3'>
+                          {partner.description}
+                        </p>
+                      </div>
+
+                      <div className='flex items-center gap-2 py-3 border-y border-border/50'>
+                        <MapPin size={14} className='text-accent' />
+                        <span className='text-[11px] font-bold text-muted-foreground uppercase tracking-wider'>{partner.location}</span>
+                      </div>
+
+                      <div className='pt-2 flex items-center justify-between'>
+                         <div className='flex items-center -space-x-2'>
+                            {[1,2,3].map(i => (
+                              <div key={i} className='w-7 h-7 rounded-full border-2 border-card bg-secondary overflow-hidden'>
+                                <img src={`https://i.pravatar.cc/100?u=${partner.id + i}`} alt="user" />
+                              </div>
+                            ))}
+                            <div className='w-7 h-7 rounded-full border-2 border-card bg-accent flex items-center justify-center text-[8px] font-bold text-accent-foreground'>
+                              +10k
+                            </div>
+                         </div>
+                        
+                        <button className='flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:text-primary transition-colors'>
+                          Profile
+                          <ExternalLink size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className='col-span-full py-20 text-center space-y-4 bg-secondary/30 rounded-3xl border border-dashed border-border'>
+                  <Search size={32} className='text-muted-foreground mx-auto' />
+                  <div className='space-y-1'>
+                    <h3 className='text-xl font-black text-foreground'>No results found</h3>
+                    <p className='text-sm text-muted-foreground'>Try refining your search criteria.</p>
                   </div>
-                  
-                  <div className="mt-10 pt-6 border-t border-border text-center">
-                    <p className="text-muted-foreground/80 text-sm">
-                      Need assistance? <a href="/contact" className="text-accent hover:underline font-medium">Contact Support</a>
-                    </p>
+                  <button
+                    onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
+                    className='px-6 py-2 bg-primary text-primary-foreground rounded-full font-bold text-xs uppercase tracking-widest transition-transform hover:scale-105'
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </section>
+
+        {/* Compact Business Section */}
+        <section className='bg-primary text-primary-foreground py-16 sm:py-24 px-6 overflow-hidden'>
+          <div className='max-w-7xl mx-auto'>
+            <div className='grid lg:grid-cols-2 gap-12 sm:gap-20 items-center'>
+              <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className='space-y-8'>
+                <div className='space-y-4'>
+                  <h2 className='text-4xl sm:text-6xl font-heading font-black leading-tight tracking-tighter text-slate-50'>
+                    Partner with <span className='text-blue-400'>Authority</span>
+                  </h2>
+                  <p className='text-base sm:text-lg text-primary-foreground/70 leading-relaxed max-w-xl font-medium'>
+                    Join Germany's fastest growing mortgage ecosystem. Connect with high-intent homebuyers and scale your business.
+                  </p>
+                </div>
+
+                <div className='grid gap-4 sm:gap-6'>
+                  {[
+                    { title: 'Market Exposure', desc: 'Direct access to verified homebuyer leads.', icon: <Users size={18} /> },
+                    { title: 'Smart Integration', desc: 'Robust data protocols and security standards.', icon: <Zap size={18} /> },
+                  ].map((feat, i) => (
+                    <div key={i} className='flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10'>
+                      <div className='flex-shrink-0 w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white'>{feat.icon}</div>
+                      <div>
+                        <h4 className='font-black text-slate-50 text-base'>{feat.title}</h4>
+                        <p className='text-sm text-primary-foreground/60'>{feat.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button className='group px-8 py-4 bg-blue-500 text-white font-black text-sm uppercase tracking-widest rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105'>
+                  Apply Now
+                  <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
+                </button>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className='relative p-6 sm:p-10 bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10'>
+                <div className='space-y-8 text-center'>
+                  <h3 className='text-2xl font-black text-slate-50 px-2'>Network Performance</h3>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
+                      <p className='text-3xl font-black text-blue-400'>€2.4B</p>
+                      <p className='text-[10px] font-bold text-primary-foreground/50 uppercase tracing-widest'>Volume</p>
+                    </div>
+                    <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
+                      <p className='text-3xl font-black text-emerald-400'>98%</p>
+                      <p className='text-[10px] font-bold text-primary-foreground/50 uppercase tracing-widest'>Success</p>
+                    </div>
+                  </div>
+                  <div className='p-6 rounded-2xl bg-white/5 border border-white/10 space-y-1.5'>
+                    <p className='text-xs font-bold text-primary-foreground/50 uppercase tracking-widest'>Avg. Response Time</p>
+                    <p className='text-4xl font-black text-slate-50 tracking-widest'>&lt; 24h</p>
                   </div>
                 </div>
               </motion.div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Floating Action Button */}
-      <AnimatePresence>
-        {isInView && (
-          <motion.button
-            initial={{ opacity: 0, y: 20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 p-4 bg-primary text-primary-foreground rounded-full shadow-xl shadow-primary/30 z-50 border border-accent/20 hover:bg-primary/90 transition-all"
-          >
-           <ArrowRight className="h-6 w-6 transform -rotate-90" />
-          </motion.button>
-        )}
-      </AnimatePresence>
-      
       <Footer />
     </div>
   )

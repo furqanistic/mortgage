@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
-  Calendar,
-  FileEdit,
-  Home,
-  LayoutDashboard,
-  Menu,
-  Users,
-  X,
+    Calendar,
+    FileEdit,
+    Home,
+    LayoutDashboard,
+    Menu,
+    Users,
+    X,
 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
@@ -15,6 +15,12 @@ import { Link, useLocation } from 'react-router-dom'
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
+  useEffect(() => {
+    const mainElement = document.querySelector('main')
+    if (mainElement) {
+      mainElement.scrollTo(0, 0)
+    }
+  }, [location.pathname])
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
