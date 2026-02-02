@@ -1,19 +1,21 @@
 // File: client/src/components/Home/MortgageCalculator.jsx
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-    ArrowRight,
-    Building,
-    Calculator,
-    CheckCircle,
-    Euro,
-    Info,
-    Landmark,
-    MapPin,
-    Percent,
-    RefreshCcw,
+   ArrowRight,
+   Building,
+   Calculator,
+   CheckCircle,
+   Euro,
+   Info,
+   Landmark,
+   MapPin,
+   Pencil,
+   Percent,
+   RefreshCcw,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -48,6 +50,25 @@ const MortgageCalculator = () => {
     agentFee: 3.57,
     interestRate: 3.5,
   })
+
+  // Formatters
+  const formatNumber = (num) => {
+    if (num === '' || num === undefined || num === null) return ''
+    const parts = num.toString().split('.')
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    return parts.join('.')
+  }
+
+  const parseNumber = (str) => {
+    return str.toString().replace(/,/g, '')
+  }
+
+  const handleInputChange = (field, value) => {
+    const rawValue = parseNumber(value)
+    if (rawValue === '' || !isNaN(rawValue)) {
+      setFormData(prev => ({ ...prev, [field]: rawValue }))
+    }
+  }
 
   const [results, setResults] = useState(null)
   
@@ -112,7 +133,7 @@ const MortgageCalculator = () => {
                  <Calculator className='w-3 h-3' /> Financial Engineering
                </motion.div>
                <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className='text-4xl md:text-6xl font-heading font-black tracking-tighter text-foreground leading-[0.9]'>
-                 Plan Your <br /><span className='text-accent'>Investment</span>
+                 Plan Your <br /><span className='text-[#155FA0]'>Investment</span>
                </motion.h2>
            </div>
            
@@ -128,46 +149,79 @@ const MortgageCalculator = () => {
                  <div className='space-y-6'>
                     
                     {/* Property Price */}
-                    <div className='space-y-3'>
-                       <label className='flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                          Property Value
-                          <span className='text-foreground'>€{Number(formData.propertyValue).toLocaleString()}</span>
-                       </label>
-                       <Slider 
-                          value={[Number(formData.propertyValue)]} 
-                          min={100000} max={2000000} step={10000} 
-                          onValueChange={v => setFormData({...formData, propertyValue: v[0]})} 
-                          className='py-2'
-                       />
-                    </div>
+                     <div className='group space-y-3'>
+                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+                           Property Value
+                           <div className='flex items-center gap-2 text-foreground bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
+                              <Pencil className='w-3 h-3 text-muted-foreground' />
+                              <div className='flex items-center gap-1'>
+                                 <span>€</span>
+                                 <input 
+                                    type="text" 
+                                    value={formatNumber(formData.propertyValue)} 
+                                    onChange={e => handleInputChange('propertyValue', e.target.value)}
+                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                                 />
+                              </div>
+                           </div>
+                        </label>
+                        <Slider 
+                           value={[Number(formData.propertyValue)]} 
+                           min={100000} max={2000000} step={10000} 
+                           onValueChange={v => setFormData({...formData, propertyValue: v[0]})} 
+                           className='py-2'
+                        />
+                     </div>
 
                     {/* Savings */}
-                    <div className='space-y-3'>
-                       <label className='flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                          Down Payment
-                          <span className='text-accent'>€{Number(formData.savings).toLocaleString()}</span>
-                       </label>
-                       <Slider 
-                          value={[Number(formData.savings)]} 
-                          min={0} max={Number(formData.propertyValue)} step={5000} 
-                          onValueChange={v => setFormData({...formData, savings: v[0]})} 
-                          className='py-2'
-                       />
-                    </div>
+                     <div className='group space-y-3'>
+                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+                           Down Payment
+                           <div className='flex items-center gap-2 text-accent bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
+                              <Pencil className='w-3 h-3 text-muted-foreground/50' />
+                              <div className='flex items-center gap-1'>
+                                 <span>€</span>
+                                 <input 
+                                    type="text" 
+                                    value={formatNumber(formData.savings)} 
+                                    onChange={e => handleInputChange('savings', e.target.value)}
+                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                                 />
+                              </div>
+                           </div>
+                        </label>
+                        <Slider 
+                           value={[Number(formData.savings)]} 
+                           min={0} max={Number(formData.propertyValue)} step={5000} 
+                           onValueChange={v => setFormData({...formData, savings: v[0]})} 
+                           className='py-2'
+                        />
+                     </div>
                     
                     {/* Income */}
-                    <div className='space-y-3'>
-                       <label className='flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                          Gross Annual Income
-                          <span className='text-foreground'>€{Number(formData.salary).toLocaleString()}</span>
-                       </label>
-                       <Slider 
-                          value={[Number(formData.salary)]} 
-                          min={30000} max={300000} step={1000} 
-                          onValueChange={v => setFormData({...formData, salary: v[0]})} 
-                          className='py-2'
-                       />
-                    </div>
+                     <div className='group space-y-3'>
+                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+                           Gross Annual Income
+                           <div className='flex items-center gap-2 text-foreground bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
+                              <Pencil className='w-3 h-3 text-muted-foreground' />
+                              <div className='flex items-center gap-1'>
+                                 <span>€</span>
+                                 <input 
+                                    type="text" 
+                                    value={formatNumber(formData.salary)} 
+                                    onChange={e => handleInputChange('salary', e.target.value)}
+                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                                 />
+                              </div>
+                           </div>
+                        </label>
+                        <Slider 
+                           value={[Number(formData.salary)]} 
+                           min={30000} max={300000} step={1000} 
+                           onValueChange={v => setFormData({...formData, salary: v[0]})} 
+                           className='py-2'
+                        />
+                     </div>
 
                  </div>
               </div>
@@ -191,36 +245,65 @@ const MortgageCalculator = () => {
                       <Switch checked={formData.hasAgent} onCheckedChange={c => setFormData({...formData, hasAgent: c})} />
                   </div>
                   
-                  <div className='space-y-1.5'>
-                      <div className='flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
-                        <span>Duration</span>
-                        <span>{formData.duration} Years</span>
-                      </div>
-                      <Slider value={[formData.duration]} min={5} max={35} step={5} onValueChange={v => setFormData({...formData, duration: v[0]})} />
-                  </div>
+                   <div className='group space-y-1.5'>
+                       <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
+                         <span>Duration</span>
+                         <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
+                           <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
+                           <div className='flex items-center gap-1'>
+                             <input 
+                                type="text" 
+                                value={formatNumber(formData.duration)} 
+                                onChange={e => handleInputChange('duration', e.target.value)}
+                                className='w-8 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                             />
+                             <span className='text-[10px]'>Y</span>
+                           </div>
+                         </div>
+                       </div>
+                       <Slider value={[Number(formData.duration)]} min={5} max={35} step={1} onValueChange={v => setFormData({...formData, duration: v[0]})} />
+                   </div>
+
+                   <div className='group space-y-1.5'>
+                       <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
+                         <span>Interest Rate</span>
+                         <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
+                           <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
+                           <div className='flex items-center gap-1'>
+                             <input 
+                                type="text" 
+                                value={formData.interestRate} 
+                                onChange={e => {
+                                   const val = e.target.value;
+                                   if (val === '' || /^[0-9]*\.?[0-9]*$/.test(val)) {
+                                      setFormData(prev => ({ ...prev, interestRate: val }));
+                                   }
+                                }}
+                                className='w-10 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                             />
+                             <span>%</span>
+                           </div>
+                         </div>
+                       </div>
+                       <Slider value={[Number(formData.interestRate)]} min={0.1} max={10} step={0.1} onValueChange={v => setFormData({...formData, interestRate: v[0]})} />
+                   </div>
               </div>
            </div>
 
            {/* Visualization Dashboard */}
            <div className='lg:col-span-8 space-y-4'>
               {/* Main Result Card */}
-              <div className='bg-primary text-primary-foreground rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl'>
+              <div className='bg-[#155FA0] text-primary-foreground rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl'>
                  <div className='absolute top-0 right-0 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none' />
                  
                  <div className='relative z-10 grid md:grid-cols-2 gap-12 items-end'>
                     <div className='space-y-2'>
                        <p className='text-sm font-bold text-primary-foreground/60 uppercase tracking-widest'>Est. Monthly Rate</p>
-                       <div className='flex items-baseline gap-1'>
-                          <span className='text-6xl md:text-7xl font-heading font-black tracking-tighter text-white'>
-                             €{Number(data.monthlyPayment).toLocaleString()}
-                          </span>
-                       </div>
-                       <div className='flex items-center gap-2 mt-2'>
-                          <div className={`w-2 h-2 rounded-full ${data.isAffordable ? 'bg-green-400' : 'bg-red-400'}`} />
-                          <span className={`text-xs font-bold uppercase tracking-wide ${data.isAffordable ? 'text-green-400' : 'text-red-400'}`}>
-                             {data.isAffordable ? 'Healthy Ratio' : 'High Risk Ratio'}
-                          </span>
-                       </div>
+                        <div className='flex items-baseline gap-1'>
+                           <span className='text-6xl md:text-7xl font-heading font-black tracking-tighter text-white'>
+                              €{Number(data.monthlyPayment).toLocaleString()}
+                           </span>
+                        </div>
                     </div>
 
                     <div className='space-y-6'>
@@ -228,10 +311,10 @@ const MortgageCalculator = () => {
                           <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Loan Amount</span>
                           <span className='text-2xl font-black text-white'>€{Number(data.loanAmount).toLocaleString()}</span>
                        </div>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-4'>
-                          <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Interest Rate</span>
-                          <span className='text-2xl font-black text-blue-400'>{formData.interestRate}%</span>
-                       </div>
+                        <div className='flex justify-between items-end border-b border-white/10 pb-4'>
+                           <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Interest Rate</span>
+                           <span className='text-2xl font-black text-blue-400'>{Number(formData.interestRate).toFixed(2)}%</span>
+                        </div>
                        <div className='flex justify-between items-end border-b border-white/10 pb-4'>
                           <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Total Capital</span>
                           <span className='text-2xl font-black text-white'>€{Number(data.totalCost).toLocaleString()}</span>
@@ -254,7 +337,7 @@ const MortgageCalculator = () => {
                     <p className='text-[10px] font-black uppercase tracking-widest text-muted-foreground'>Agent</p>
                     <p className='text-lg font-bold'>€{(data.buyingCosts.agent).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
                  </div>
-                 <div className='bg-accent text-accent-foreground rounded-3xl p-5 text-center space-y-1 cursor-pointer hover:bg-accent/90'>
+                 <div className='bg-[#FAC51C] text-[#155FA0] rounded-3xl p-5 text-center space-y-1 cursor-pointer hover:bg-[#FAC51C]/90 shadow-[0_0_20px_rgba(250,197,28,0.2)]'>
                     <p className='text-[10px] font-black uppercase tracking-widest opacity-80'>Total Fees</p>
                     <p className='text-lg font-black'>€{Number(data.totalBuyingCosts).toLocaleString()}</p>
                  </div>

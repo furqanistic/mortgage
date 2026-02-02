@@ -3,22 +3,22 @@ import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-    ArrowRight,
-    BookOpen,
-    Calendar,
-    Clock,
-    Search,
-    Zap,
+  ArrowRight,
+  BookOpen,
+  Calendar,
+  Clock,
+  Search,
+  Zap,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -112,17 +112,17 @@ const BlogPage = () => {
         {/* Premium Blog Hero */}
         <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden border-b border-border/50">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
-             <div className="absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/20 rounded-full blur-[80px]" />
-             <div className="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[60px]" />
+             <div className="absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-[#FAC51C]/10 rounded-full blur-[80px]" />
+             <div className="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-[#155FA0]/5 rounded-full blur-[60px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-primary border border-border"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155FA0]/10 text-[#155FA0] border border-[#155FA0]/20"
             >
-              <BookOpen size={12} className="text-accent" />
+              <BookOpen size={12} className="text-[#FAC51C]" />
               <span className="text-[10px] font-bold tracking-widest uppercase">Intelligence Reservoir</span>
             </motion.div>
 
@@ -131,7 +131,7 @@ const BlogPage = () => {
               animate={{ opacity: 1, scale: 1 }}
               className="text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight text-foreground"
             >
-              Market <span className="text-accent underline decoration-border/30 underline-offset-8">Perspectives</span>
+              Market <span className="text-[#155FA0] underline decoration-[#FAC51C]/30 underline-offset-8">Perspectives</span>
             </motion.h1>
 
             <motion.p 
@@ -153,7 +153,7 @@ const BlogPage = () => {
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
                     className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${
-                      activeCategory === cat ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-secondary'
+                      activeCategory === cat ? 'bg-[#155FA0] text-primary-foreground shadow-lg shadow-[#155FA0]/20' : 'text-muted-foreground hover:bg-[#155FA0]/5'
                     }`}
                    >
                     {cat}
@@ -168,7 +168,7 @@ const BlogPage = () => {
                   placeholder="Universal Research..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-secondary rounded-full text-xs outline-none focus:ring-1 focus:ring-accent transition-all font-medium"
+                  className="w-full pl-10 pr-4 py-2 bg-secondary rounded-full text-xs outline-none focus:ring-1 focus:ring-[#155FA0] transition-all font-medium"
                  />
               </div>
            </div>
@@ -198,8 +198,8 @@ const BlogPage = () => {
                   </div>
 
                   <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3 px-2">
-                     <span className="flex items-center gap-1.5 shrink-0"><Calendar size={12} className="text-accent" /> {post.date}</span>
-                     <span className="flex items-center gap-1.5 shrink-0"><Clock size={12} className="text-accent" /> {post.readTime}</span>
+                     <span className="flex items-center gap-1.5 shrink-0"><Calendar size={12} className="text-[#FAC51C]" /> {post.date}</span>
+                     <span className="flex items-center gap-1.5 shrink-0"><Clock size={12} className="text-[#FAC51C]" /> {post.readTime}</span>
                   </div>
 
                   <h3 className="text-2xl font-heading font-black text-foreground px-2 mb-3 leading-tight group-hover:text-accent transition-colors">
@@ -212,7 +212,7 @@ const BlogPage = () => {
 
                   <div className="mt-auto px-2">
                     <button className="flex items-center gap-2 text-[11px] font-black uppercase tracking-tighter text-foreground hover:gap-4 transition-all">
-                      Read Analysis <ArrowRight size={14} className="text-accent" />
+                      Read Analysis <ArrowRight size={14} className="text-[#155FA0]" />
                     </button>
                   </div>
                 </motion.div>
@@ -223,10 +223,10 @@ const BlogPage = () => {
 
         {/* Knowledge CTA */}
         <section className="py-20 px-6 sm:px-12">
-          <div className="max-w-4xl mx-auto rounded-[3rem] bg-primary text-primary-foreground p-12 sm:p-20 text-center space-y-8 relative overflow-hidden border border-border">
+          <div className="max-w-4xl mx-auto rounded-[3rem] bg-[#155FA0] text-primary-foreground p-12 sm:p-20 text-center space-y-8 relative overflow-hidden border border-border">
              <div className="relative z-10 space-y-4">
                 <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-slate-50">
-                   Stay <span className="text-blue-400">Tactical</span>
+                   Stay <span className="text-[#FAC51C]">Tactical</span>
                 </h2>
                 <p className="text-base text-primary-foreground/70 font-medium max-w-md mx-auto">
                    Our bi-weekly dossier on the German mortgage landscape. Direct to your terminal.
@@ -237,9 +237,9 @@ const BlogPage = () => {
                 <input 
                   type="email" 
                   placeholder="Email Protocol" 
-                  className="flex-1 h-12 px-6 rounded-full bg-white/5 border border-white/10 text-xs outline-none focus:ring-1 focus:ring-blue-400 transition-all"
+                  className="flex-1 h-12 px-6 rounded-full bg-white/5 border border-white/10 text-xs outline-none focus:ring-1 focus:ring-[#FAC51C] transition-all"
                 />
-                <button className="h-12 px-8 rounded-full bg-blue-500 text-white font-black text-[11px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform">
+                <button className="h-12 px-8 rounded-full bg-[#FAC51C] text-[#155FA0] font-black text-[11px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-[#FAC51C]/10">
                   Deploy
                 </button>
              </form>

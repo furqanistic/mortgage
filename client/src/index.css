@@ -9,7 +9,7 @@
 
 :root {
   /* Base Colors - Light Mode */
-  --background: hsl(210 20% 98%); /* Soft Off-white */
+  --background: hsl(210 25% 99%); /* Clean crisp white with slight blue tint */
   --foreground: hsl(222 47% 11%); /* Deep Navy Text */
 
   --card: hsl(0 0% 100%);
@@ -23,11 +23,11 @@
   --primary-foreground: hsl(210 40% 98%);
 
   /* Secondary - Clean White/Off-white */
-  --secondary: hsl(210 40% 96.1%);
+  --secondary: hsl(210 40% 97.5%);
   --secondary-foreground: hsl(222 47% 11%);
 
-  /* Muted - Subtle Grays */
-  --muted: hsl(210 40% 96.1%);
+  /* Muted - Subtle */
+  --muted: hsl(210 40% 97.5%);
   --muted-foreground: hsl(215.4 16.3% 46.9%);
 
   /* Accent - Light Navy (Brand Alignment) */

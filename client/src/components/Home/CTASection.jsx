@@ -46,7 +46,7 @@ const CTASection = () => {
             className='text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-foreground tracking-tight leading-[1.1]'
           >
             Start Your Journey to <br />
-            <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
+            <span className='text-transparent bg-clip-text bg-gradient-to-br from-[#155FA0] via-[#155FA0]/90 to-[#51A0D0] relative'>
               Home Ownership
             </span>
           </motion.h2>
@@ -73,7 +73,7 @@ const CTASection = () => {
             <Link to='/auth' className="group relative w-full sm:w-auto">
               <Button
                 size='lg'
-                className='h-16 px-10 text-lg bg-primary text-primary-foreground hover:bg-primary/95 rounded-full shadow-2xl shadow-primary/20 transition-all hover:scale-[1.05] active:scale-[0.98] w-full sm:w-auto font-bold'
+                className='h-16 px-10 text-lg bg-[#155FA0] text-primary-foreground hover:bg-[#155FA0]/95 rounded-full shadow-2xl shadow-[#155FA0]/20 transition-all hover:scale-[1.05] active:scale-[0.98] w-full sm:w-auto font-bold'
               >
                 Get Started Now <ArrowRight className='ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform' />
               </Button>

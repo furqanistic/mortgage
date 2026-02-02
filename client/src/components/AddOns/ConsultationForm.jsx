@@ -1,249 +1,287 @@
 // File: client/src/components/AddOns/ConsultationForm.jsx
-import { motion } from 'framer-motion'
-import { X, ArrowRight, CheckCircle } from 'lucide-react'
-import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowRight, CheckCircle, Globe, Mail, Shield, Smartphone, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 // shadcn UI components
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 
 const ConsultationForm = ({ isOpen, onClose }) => {
-  const [contactMethod, setContactMethod] = useState('email')
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    nationality: '',
+    residency: '',
+    language: '',
+    email: '',
+    phone: '',
+    message: ''
+  })
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [phoneError, setPhoneError] = useState('')
+
+  // Reset form when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        firstName: '',
+        lastName: '',
+        nationality: '',
+        residency: '',
+        language: '',
+        email: '',
+        phone: '',
+        message: ''
+      })
+      setShowConfirmation(false)
+      setPhoneError('')
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
+  const validateGermanPhone = (number) => {
+    // German phone pattern: starts with +49 or 0, then digits.
+    // Simple regex: ^(\+49|0)[1-9][0-9]{5,14}$
+    const germanPhoneRegex = /^(\+49|0)[1-9][0-9]{5,14}$/
+    return germanPhoneRegex.test(number.replace(/\s/g, ''))
+  }
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target
+    setFormData(prev => ({ ...prev, [id]: value }))
+    
+    if (id === 'phone') {
+      if (value && !validateGermanPhone(value)) {
+        setPhoneError('Please enter a valid German number (e.g. +49...)')
+      } else {
+        setPhoneError('')
+      }
+    }
+  }
+
+  const handleSelectChange = (name, value) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: value,
+      // Reset residency if nationality changes
+      ...(name === 'nationality' ? { residency: '' } : {})
+    }))
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!validateGermanPhone(formData.phone)) {
+      setPhoneError('A valid German phone number is required.')
+      return
+    }
     // Form submission logic would go here
     setShowConfirmation(true)
   }
 
+  const residencyOptions = formData.nationality === 'eu' 
+    ? [
+        { value: 'blue-card', label: 'Blue Card' },
+        { value: 'visa', label: 'Visa Residency' },
+        { value: 'permanent', label: 'Permanent Residency' },
+        { value: 'limited', label: 'Limited Residency' }
+      ]
+    : [
+        { value: 'permanent', label: 'Permanent Resident' },
+        { value: 'temporary', label: 'Temporary Resident' },
+        { value: 'student', label: 'Student Visa' },
+        { value: 'other', label: 'Other' }
+      ]
+
   return (
-    <div className='fixed inset-0 bg-primary/40 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className='bg-background rounded-3xl shadow-2xl w-full max-w-lg relative overflow-hidden max-h-[95vh] flex flex-col border border-border/50'
-      >
-        {/* Premium Header - Compact */}
-        <div className='bg-primary/5 dark:bg-card border-b border-border/40 px-6 py-5 flex justify-between items-center relative overflow-hidden'>
-           {/* Subtle pattern overlay */}
-           <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
-                style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '16px 16px' }} 
-           />
-           
-          <div className="relative z-10">
-            <h3 className='text-2xl font-bold font-heading text-primary dark:text-white tracking-tight'>
-              Book Your <span className="text-accent dark:text-blue-400">Consultation</span>
-            </h3>
-            <p className="text-muted-foreground text-sm mt-1 font-body">
-              Expert advice to secure your future.
-            </p>
+    <AnimatePresence>
+      <div className='fixed inset-0 bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center z-50 p-0 sm:p-4'>
+        <motion.div
+          initial={{ opacity: 0, y: '100%' }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: '100%' }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className='bg-background w-full max-w-lg relative overflow-hidden h-[90vh] sm:h-auto sm:max-h-[95vh] flex flex-col rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl border-t sm:border border-border/40'
+        >
+          {/* Native Mobile Feel Grabber */}
+          <div className="w-12 h-1.5 bg-muted-foreground/20 rounded-full mx-auto mt-4 sm:hidden" />
+
+          {/* Header */}
+          <div className='px-6 py-4 flex justify-between items-center relative'>
+            <div>
+              <h3 className='text-2xl font-black font-heading text-primary dark:text-white tracking-tight leading-tight'>
+                Book <span className="text-blue-600">Free</span> <br/>Consultation
+              </h3>
+            </div>
+            <button
+              onClick={onClose}
+              className='bg-muted/50 hover:bg-muted p-2 rounded-xl transition-all duration-200'
+            >
+              <X className='w-4 h-4' />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className='relative z-10 text-muted-foreground hover:text-primary hover:bg-muted/50 rounded-full p-2 transition-all duration-200 focus:outline-none'
-          >
-            <X className='w-5 h-5' />
-          </button>
-        </div>
 
-        <div className='p-6 overflow-y-auto font-body scrollbar-hide'>
-          {!showConfirmation ? (
-            <>
-              <form onSubmit={handleSubmit} className='space-y-4'>
-                <div className='grid grid-cols-2 gap-4'>
-                  <div className='space-y-1.5'>
-                    <Label htmlFor='firstName' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">First Name</Label>
-                    <Input
-                      id='firstName'
-                      placeholder='Thomas'
-                      required
-                      className="h-10 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-lg text-sm"
-                    />
-                  </div>
-
-                  <div className='space-y-1.5'>
-                    <Label htmlFor='lastName' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Last Name</Label>
-                    <Input
-                      id='lastName'
-                      placeholder='Weber'
-                      required
-                      className="h-10 bg-muted/30 border-input focus:border-accent focus:ring-accent/20 transition-all rounded-lg text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Grouped Residency and Language */}
-                <div className='grid grid-cols-2 gap-4'>
-                    <div className='space-y-1.5'>
-                      <Label htmlFor='residency' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">
-                        Residency
-                      </Label>
-                      <Select required>
-                        <SelectTrigger id='residency' className="h-10 bg-muted/30 border-input focus:ring-accent/20 rounded-lg text-sm">
-                          <SelectValue placeholder='Select status' />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value='citizen'>German Citizen</SelectItem>
-                          <SelectItem value='permanent'>Permanent Resident</SelectItem>
-                          <SelectItem value='temporary'>Temporary Resident</SelectItem>
-                          <SelectItem value='eu'>EU Citizen</SelectItem>
-                          <SelectItem value='other'>Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className='space-y-1.5'>
-                      <Label htmlFor='language' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Language</Label>
-                      <Select required>
-                        <SelectTrigger id='language' className="h-10 bg-muted/30 border-input focus:ring-accent/20 rounded-lg text-sm">
-                          <SelectValue placeholder='Select language' />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value='german'>German / Deutsch</SelectItem>
-                          <SelectItem value='english'>English</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                </div>
-
-                <div className='space-y-2'>
-                  <Label className="text-foreground/80 font-medium text-xs uppercase tracking-wide">Contact Method</Label>
-                  <RadioGroup
-                    defaultValue='email'
-                    className='grid grid-cols-3 gap-1 p-1 bg-secondary/50 dark:bg-card border border-border/40 rounded-xl'
-                    onValueChange={setContactMethod}
-                    value={contactMethod}
-                  >
-                    {['email', 'phone', 'whatsapp'].map((method) => (
-                        <div key={method} className="relative">
-                            <RadioGroupItem value={method} id={`contact-${method}`} className="peer sr-only" />
-                            <Label 
-                                htmlFor={`contact-${method}`} 
-                                className="flex items-center justify-center w-full py-2 rounded-lg cursor-pointer text-xs font-bold text-muted-foreground transition-all duration-300 peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:shadow-sm hover:text-primary"
-                            >
-                                {method.charAt(0).toUpperCase() + method.slice(1)}
-                            </Label>
-                        </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-
-                {/* Dynamic fields based on contact method */}
-                <div className="bg-secondary/30 dark:bg-card/30 rounded-xl p-4 border border-border/30">
-                    {contactMethod === 'email' && (
-                      <div className='space-y-1.5'>
-                        <Label htmlFor='preferredEmail' className="text-foreground/90 font-medium text-xs">Preferred Email</Label>
-                        <Input
-                          id='preferredEmail'
-                          type='email'
-                          placeholder='name@example.com'
-                          required
-                          className="h-10 bg-background border-border/80 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
-                        />
-                      </div>
-                    )}
-
-                    {contactMethod === 'phone' && (
-                      <div className='space-y-1.5'>
-                        <Label htmlFor='phoneNumber' className="text-foreground/80 text-xs">Phone Number</Label>
-                        <Input
-                          id='phoneNumber'
-                          type='tel'
-                          placeholder='+49 123 456789'
-                          required
-                          className="h-10 bg-background border-border/60 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
-                        />
-                      </div>
-                    )}
-
-                    {contactMethod === 'whatsapp' && (
-                      <div className='space-y-1.5'>
-                        <Label htmlFor='whatsappNumber' className="text-foreground/80 text-xs">WhatsApp Number</Label>
-                        <Input
-                          id='whatsappNumber'
-                          type='tel'
-                          placeholder='+49 123 456789'
-                          required
-                          className="h-10 bg-white border-border/60 focus:border-accent focus:ring-accent/20 rounded-lg text-sm"
-                        />
-                      </div>
-                    )}
-                </div>
-
-                <div className='space-y-1.5'>
-                  <Label htmlFor='message' className="text-foreground/80 font-medium text-xs uppercase tracking-wide">
-                    Message <span className="text-muted-foreground font-normal normal-case">(Optional)</span>
-                  </Label>
-                  <Textarea
-                    id='message'
-                    placeholder='Tell us about your goals...'
-                    className='min-h-[80px] bg-muted/30 border-input focus:border-accent focus:ring-accent/20 rounded-lg resize-none text-sm'
+          <div className='flex-1 overflow-y-auto px-6 pb-8 scrollbar-hide'>
+            {!showConfirmation ? (
+              <form onSubmit={handleSubmit} className='space-y-3.5'>
+                <div className='grid grid-cols-2 gap-3'>
+                  <Input
+                    id='firstName'
+                    placeholder='First Name'
+                    required
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className="h-11 bg-muted/20 border border-border/40 focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-xl px-4 text-sm transition-all"
+                  />
+                  <Input
+                    id='lastName'
+                    placeholder='Last Name'
+                    required
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className="h-11 bg-muted/20 border border-border/40 focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-xl px-4 text-sm transition-all"
                   />
                 </div>
 
-                <div className='flex items-start gap-3 p-3 bg-accent/5 dark:bg-blue-500/10 rounded-xl border border-accent/20 dark:border-blue-500/20'>
-                  <div className="shrink-0 mt-0.5 w-5 h-5 rounded-full bg-accent/20 dark:bg-blue-500/20 flex items-center justify-center text-accent dark:text-blue-400">
-                     <CheckCircle className="w-3 h-3" />
-                  </div>
-                  <p className='text-[11px] text-muted-foreground leading-relaxed font-medium pt-0.5'>
-                    By scheduling, you agree to our privacy policy. One-on-one session, no hidden costs.
-                  </p>
+                <div className='space-y-3.5'>
+                  <Select 
+                    required 
+                    onValueChange={(v) => handleSelectChange('nationality', v)}
+                    value={formData.nationality}
+                  >
+                    <SelectTrigger className="h-11 w-full bg-muted/20 border border-border/40 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 text-sm text-left transition-all">
+                      <SelectValue placeholder='Nationality' />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      <SelectItem value='eu'>EU Citizen</SelectItem>
+                      <SelectItem value='non-eu'>Non-EU Citizen</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  {formData.nationality === 'eu' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="w-full"
+                    >
+                      <Select 
+                        required 
+                        onValueChange={(v) => handleSelectChange('residency', v)}
+                        value={formData.residency}
+                      >
+                        <SelectTrigger className="h-11 w-full bg-muted/20 border border-border/40 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 text-sm text-left transition-all">
+                          <SelectValue placeholder='Residency Status' />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl">
+                          {residencyOptions.map(opt => (
+                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  )}
                 </div>
 
-                <div className='pt-2'>
-                  <Button
-                    type='submit'
-                    size="lg"
-                    className='w-full text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-12 bg-primary text-primary-foreground'
-                  >
-                    Confirm Appointment
-                    <ArrowRight className='ml-2 h-4 w-4' />
-                  </Button>
+                <Select 
+                  required 
+                  onValueChange={(v) => handleSelectChange('language', v)}
+                  value={formData.language}
+                >
+                  <SelectTrigger className="h-11 bg-muted/20 border border-border/40 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 text-sm text-left transition-all">
+                    <SelectValue placeholder='Preferred Language' />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl">
+                    <SelectItem value='german'>Deutsch (German)</SelectItem>
+                    <SelectItem value='english'>English</SelectItem>
+                    <SelectItem value='urdu'>اردو (Urdu)</SelectItem>
+                    <SelectItem value='punjabi'>ਪੰਜਾਬੀ (Punjabi)</SelectItem>
+                    <SelectItem value='hindi'>हिन्दी (Hindi)</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <div className="space-y-3.5">
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-blue-600 transition-colors" />
+                    <Input
+                      id='email'
+                      type='email'
+                      placeholder='Email Address'
+                      required
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="h-11 bg-muted/20 border border-border/40 focus-visible:ring-2 focus-visible:ring-blue-500/20 rounded-xl pl-11 text-sm transition-all"
+                    />
+                  </div>
+
+                  <div className="relative group">
+                    <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-blue-600 transition-colors" />
+                    <Input
+                      id='phone'
+                      type='tel'
+                      placeholder='Phone Number (+49...)'
+                      required
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className={`h-11 bg-muted/20 border border-border/40 focus-visible:ring-2 ${phoneError ? 'focus-visible:ring-red-500/20 border-red-500/50' : 'focus-visible:ring-blue-500/20'} rounded-xl pl-11 text-sm transition-all`}
+                    />
+                    {phoneError && <p className="text-[10px] text-red-500 mt-1 ml-4 font-semibold">{phoneError}</p>}
+                  </div>
                 </div>
+
+                <Textarea
+                  id='message'
+                  placeholder='How can we help you? (Optional)'
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  className='min-h-[80px] bg-muted/20 border border-border/40 focus:ring-2 focus:ring-blue-500/20 rounded-xl p-4 text-sm resize-none transition-all'
+                />
+
+                <Button
+                  type='submit'
+                  size="lg"
+                  className='w-full text-base font-bold shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all rounded-xl h-13 bg-blue-600 hover:bg-blue-700 text-white'
+                >
+                  Schedule Now
+                  <ArrowRight className='ml-2 h-4 w-4' />
+                </Button>
               </form>
-            </>
-          ) : (
-            <div className='flex flex-col items-center justify-center py-8 text-center'>
-              <div className='w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-full flex items-center justify-center mb-4 animate-in zoom-in duration-500'>
-                <CheckCircle className='h-8 w-8 text-emerald-600 dark:text-emerald-400' />
-              </div>
-              <h3 className='text-xl font-bold text-foreground mb-2 font-heading'>
-                Request Received!
-              </h3>
-              <p className='text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed'>
-                We&apos;ll be in touch shortly to confirm your consultation.
-              </p>
-              <Button
-                onClick={onClose}
-                variant="outline"
-                className='px-6 h-10 rounded-xl border-primary/20 hover:bg-muted text-sm'
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className='flex flex-col items-center justify-center py-10 text-center'
               >
-                Return to Site
-              </Button>
-            </div>
-          )}
-        </div>
-      </motion.div>
-    </div>
+                <div className='w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-[1.5rem] flex items-center justify-center mb-5'>
+                  <CheckCircle className='h-10 w-10 text-blue-600' />
+                </div>
+                <h3 className='text-2xl font-black text-foreground mb-2 font-heading'>
+                  Success!
+                </h3>
+                <p className='text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed'>
+                  Our experts will review your details and contact you within 24 hours.
+                </p>
+                <Button
+                  onClick={onClose}
+                  className='w-full h-12 rounded-xl bg-foreground text-background font-bold text-base'
+                >
+                  Back Home
+                </Button>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
   )
 }
 
 export default ConsultationForm
-
-// Helper icon component since we removed some imports
-

@@ -4,20 +4,20 @@ import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card'
 
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -251,8 +251,9 @@ const PropertiesPage = () => {
       <Navbar />
       <div className='min-h-screen bg-white'>
         {/* Header */}
-        <header className='bg-gradient-to-r from-[#71C8DC] to-[#155FA0] py-6 px-4 md:px-8'>
-          <div className='container mx-auto'>
+        <header className='bg-gradient-to-r from-[#155FA0] to-[#0D3B66] py-10 px-4 md:px-8 relative overflow-hidden'>
+          <div className="absolute top-0 right-0 w-[400px] h-full bg-[#FAC51C]/10 skew-x-[-20deg] translate-x-32" />
+          <div className='container mx-auto relative z-10'>
             <h1 className='text-2xl md:text-3xl font-bold text-white'>
               Find Your Dream Home
             </h1>
@@ -271,10 +272,10 @@ const PropertiesPage = () => {
                 placeholder='Search by property name or location'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='pl-10 pr-4 py-2 w-full border rounded-lg focus:ring-[#51A0D0] focus:border-[#51A0D0]'
+                className='pl-10 pr-4 py-6 w-full border-none bg-secondary/50 rounded-2xl focus:ring-2 focus:ring-[#155FA0] transition-all'
               />
               <Search
-                className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'
+                className='absolute left-3 top-1/2 transform -translate-y-1/2 text-[#155FA0]/50'
                 size={18}
               />
             </div>
@@ -283,7 +284,7 @@ const PropertiesPage = () => {
               <Button
                 onClick={() => setFiltersVisible(!filtersVisible)}
                 variant='outline'
-                className='flex items-center gap-2 border-[#51A0D0] text-[#155FA0]'
+                className='flex items-center gap-2 border-[#155FA0]/20 text-[#155FA0] rounded-full h-12'
               >
                 <Filter size={18} />
                 Filters
@@ -323,7 +324,7 @@ const PropertiesPage = () => {
                     {/* Price Range */}
                     <div>
                       <h3 className='text-sm font-medium mb-2 flex items-center gap-2'>
-                        <Euro size={16} className='text-[#51A0D0]' />
+                        <Euro size={16} className='text-[#FAC51C]' />
                         Price Range
                       </h3>
                       <Slider
@@ -344,7 +345,7 @@ const PropertiesPage = () => {
                     {/* Size Range */}
                     <div>
                       <h3 className='text-sm font-medium mb-2 flex items-center gap-2'>
-                        <Home size={16} className='text-[#51A0D0]' />
+                        <Home size={16} className='text-[#FAC51C]' />
                         Size (m²)
                       </h3>
                       <Slider
@@ -365,7 +366,7 @@ const PropertiesPage = () => {
                     {/* Location */}
                     <div>
                       <h3 className='text-sm font-medium mb-2 flex items-center gap-2'>
-                        <MapPin size={16} className='text-[#51A0D0]' />
+                        <MapPin size={16} className='text-[#FAC51C]' />
                         Location
                       </h3>
                       <Select
@@ -436,7 +437,7 @@ const PropertiesPage = () => {
                     <Button
                       onClick={resetFilters}
                       variant='outline'
-                      className='w-full border-[#51A0D0] text-[#155FA0] hover:bg-[#71C8DC]/10'
+                      className='w-full border-[#155FA0]/20 text-[#155FA0] hover:bg-[#155FA0]/5 rounded-xl h-12 font-bold uppercase tracking-widest text-[10px]'
                     >
                       Reset Filters
                     </Button>
@@ -533,7 +534,7 @@ const PropertiesPage = () => {
                           <div className='flex gap-4 text-sm'>
                             <div className='flex items-center'>
                               <svg
-                                className='w-4 h-4 mr-1 text-[#51A0D0]'
+                                className='w-4 h-4 mr-1 text-[#FAC51C]'
                                 viewBox='0 0 24 24'
                                 fill='none'
                                 xmlns='http://www.w3.org/2000/svg'
@@ -557,7 +558,7 @@ const PropertiesPage = () => {
                             </div>
                             <div className='flex items-center'>
                               <svg
-                                className='w-4 h-4 mr-1 text-[#51A0D0]'
+                                className='w-4 h-4 mr-1 text-[#FAC51C]'
                                 viewBox='0 0 24 24'
                                 fill='none'
                                 xmlns='http://www.w3.org/2000/svg'
@@ -582,7 +583,7 @@ const PropertiesPage = () => {
                             </div>
                             <div className='flex items-center'>
                               <svg
-                                className='w-4 h-4 mr-1 text-[#51A0D0]'
+                                className='w-4 h-4 mr-1 text-[#FAC51C]'
                                 viewBox='0 0 24 24'
                                 fill='none'
                                 xmlns='http://www.w3.org/2000/svg'
@@ -627,7 +628,7 @@ const PropertiesPage = () => {
                           </div>
                         </CardContent>
                         <CardFooter className='pt-0'>
-                          <Button className='w-full bg-gradient-to-r from-[#71C8DC] to-[#155FA0] hover:from-[#51A0D0] hover:to-[#155FA0]'>
+                          <Button className='w-full bg-[#155FA0] hover:bg-[#155FA0]/90 rounded-xl h-12 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#155FA0]/20'>
                             View Details
                           </Button>
                         </CardFooter>

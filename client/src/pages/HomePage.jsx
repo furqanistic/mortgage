@@ -12,7 +12,7 @@ const HomePage = () => {
     <>
       <Navbar />
       <HeroSection />
-      <RoadmapSection />
+      {/* <RoadmapSection /> */}
       <MortgageCalculator />
       <SuccessStories />
       <CTASection />

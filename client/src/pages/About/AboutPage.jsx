@@ -4,18 +4,18 @@ import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-    ArrowRight,
-    Award,
-    Building,
-    CheckCircle,
-    ChevronRight,
-    History,
-    Lightbulb,
-    MessageCircle,
-    Star,
-    Target,
-    Users,
-    Zap,
+  ArrowRight,
+  Award,
+  Building,
+  CheckCircle,
+  ChevronRight,
+  History,
+  Lightbulb,
+  MessageCircle,
+  Star,
+  Target,
+  Users,
+  Zap,
 } from 'lucide-react'
 import { useRef } from 'react'
 
@@ -67,8 +67,8 @@ const AboutPage = () => {
         {/* Compact & High-Impact Hero */}
         <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-28 overflow-hidden border-b border-border/50">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
-            <motion.div style={{ y: y1 }} className="absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/20 rounded-full blur-[80px]" />
-            <motion.div style={{ y: y1 }} className="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[60px]" />
+            <motion.div style={{ y: y1 }} className="absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-[#FAC51C]/10 rounded-full blur-[80px]" />
+            <motion.div style={{ y: y1 }} className="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-[#155FA0]/5 rounded-full blur-[60px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -79,14 +79,14 @@ const AboutPage = () => {
                 transition={{ duration: 0.8 }}
                 className="space-y-6 sm:space-y-8"
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-primary border border-border">
-                  <Zap size={12} className="text-accent" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155FA0]/10 text-[#155FA0] border border-[#155FA0]/20">
+                  <Zap size={12} className="text-[#FAC51C] fill-[#FAC51C]" />
                   <span className="text-[10px] font-bold tracking-widest uppercase">The Baufiking Mission</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight text-foreground">
                   Transforming <br />
-                  <span className="text-accent underline decoration-border/30 underline-offset-8">Property</span> Ownership
+                  <span className="text-[#155FA0] underline decoration-[#FAC51C]/30 underline-offset-8">Property</span> Ownership
                 </h1>
 
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium">
@@ -94,7 +94,7 @@ const AboutPage = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  <Button className="h-12 px-8 rounded-full bg-primary text-primary-foreground font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
+                  <Button className="h-12 px-8 rounded-full bg-[#155FA0] text-primary-foreground font-black text-sm uppercase tracking-widest shadow-xl shadow-[#155FA0]/20 hover:scale-105 transition-transform">
                     Start Your Journey
                     <ArrowRight size={16} className="ml-2" />
                   </Button>
@@ -124,8 +124,8 @@ const AboutPage = () => {
                   className="absolute -bottom-6 -right-5 sm:-bottom-10 sm:-right-8 bg-card dark:bg-slate-900 shadow-2xl p-5 sm:p-8 rounded-3xl border border-border z-20"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-accent/10 rounded-2xl">
-                      <Award size={24} className="text-accent" />
+                    <div className="p-3 bg-[#FAC51C]/10 rounded-2xl">
+                      <Award size={24} className="text-[#155FA0]" />
                     </div>
                     <div>
                       <p className="text-lg font-black text-foreground">Top Tier</p>
@@ -151,7 +151,7 @@ const AboutPage = () => {
                   transition={{ delay: idx * 0.1 }}
                   className="text-center space-y-2"
                  >
-                   <p className="text-3xl sm:text-5xl font-heading font-black text-primary">{stat.value}</p>
+                   <p className="text-3xl sm:text-5xl font-heading font-black text-[#155FA0]">{stat.value}</p>
                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">{stat.label}</p>
                  </motion.div>
                ))}
@@ -162,8 +162,8 @@ const AboutPage = () => {
         {/* Values Section - Premium Cards */}
         <section className="py-20 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center space-y-4 mb-20">
-            <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">Core <span className="text-accent">Principles</span></h2>
-            <div className="w-16 h-1 bg-accent mx-auto rounded-full" />
+            <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">Core <span className="text-[#155FA0]">Principles</span></h2>
+            <div className="w-16 h-1 bg-[#FAC51C] mx-auto rounded-full" />
           </div>
 
           <motion.div 
@@ -179,7 +179,7 @@ const AboutPage = () => {
                 variants={cardVariants}
                 className="group relative bg-card rounded-[2.5rem] p-10 border border-border hover:border-accent/40 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-accent/5"
               >
-                <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-8 border border-border group-hover:scale-110 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500">
+                <div className="w-16 h-16 rounded-2xl bg-[#155FA0]/5 flex items-center justify-center mb-8 border border-border group-hover:scale-110 group-hover:bg-[#155FA0] group-hover:text-white transition-all duration-500">
                   <value.icon size={24} />
                 </div>
                 <h3 className="text-2xl font-heading font-black text-foreground mb-4">{value.title}</h3>
@@ -192,7 +192,7 @@ const AboutPage = () => {
         </section>
 
         {/* Our Approach Section */}
-        <section className="py-20 sm:py-32 bg-primary text-primary-foreground overflow-hidden">
+        <section className="py-20 sm:py-32 bg-[#155FA0] text-primary-foreground overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
              <div className="grid lg:grid-cols-2 gap-20 items-center">
                 <motion.div 
@@ -202,7 +202,7 @@ const AboutPage = () => {
                   className="space-y-10"
                 >
                   <div className="space-y-6">
-                    <h2 className="text-4xl sm:text-6xl font-heading font-black leading-tight tracking-tighter text-slate-50">Expertise Meets <br /><span className="text-blue-400">Empathy</span></h2>
+                    <h2 className="text-4xl sm:text-6xl font-heading font-black leading-tight tracking-tighter text-slate-50">Expertise Meets <br /><span className="text-[#FAC51C]">Empathy</span></h2>
                     <p className="text-lg text-primary-foreground/70 leading-relaxed font-medium">
                       The German mortgage market is complex. Our approach simplifies the math while respecting the emotional gravity of buying a home.
                     </p>
@@ -215,7 +215,7 @@ const AboutPage = () => {
                       { icon: MessageCircle, title: 'Always Open', desc: 'Communication is our top priority, ensuring zero blind spots.' }
                     ].map((item, idx) => (
                       <div key={idx} className="flex gap-6 group">
-                         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+                         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#FAC51C] group-hover:bg-[#FAC51C] group-hover:text-[#155FA0] transition-all duration-300">
                            <item.icon size={20} />
                          </div>
                          <div className="space-y-1">
@@ -271,7 +271,7 @@ const AboutPage = () => {
             <div className="space-y-4 sm:space-y-6 relative z-10 text-center">
               <h2 className="text-4xl sm:text-6xl font-heading font-black tracking-tight text-foreground">
                 Ready to Find Your <br />
-                <span className="text-accent">Future Home?</span>
+                <span className="text-[#155FA0]">Future Home?</span>
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed">
                 Connect with our expert team today and discover how simple home ownership in Germany can be with Baufiking.
@@ -279,7 +279,7 @@ const AboutPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
-              <Button className="h-16 px-12 rounded-full bg-primary text-primary-foreground font-black text-sm uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-2xl shadow-primary/20">
+              <Button className="h-16 px-12 rounded-full bg-[#155FA0] text-primary-foreground font-black text-sm uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-2xl shadow-[#155FA0]/20">
                 Talk to an Advisor
               </Button>
               <Button variant="outline" className="h-16 px-12 rounded-full border-border font-black text-sm uppercase tracking-widest hover:bg-white dark:hover:bg-slate-800 transition-all">

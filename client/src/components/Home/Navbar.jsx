@@ -1,35 +1,44 @@
 // File: client/src/components/Home/Navbar.jsx
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import {
-    logout,
-    selectCurrentUser,
-    selectIsAdmin,
-    selectIsAuthenticated,
+  logout,
+  selectCurrentUser,
+  selectIsAdmin,
+  selectIsAuthenticated,
 } from '@/redux/userSlice'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-    ArrowRight,
-    Home,
-    LogOut,
-    Mail,
-    Menu,
-    MessageCircle,
-    NotebookText,
-    PersonStanding,
-    Phone,
-    ShieldPlus,
-    User,
-    Users
+  ArrowRight,
+  Home,
+  LogOut,
+  Mail,
+  Menu,
+  MessageCircle,
+  NotebookText,
+  PersonStanding,
+  Phone,
+  ShieldPlus,
+  User,
+  Users
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -96,25 +105,59 @@ const Navbar = () => {
           <motion.div 
             initial={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className='bg-primary/5 dark:bg-accent/5 backdrop-blur-sm text-foreground overflow-hidden border-b border-border/10'
+            className='bg-gradient-to-r from-[#155FA0] via-[#51A0D0] to-[#155FA0] text-white overflow-hidden border-b border-white/10 shadow-sm'
           >
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2'>
               <div className='flex justify-between items-center text-[10px] sm:text-xs tracking-wide'>
                  <div className="hidden lg:flex items-center gap-3">
-                    <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
-                    <span className="text-muted-foreground uppercase tracking-[0.2em] font-bold opacity-80">Expert Mortgage Advice in Germany</span>
+                    <span className="flex h-2 w-2 rounded-full bg-[#FAC51C] animate-pulse shadow-[0_0_8px_#FAC51C]" />
+                    <span className="text-white/90 uppercase tracking-[0.2em] font-bold opacity-100 text-[10px] font-heading">Expert Mortgage Advice in Germany</span>
                  </div>
 
                  <div className="flex flex-wrap items-center justify-center lg:justify-end gap-x-8 gap-y-2 w-full lg:w-auto">
-                    <a href="tel:+4915171618082" className="flex items-center gap-2.5 group text-muted-foreground hover:text-accent transition-all duration-300">
-                      <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all">
-                        <Phone className="w-3 h-3" />
-                      </div>
-                      <span className="font-bold font-heading">+49 151 71618082</span>
-                    </a>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="flex items-center gap-2.5 group text-white/90 hover:text-white transition-all duration-300 outline-none">
+                          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-[#155FA0] transition-all shadow-[0_0_10px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_15px_rgba(255,255,255,0.6)]">
+                            <Phone className="w-3 h-3" />
+                          </div>
+                          <span className="font-bold font-heading group-hover:tracking-wide transition-all">+49 151 71618082</span>
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md bg-background/95 backdrop-blur-xl border-white/20 shadow-2xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl font-bold font-heading text-center">Get in Touch</DialogTitle>
+                          <DialogDescription className="text-center text-muted-foreground">
+                            How would you like to connect with us?
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid grid-cols-2 gap-4 py-4">
+                          <a href="tel:+4915171618082" className="no-underline group">
+                            <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-secondary/50 hover:bg-accent/10 border-2 border-transparent hover:border-accent/20 transition-all duration-300 gap-3 group-hover:-translate-y-1">
+                              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                <Phone className="w-6 h-6" />
+                              </div>
+                              <span className="font-bold font-heading text-foreground">Call Now</span>
+                            </div>
+                          </a>
+                          
+                          <a href="https://wa.me/4915171618082" target="_blank" rel="noopener noreferrer" className="no-underline group">
+                             <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-secondary/50 hover:bg-[#25D366]/10 border-2 border-transparent hover:border-[#25D366]/20 transition-all duration-300 gap-3 group-hover:-translate-y-1">
+                              <div className="w-12 h-12 rounded-full bg-[#25D366]/10 text-[#25D366] flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300">
+                                <MessageCircle className="w-6 h-6" />
+                              </div>
+                              <span className="font-bold font-heading text-foreground">WhatsApp</span>
+                            </div>
+                          </a>
+                        </div>
+                        <div className="text-center text-xs text-muted-foreground mt-2">
+                          We are available Mon-Fri, 9:00 - 18:00
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                     
-                    <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-2.5 group text-muted-foreground hover:text-accent transition-all duration-300">
-                      <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all">
+                    <a href="mailto:ravinder.singh@baufiking.de" className="flex items-center gap-2.5 group text-white/90 hover:text-white transition-all duration-300">
+                      <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-[#155FA0] transition-all">
                         <Mail className="w-3 h-3" />
                       </div>
                       <span className="font-medium">ravinder.singh@baufiking.de</span>
@@ -133,8 +176,8 @@ const Navbar = () => {
         <nav
           className={`mx-auto transition-all duration-500 ease-in-out relative
             ${isScrolled 
-              ? 'max-w-5xl rounded-full glass shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/40 dark:border-white/10 py-2' 
-              : 'max-w-full border-b border-border/40 bg-background/80 backdrop-blur-md py-4'
+              ? 'max-w-5xl rounded-full glass-card shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/20 dark:border-white/10 py-2.5 px-2' 
+              : 'max-w-full border-b border-border/10 bg-background/5 backdrop-blur-[2px] py-4'
             }`}
         >
           <div className={`${isScrolled ? 'px-6' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}`}>
@@ -198,7 +241,7 @@ const Navbar = () => {
                 <ThemeToggle />
 
                 {/* Authentication Actions */}
-                {!isAuthenticated ? (
+                {/* {!isAuthenticated ? (
                   <Link
                     to='/auth'
                     className={`ml-4 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-accent dark:text-accent-foreground dark:hover:bg-accent/90 rounded-full font-bold text-sm shadow-lg shadow-primary/10 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center gap-2 group/btn ${isScrolled ? 'py-1.5' : 'py-2.5'}`}
@@ -236,7 +279,7 @@ const Navbar = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                )}
+                )} */}
               </div>
 
               {/* Mobile Navigation */}
@@ -299,12 +342,35 @@ const Navbar = () => {
                     
                     <div className="p-8 border-t border-border mt-auto bg-secondary/30">
                        <div className="flex flex-col gap-4">
-                         <a href="tel:+4915171618082" className="flex items-center gap-3 text-sm font-bold text-foreground">
-                            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                               <Phone className="w-4 h-4" />
-                            </div>
-                            +49 15 1716 18082
-                         </a>
+                         <Dialog>
+                            <DialogTrigger asChild>
+                              <button className="flex items-center gap-3 text-sm font-bold text-foreground hover:text-accent transition-colors w-full text-left">
+                                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                                    <Phone className="w-4 h-4" />
+                                  </div>
+                                  +49 15 1716 18082
+                              </button>
+                            </DialogTrigger>
+                             <DialogContent className="w-[90%] rounded-2xl bg-background/95 backdrop-blur-xl border-white/20">
+                                <DialogHeader>
+                                  <DialogTitle className="text-xl font-bold font-heading">Get in Touch</DialogTitle>
+                                </DialogHeader>
+                                <div className="grid grid-cols-1 gap-3 py-4">
+                                  <a href="tel:+4915171618082" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all">
+                                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                        <Phone className="w-5 h-5" />
+                                      </div>
+                                      <span className="font-bold text-lg">Call Now</span>
+                                  </a>
+                                  <a href="https://wa.me/4915171618082" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 hover:bg-[#25D366]/10 border border-transparent hover:border-[#25D366]/20 transition-all">
+                                      <div className="w-10 h-10 rounded-full bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
+                                        <MessageCircle className="w-5 h-5" />
+                                      </div>
+                                      <span className="font-bold text-lg">WhatsApp</span>
+                                  </a>
+                                </div>
+                             </DialogContent>
+                         </Dialog>
                          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold mt-2">
                            © 2026 Baufiking
                          </p>

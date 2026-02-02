@@ -62,9 +62,9 @@ const SuccessStories = () => {
   }, [stories.length])
 
   return (
-    <section className='py-24 bg-background relative overflow-hidden'>
+    <section className='py-24 bg-gradient-to-b from-background to-secondary/30 relative overflow-hidden'>
        {/* Background Decoration */}
-       <div className='absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none' />
+       <div className='absolute top-0 left-0 w-[500px] h-[500px] bg-[#155FA0]/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none' />
 
       <div className='max-w-7xl mx-auto px-6 lg:px-8 relative z-10'>
         <div className='flex flex-col md:flex-row items-end justify-between gap-8 mb-20'>
@@ -73,7 +73,7 @@ const SuccessStories = () => {
                  <Sparkles className='w-3 h-3' /> Success Stories
                </div>
                <h2 className='text-4xl md:text-6xl font-heading font-black tracking-tighter text-foreground leading-[0.9]'>
-                 Real Results <br /><span className='text-accent'>Realized</span>
+                 Real Results <br /><span className='text-[#155FA0]'>Realized</span>
                </h2>
            </div>
            
@@ -108,7 +108,7 @@ const SuccessStories = () => {
                          </div>
                          
                          <div className="flex items-center gap-4">
-                             <Avatar className="w-14 h-14 border-2 border-accent">
+                             <Avatar className="w-14 h-14 border-2 border-[#155FA0]">
                                  <AvatarImage src={stories[activeStory].image} className="object-cover" />
                                  <AvatarFallback>U</AvatarFallback>
                              </Avatar>

@@ -6,22 +6,22 @@ import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { axiosInstance } from '@/config'
 import {
-    loginFailure,
-    loginStart,
-    loginSuccess,
-    selectCurrentUser,
-    selectIsLoading,
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  selectCurrentUser,
+  selectIsLoading,
 } from '@/redux/userSlice'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-    ArrowRight,
-    ChevronRight,
-    Lock,
-    Mail,
-    PieChart,
-    ShieldCheck,
-    User,
-    Zap
+  ArrowRight,
+  ChevronRight,
+  Lock,
+  Mail,
+  PieChart,
+  ShieldCheck,
+  User,
+  Zap
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -128,8 +128,8 @@ const Auth = () => {
       <div className='relative min-h-[calc(100vh-80px)] flex items-center justify-center p-6 md:p-10'>
         {/* Dynamic Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-accent/5 rounded-full blur-[100px]" />
-          <div className="absolute top-[40%] -right-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
+          <div className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-[#155FA0]/5 rounded-full blur-[100px]" />
+          <div className="absolute top-[40%] -right-[10%] w-[500px] h-[500px] bg-[#155FA0]/5 rounded-full blur-[120px]" />
         </div>
 
         <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-16 lg:gap-24 items-center z-10">
@@ -142,15 +142,15 @@ const Auth = () => {
             className="hidden lg:flex flex-col space-y-12"
           >
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
-                <ShieldCheck className="w-3 h-3 text-accent" />
-                <span className="text-[10px] font-black tracking-widest text-accent uppercase">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155FA0]/10 border border-[#155FA0]/20">
+                <ShieldCheck className="w-3 h-3 text-[#155FA0]" />
+                <span className="text-[10px] font-black tracking-widest text-[#155FA0] uppercase">
                   Secure Portal
                 </span>
               </div>
               <h1 className="text-6xl xl:text-8xl font-black font-heading text-foreground leading-[0.9] tracking-tighter">
                 Access <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-foreground to-muted-foreground">Ecosystem</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#155FA0] to-[#51A0D0]">Ecosystem</span>
               </h1>
               <p className="text-lg text-muted-foreground font-medium leading-relaxed max-w-md">
                 Manage your applications, documents, and property portfolio in one centralized, secure dashboard.
@@ -171,7 +171,7 @@ const Auth = () => {
                  },
                ].map((item, i) => (
                  <div key={i} className="flex items-center gap-5 p-4 rounded-3xl bg-secondary/30 border border-border/50 backdrop-blur-sm">
-                    <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center text-accent shadow-sm">
+                    <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center text-[#155FA0] shadow-sm">
                        <item.icon className="w-6 h-6" />
                     </div>
                     <div>
@@ -190,7 +190,7 @@ const Auth = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <Card className="relative overflow-hidden bg-card/50 backdrop-blur-2xl border-border/50 rounded-[3rem] shadow-2xl">
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent/50 to-primary/50" />
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#155FA0] to-[#51A0D0]" />
               
               <div className="p-8 md:p-12">
                 <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -216,25 +216,25 @@ const Auth = () => {
                           <div className="space-y-1.5">
                             <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Credentials</label>
                             <div className="relative group">
-                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[#155FA0] transition-colors" />
                               <Input id="email" type="email" placeholder="Email Address" value={loginData.email} onChange={handleLoginChange}
-                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                             </div>
                           </div>
 
                           <div className="space-y-1.5">
                             <div className="relative group">
-                              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[#155FA0] transition-colors" />
                               <Input id="password" type="password" placeholder="Password" value={loginData.password} onChange={handleLoginChange}
-                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                             </div>
                             <div className="flex justify-end pr-2">
-                               <button type="button" className="text-[10px] font-bold text-muted-foreground hover:text-accent transition-colors">Forgot Password?</button>
+                               <button type="button" className="text-[10px] font-bold text-muted-foreground hover:text-[#155FA0] transition-colors">Forgot Password?</button>
                             </div>
                           </div>
                         </div>
 
-                        <Button className="w-full h-14 bg-primary text-primary-foreground hover:bg-primary/95 rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]" 
+                        <Button className="w-full h-14 bg-[#155FA0] text-primary-foreground hover:bg-[#155FA0]/95 rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-[#155FA0]/20 transition-all hover:scale-[1.02] active:scale-[0.98]" 
                           type="submit" disabled={loading}>
                           {loading ? "Authenticating..." : <div className="flex items-center gap-2">Identify <ArrowRight className="w-4 h-4" /></div>}
                         </Button>
@@ -252,44 +252,44 @@ const Auth = () => {
                         <div className="grid grid-cols-2 gap-3">
                           <div className="space-y-1.5">
                              <Input id="firstName" placeholder="First Name" value={signupData.firstName} onChange={handleSignupChange}
-                               className="w-full h-12 px-4 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                               className="w-full h-12 px-4 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                           </div>
                           <div className="space-y-1.5">
                              <Input id="lastName" placeholder="Last Name" value={signupData.lastName} onChange={handleSignupChange}
-                               className="w-full h-12 px-4 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                               className="w-full h-12 px-4 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                           </div>
                         </div>
 
                         <div className="space-y-1.5">
                            <div className="relative group">
-                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[#155FA0] transition-colors" />
                               <Input id="email" type="email" placeholder="Email Address" value={signupData.email} onChange={handleSignupChange}
-                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                                className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                            </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                           <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[#155FA0] transition-colors" />
                             <Input id="password" type="password" placeholder="Password" value={signupData.password} onChange={handleSignupChange}
-                              className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                              className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                           </div>
                           <div className="relative group">
-                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[#155FA0] transition-colors" />
                              <Input id="confirmPassword" type="password" placeholder="Confirm" value={signupData.confirmPassword} onChange={handleSignupChange}
-                              className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
+                              className="w-full pl-11 h-12 rounded-2xl bg-secondary border-transparent focus:bg-background focus:border-[#155FA0] focus:ring-1 focus:ring-[#155FA0] transition-all outline-none font-medium placeholder:text-muted-foreground/50" required />
                           </div>
                         </div>
 
                         <label className="flex items-start gap-3 cursor-pointer group p-1">
                           <input type="checkbox" id="terms" checked={signupData.terms} onChange={handleSignupChange}
-                            className="w-4 h-4 mt-0.5 rounded border-2 border-border text-accent focus:ring-accent transition-all cursor-pointer" required />
+                            className="w-4 h-4 mt-0.5 rounded border-2 border-border text-[#155FA0] focus:ring-[#155FA0] transition-all cursor-pointer" required />
                           <span className="text-xs font-medium text-muted-foreground leading-snug">
                             I accept the <button type="button" className="text-foreground font-bold hover:underline">Privacy Protocol</button> & <button type="button" className="text-foreground font-bold hover:underline">Terms</button>.
                           </span>
                         </label>
 
-                        <Button className="w-full h-14 bg-accent text-accent-foreground hover:bg-accent/90 rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:scale-[1.02] active:scale-[0.98]" 
+                        <Button className="w-full h-14 bg-[#155FA0] text-primary-foreground hover:bg-[#155FA0]/90 rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-[#155FA0]/20 transition-all hover:scale-[1.02] active:scale-[0.98]" 
                           type="submit" disabled={loading}>
                           {loading ? "Processing..." : <div className="flex items-center gap-2">Initialize Account <ChevronRight className="w-4 h-4" /></div>}
                         </Button>

@@ -18,9 +18,6 @@ const HeroSection = () => {
     <section className='relative min-h-[85vh] flex items-center bg-background overflow-hidden pt-12 md:pt-0'>
       {/* Dynamic Background */}
       <div className='absolute inset-0 pointer-events-none'>
-        <div className="absolute top-[-10%] right-[-5%] w-[80vw] h-[80vw] bg-primary/5 rounded-full blur-[140px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[60vw] h-[60vw] bg-accent/5 rounded-full blur-[100px]" />
-        
         {/* Fine grid pattern for premium feel */}
         <div className="absolute inset-0 opacity-[0.03]" 
              style={{ 
@@ -46,10 +43,10 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className='inline-flex items-center space-x-2 px-3 py-1 bg-accent/10 backdrop-blur-sm rounded-full border border-accent/20'
+              className='inline-flex items-center space-x-2 px-3 py-1 bg-[#155FA0]/10 backdrop-blur-sm rounded-full border border-[#155FA0]/20'
             >
-              <Zap size={12} className="text-accent fill-accent" />
-              <span className='text-[10px] font-bold text-accent tracking-widest font-heading uppercase'>
+              <Zap size={12} className="text-[#155FA0] fill-[#155FA0]" />
+              <span className='text-[10px] font-bold text-[#155FA0] tracking-widest font-heading uppercase'>
                 The New Standard
               </span>
             </motion.div>
@@ -58,7 +55,7 @@ const HeroSection = () => {
             <div className="space-y-4">
               <h1 className='text-5xl sm:text-7xl lg:text-8xl font-black font-heading text-foreground leading-[0.95] tracking-tighter'>
                 Experience <br />
-                <span className='text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/90 to-accent relative'>
+                <span className='text-transparent bg-clip-text bg-gradient-to-br from-[#155FA0] via-[#155FA0]/90 to-[#51A0D0] relative'>
                   True Ownership
                 </span>
               </h1>
@@ -72,7 +69,7 @@ const HeroSection = () => {
               <Link to='/contact' className="w-full sm:w-auto">
                 <Button
                   size='lg'
-                  className='w-full sm:w-auto px-10 h-16 text-sm font-black uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-primary/20'
+                  className='w-full sm:w-auto px-10 h-16 text-sm font-black uppercase tracking-widest bg-[#155FA0] text-primary-foreground hover:bg-[#155FA0]/95 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-[#155FA0]/20'
                 >
                   Start Journey
                   <ArrowRight className='ml-3 w-4 h-4' />
@@ -83,7 +80,7 @@ const HeroSection = () => {
                 variant='outline'
                 size='lg'
                 onClick={openForm}
-                className='w-full sm:w-auto px-8 h-16 text-xs font-black uppercase tracking-widest text-foreground border-border hover:bg-secondary rounded-full transition-all'
+                className='w-full sm:w-auto px-8 h-16 text-xs font-black uppercase tracking-widest text-foreground border-border hover:bg-[#155FA0] hover:text-white rounded-full transition-all'
               >
                 Consult Free
               </Button>
@@ -96,8 +93,8 @@ const HeroSection = () => {
                 { label: 'Verified Partners', icon: Star }
               ].map((item, i) => (
                 <div key={i} className='flex items-center gap-2.5 group cursor-default'>
-                  <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent transition-colors">
-                     <item.icon className='w-3 h-3 text-accent group-hover:text-accent-foreground transition-colors' />
+                  <div className="w-6 h-6 rounded-full bg-[#155FA0]/10 flex items-center justify-center group-hover:bg-[#155FA0] transition-colors">
+                     <item.icon className='w-3 h-3 text-[#155FA0] group-hover:text-white transition-colors' />
                   </div>
                   <span className="text-[10px] font-black text-muted-foreground tracking-widest uppercase">{item.label}</span>
                 </div>
@@ -115,10 +112,10 @@ const HeroSection = () => {
              {/* Architectural Frame */}
              <div className="relative aspect-[4/5] w-full max-w-[500px] mx-auto group">
                 {/* Decorative Elements */}
-                <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-accent/20 rounded-tl-[3rem]" />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-primary/20 rounded-br-[3rem]" />
+                <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-[#155FA0]/20 rounded-tl-[3rem]" />
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-[#FAC51C]/20 rounded-br-[3rem]" />
                 
-                <div className='relative z-10 w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-muted'>
+                <div className='relative z-10 w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-secondary/50'>
                   <img
                     src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop'
                     alt='Modern German Penthouse'
@@ -141,28 +138,13 @@ const HeroSection = () => {
                           </div>
                           <div className="text-right space-y-1">
                                <p className='text-[9px] text-white/60 font-black uppercase tracking-widest'>Avg. Saving</p>
-                               <p className='text-3xl font-black text-accent tracking-tighter'>€12.5k</p>
+                               <p className='text-3xl font-black text-[#FAC51C] tracking-tighter'>€12.5k</p>
                           </div>
                       </div>
                    </motion.div>
                 </div>
 
-                {/* Floating Micro-Card */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-8 -right-8 bg-card border border-border px-5 py-4 rounded-2xl shadow-xl z-20 hidden sm:block"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
-                      <TrendingUp className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Applications</p>
-                      <p className="text-sm font-black text-foreground">+124 Today</p>
-                    </div>
-                  </div>
-                </motion.div>
+
              </div>
           </motion.div>
         </div>

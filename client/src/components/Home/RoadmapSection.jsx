@@ -1,17 +1,17 @@
 // File: client/src/components/Home/RoadmapSection.jsx
 import { Button } from '@/components/ui/button'
 import {
-    BadgeDollarSign,
-    Calculator,
-    ChevronRight,
-    FileCheck,
-    FileText,
-    Home,
-    Key,
-    Milestone,
-    Search,
-    Shield,
-    Users,
+  BadgeDollarSign,
+  Calculator,
+  ChevronRight,
+  FileCheck,
+  FileText,
+  Home,
+  Key,
+  Milestone,
+  Search,
+  Shield,
+  Users,
 } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -115,24 +115,28 @@ const RoadmapSection = () => {
   }, [activeStep])
 
   return (
-    <section className='py-24 bg-background relative overflow-hidden'>
+    <section className='py-24 bg-background relative overflow-hidden text-foreground'>
+      {/* Decorative Branding Background */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#155FA0]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#FAC51C]/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+      
       <div className='max-w-7xl mx-auto px-6 lg:px-8 relative'>
         
         {/* Header */}
         <div className='flex flex-col md:flex-row items-end justify-between gap-8 mb-16'>
           <div className="space-y-4">
-            <div className='inline-flex items-center gap-2 px-3 py-1 bg-secondary rounded-full text-foreground text-[10px] font-bold uppercase tracking-widest border border-border'>
-              <Milestone className='w-3 h-3' /> The Roadmap
+            <div className='inline-flex items-center gap-2 px-3 py-1 bg-[#155FA0]/10 rounded-full text-[#155FA0] text-[10px] font-bold uppercase tracking-widest border border-[#155FA0]/20'>
+              <Milestone className='w-3 h-3 text-[#FAC51C]' /> The Roadmap
             </div>
             <h2 className='text-4xl md:text-6xl font-heading font-black tracking-tighter text-foreground leading-[0.9]'>
-              Follow Your <br /><span className='text-accent decoration-border/30 underline underline-offset-8'>Path Home</span>
+              Follow Your <br /><span className='text-[#155FA0] decoration-[#FAC51C]/30 underline underline-offset-8'>Path Home</span>
             </h2>
           </div>
           
-          <div className='flex items-center gap-4 bg-secondary/50 rounded-full px-4 py-2 border border-border'>
+          <div className='flex items-center gap-4 bg-secondary/80 backdrop-blur-md rounded-full px-4 py-2 border border-border'>
              <div className="flex gap-1">
                 {steps.map((_, i) => (
-                    <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === activeStep ? 'w-6 bg-accent' : i < activeStep ? 'w-1.5 bg-primary' : 'w-1.5 bg-border'}`} />
+                    <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === activeStep ? 'w-6 bg-[#FAC51C]' : i < activeStep ? 'w-1.5 bg-[#155FA0]' : 'w-1.5 bg-border'}`} />
                 ))}
              </div>
              <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-wider whitespace-nowrap'>
@@ -150,9 +154,6 @@ const RoadmapSection = () => {
                     className="max-h-[600px] overflow-y-auto pr-4 space-y-2 scrollbar-hide relative"
                     style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
                 >
-                     {/* Subtle line connecting items */}
-                     <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-border -z-10" />
-
                      {steps.map((step, index) => {
                          const isActive = index === activeStep
                          const isCompleted = index < activeStep
@@ -162,22 +163,22 @@ const RoadmapSection = () => {
                                 key={index}
                                 onClick={() => setActiveStep(index)}
                                 className={`w-full group flex items-center gap-4 p-3 rounded-2xl transition-all duration-300 text-left relative z-10
-                                    ${isActive ? 'bg-accent/10 translate-x-2' : 'hover:bg-secondary/50 hover:translate-x-1'}
+                                    ${isActive ? 'bg-[#155FA0]/5 translate-x-2 border border-[#155FA0]/10' : 'hover:bg-secondary hover:translate-x-1'}
                                 `}
                              >
                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 shadow-sm
                                      ${isActive 
-                                         ? 'bg-accent text-accent-foreground border-accent scale-110 shadow-accent/20' 
+                                         ? 'bg-[#FAC51C] text-[#155FA0] border-[#FAC51C] scale-110 shadow-[0_0_15px_rgba(250,197,28,0.2)]' 
                                          : isCompleted 
-                                             ? 'bg-primary text-primary-foreground border-primary' 
-                                             : 'bg-background text-muted-foreground border-border group-hover:border-accent/50'
+                                             ? 'bg-[#155FA0] text-white border-[#155FA0]' 
+                                             : 'bg-background text-muted-foreground border-border group-hover:border-[#155FA0]/30'
                                      }
                                  `}>
                                      <step.icon className="w-4 h-4" />
                                  </div>
                                  
                                  <div>
-                                     <p className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-accent' : 'text-muted-foreground'}`}>
+                                     <p className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-[#155FA0]' : 'text-muted-foreground'}`}>
                                          Step {index + 1}
                                      </p>
                                      <p className={`text-sm font-bold leading-none transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`}>
@@ -195,12 +196,12 @@ const RoadmapSection = () => {
                <div className='bg-card border border-border rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden h-full min-h-[500px] flex flex-col justify-between group'>
                    
                    {/* Background ambiance */}
-                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none group-hover:bg-accent/5 transition-colors duration-1000" />
+                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#155FA0]/5 rounded-full blur-[120px] pointer-events-none group-hover:bg-[#FAC51C]/5 transition-colors duration-1000" />
                    
                    <div className="relative z-10 space-y-10">
                        <div className="flex items-start justify-between gap-6">
                            <div className="space-y-6">
-                               <div className={`inline-flex p-4 rounded-2xl ${activeStep === steps.length-1 ? 'bg-green-500 text-white' : 'bg-foreground text-background'} shadow-xl`}>
+                               <div className={`inline-flex p-4 rounded-2xl ${activeStep === steps.length-1 ? 'bg-green-500 text-white' : 'bg-[#155FA0] text-white'} shadow-xl`}>
                                   {React.createElement(steps[activeStep].icon, { className: 'w-8 h-8' })}
                                </div>
                                
@@ -216,19 +217,20 @@ const RoadmapSection = () => {
 
                            <div className="hidden sm:block text-right">
                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Timeline</p>
-                               <p className="text-2xl font-black text-accent">{steps[activeStep].timeframe}</p>
+                               <p className="text-2xl font-black text-[#155FA0]">{steps[activeStep].timeframe}</p>
                            </div>
                        </div>
                        
                        {/* Action Items */}
-                       <div className="bg-secondary/40 rounded-3xl p-8 border border-border/50 backdrop-blur-md">
-                           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                       <div className="bg-[#155FA0] rounded-3xl p-8 border border-[#155FA0]/10 shadow-lg relative overflow-hidden">
+                           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                                {steps[activeStep].details.map((detail, idx) => (
                                    <div key={idx} className="flex flex-col gap-2">
-                                       <div className="w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center text-[10px] font-bold text-muted-foreground">
+                                       <div className="w-8 h-8 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-[10px] font-bold text-white">
                                            0{idx + 1}
                                        </div>
-                                       <span className="text-sm font-bold text-foreground leading-tight">{detail}</span>
+                                       <span className="text-sm font-bold text-white leading-tight">{detail}</span>
                                    </div>
                                ))}
                            </div>
@@ -241,7 +243,7 @@ const RoadmapSection = () => {
                          variant="ghost" 
                          onClick={() => setActiveStep(p => Math.max(0, p - 1))}
                          disabled={activeStep === 0}
-                         className="w-full sm:w-auto hover:bg-transparent hover:text-accent font-bold uppercase tracking-widest text-xs"
+                         className="w-full sm:w-auto hover:bg-secondary text-muted-foreground hover:text-[#155FA0] font-bold uppercase tracking-widest text-xs"
                        >
                            Analysis Phase
                        </Button>
@@ -249,7 +251,7 @@ const RoadmapSection = () => {
                        <Button 
                         onClick={() => setActiveStep(p => Math.min(steps.length - 1, p + 1))}
                         disabled={activeStep === steps.length - 1}
-                        className="w-full sm:w-auto h-14 rounded-full px-10 bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 active:scale-95 font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-accent/20"
+                        className="w-full sm:w-auto h-14 rounded-full px-10 bg-[#FAC51C] text-[#155FA0] hover:bg-[#FAC51C]/90 hover:scale-105 active:scale-95 font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-[#FAC51C]/20"
                        >
                            {activeStep === steps.length - 1 ? 'Complete Journey' : 'Next Phase'} <ChevronRight className="w-4 h-4 ml-2" />
                        </Button>

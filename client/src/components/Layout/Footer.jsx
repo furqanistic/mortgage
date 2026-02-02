@@ -1,17 +1,17 @@
 // File: client/src/components/layout/Footer.jsx
 import { motion } from 'framer-motion'
 import {
-    Building,
-    Calculator,
-    Github,
-    Globe,
-    Home,
-    Instagram,
-    Mail,
-    MessageCircle,
-    Phone,
-    Twitter,
-    Users,
+  Building,
+  Calculator,
+  Github,
+  Globe,
+  Home,
+  Instagram,
+  Mail,
+  MessageCircle,
+  Phone,
+  Twitter,
+  Users,
 } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -89,16 +89,16 @@ const Footer = () => {
               <ul className='space-y-3'>
                 <li className='flex items-center gap-2 group cursor-pointer text-muted-foreground hover:text-accent transition-colors'>
                   <Phone size={14} className='text-accent' />
-                  <span className='text-sm font-medium'>+49 151 7161</span>
+                  <span className='text-sm font-medium'>+49 151 71618082</span>
                 </li>
                 <li className='flex items-center gap-2 group cursor-pointer text-muted-foreground hover:text-accent transition-colors'>
                   <Mail size={14} className='text-accent' />
-                  <span className='text-sm font-medium truncate'>hello@baufiking</span>
+                  <span className='text-sm font-medium truncate'>ravinder.singh@baufiking.de</span>
                 </li>
-                <li className='flex items-center gap-2 text-muted-foreground'>
+                {/* <li className='flex items-center gap-2 text-muted-foreground'>
                   <Building size={14} className='text-accent' />
                   <span className='text-sm font-medium'>Munich, DE</span>
-                </li>
+                </li> */}
               </ul>
             </motion.div>
           </div>
