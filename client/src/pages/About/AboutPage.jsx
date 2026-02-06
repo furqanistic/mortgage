@@ -94,9 +94,15 @@ const AboutPage = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  <Button className="h-12 px-8 rounded-full bg-[#155FA0] text-primary-foreground font-black text-sm uppercase tracking-widest shadow-xl shadow-[#155FA0]/20 hover:scale-105 transition-transform">
-                    Start Your Journey
-                    <ArrowRight size={16} className="ml-2" />
+                  <Button asChild className="h-12 px-8 rounded-full bg-[#155FA0] text-primary-foreground font-black text-sm uppercase tracking-widest shadow-xl shadow-[#155FA0]/20 hover:scale-105 transition-transform">
+                    <a 
+                      href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37" 
+                      target="_blank" 
+                      rel="noreferrer"
+                    >
+                      View Portfolio
+                      <ArrowRight size={16} className="ml-2" />
+                    </a>
                   </Button>
                 </div>
               </motion.div>
@@ -109,11 +115,11 @@ const AboutPage = () => {
               >
                 <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-[2rem] overflow-hidden border border-border bg-muted shadow-2xl">
                   <img
-                    src="/Ravinder.jpeg"
+                    src="/Ravinder.png"
                     alt="Ravinder Singh"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
                 </div>
                 
                 {/* Floating Badge removed per request */}
@@ -289,14 +295,7 @@ const AboutPage = () => {
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
-              <Button className="h-16 px-12 rounded-full bg-[#155FA0] text-primary-foreground font-black text-sm uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-2xl shadow-[#155FA0]/20">
-                Talk to an Advisor
-              </Button>
-              <Button variant="outline" className="h-16 px-12 rounded-full border-border font-black text-sm uppercase tracking-widest hover:bg-white dark:hover:bg-slate-800 transition-all">
-                Browse Rates
-              </Button>
-            </div>
+
             
             {/* Visual Decoration */}
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_50%)] opacity-5" />

@@ -5,17 +5,17 @@ import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-   ArrowRight,
-   Building,
-   Calculator,
-   CheckCircle,
-   Euro,
-   Info,
-   Landmark,
-   MapPin,
-   Pencil,
-   Percent,
-   RefreshCcw,
+    ArrowRight,
+    Building,
+    Calculator,
+    CheckCircle,
+    Euro,
+    Info,
+    Landmark,
+    MapPin,
+    Pencil,
+    Percent,
+    RefreshCcw,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -41,9 +41,6 @@ const GERMAN_STATES = [
 
 const MortgageCalculator = () => {
   const [formData, setFormData] = useState({
-    salary: 60000,
-    savings: 100000,
-    duration: 20,
     propertyValue: 500000,
     state: 'Bayern',
     hasAgent: false,
@@ -76,42 +73,32 @@ const MortgageCalculator = () => {
   const calculate = () => {
     const propertyValue = Number(formData.propertyValue)
     const downPayment = Number(formData.savings)
-    const annualIncome = Number(formData.salary)
-    const monthlyIncome = annualIncome / 12
-    const maxMonthlyPayment = monthlyIncome * 0.40
-
+    
     // Buying costs
-    const notaryFee = propertyValue * 0.015
-    const landRegistrationFee = propertyValue * 0.005
+    const notaryFee = propertyValue * 0.02 // 2.0% covers Notary + Land Registry
     const selectedState = GERMAN_STATES.find(s => s.name === formData.state)
     const propertyAcquisitionTax = propertyValue * (selectedState.tax / 100)
     const agentFee = formData.hasAgent ? propertyValue * (formData.agentFee / 100) : 0
-    const totalBuyingCosts = notaryFee + landRegistrationFee + propertyAcquisitionTax + agentFee
+    const totalBuyingCosts = notaryFee + propertyAcquisitionTax + agentFee
 
     const totalCost = propertyValue + totalBuyingCosts
     const loanAmount = Math.max(0, totalCost - downPayment)
 
     const annualInterestRate = formData.interestRate / 100
     const monthlyInterestRate = annualInterestRate / 12
-    const numberOfPayments = formData.duration * 12
 
+    // Monthly payment calculation removed since duration is gone
+    // We will show 0 or hide it if we only care about acquisition costs now
     let monthlyPayment = 0
-    let totalInterest = 0
-
-    if (loanAmount > 0) {
-        monthlyPayment = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
-        totalInterest = monthlyPayment * numberOfPayments - loanAmount
-    }
 
     return {
         monthlyPayment: monthlyPayment.toFixed(0),
         loanAmount: loanAmount.toFixed(0),
         totalBuyingCosts: totalBuyingCosts.toFixed(0),
         totalCost: totalCost.toFixed(0),
-        isAffordable: monthlyPayment <= maxMonthlyPayment,
         buyingCosts: {
             tax: propertyAcquisitionTax,
-            notary: notaryFee + landRegistrationFee,
+            notary: notaryFee,
             agent: agentFee
         }
     }
@@ -151,7 +138,7 @@ const MortgageCalculator = () => {
                     {/* Property Price */}
                      <div className='group space-y-3'>
                         <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                           Property Value
+                           Buying Price
                            <div className='flex items-center gap-2 text-foreground bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
                               <Pencil className='w-3 h-3 text-muted-foreground' />
                               <div className='flex items-center gap-1'>
@@ -198,30 +185,7 @@ const MortgageCalculator = () => {
                         />
                      </div>
                     
-                    {/* Income */}
-                     <div className='group space-y-3'>
-                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                           Gross Annual Income
-                           <div className='flex items-center gap-2 text-foreground bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
-                              <Pencil className='w-3 h-3 text-muted-foreground' />
-                              <div className='flex items-center gap-1'>
-                                 <span>€</span>
-                                 <input 
-                                    type="text" 
-                                    value={formatNumber(formData.salary)} 
-                                    onChange={e => handleInputChange('salary', e.target.value)}
-                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                                 />
-                              </div>
-                           </div>
-                        </label>
-                        <Slider 
-                           value={[Number(formData.salary)]} 
-                           min={30000} max={300000} step={1000} 
-                           onValueChange={v => setFormData({...formData, salary: v[0]})} 
-                           className='py-2'
-                        />
-                     </div>
+                     {/* Income removed */}
 
                  </div>
               </div>
@@ -244,26 +208,37 @@ const MortgageCalculator = () => {
                       <span className='text-sm font-bold text-foreground'>Real Estate Agent</span>
                       <Switch checked={formData.hasAgent} onCheckedChange={c => setFormData({...formData, hasAgent: c})} />
                   </div>
-                  
-                   <div className='group space-y-1.5'>
-                       <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
-                         <span>Duration</span>
-                         <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
-                           <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
-                           <div className='flex items-center gap-1'>
-                             <input 
-                                type="text" 
-                                value={formatNumber(formData.duration)} 
-                                onChange={e => handleInputChange('duration', e.target.value)}
-                                className='w-8 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                             />
-                             <span className='text-[10px]'>Y</span>
-                           </div>
-                         </div>
-                       </div>
-                       <Slider value={[Number(formData.duration)]} min={5} max={35} step={1} onValueChange={v => setFormData({...formData, duration: v[0]})} />
-                   </div>
 
+                  {formData.hasAgent && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }} 
+                      animate={{ opacity: 1, height: 'auto' }} 
+                      className='group space-y-1.5'
+                    >
+                        <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
+                          <span>Agent Fee</span>
+                          <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
+                            <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
+                            <div className='flex items-center gap-1'>
+                              <input 
+                                 type="text" 
+                                 value={formData.agentFee} 
+                                 onChange={e => {
+                                    const val = e.target.value;
+                                    if (val === '' || /^[0-9]*\.?[0-9]*$/.test(val)) {
+                                       setFormData(prev => ({ ...prev, agentFee: val }));
+                                    }
+                                 }}
+                                 className='w-10 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                              />
+                              <span>%</span>
+                            </div>
+                          </div>
+                        </div>
+                        <Slider value={[Number(formData.agentFee)]} min={0.1} max={7} step={0.01} onValueChange={v => setFormData({...formData, agentFee: v[0]})} />
+                    </motion.div>
+                  )}
+                  
                    <div className='group space-y-1.5'>
                        <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
                          <span>Interest Rate</span>
@@ -298,48 +273,40 @@ const MortgageCalculator = () => {
                  
                  <div className='relative z-10 grid md:grid-cols-2 gap-12 items-end'>
                     <div className='space-y-2'>
-                       <p className='text-sm font-bold text-primary-foreground/60 uppercase tracking-widest'>Est. Monthly Rate</p>
+                       <p className='text-sm font-bold text-primary-foreground/60 uppercase tracking-widest whitespace-nowrap'>Total Cost of Acquisition</p>
                         <div className='flex items-baseline gap-1'>
                            <span className='text-6xl md:text-7xl font-heading font-black tracking-tighter text-white'>
-                              €{Number(data.monthlyPayment).toLocaleString()}
+                              €{Number(data.totalCost).toLocaleString()}
                            </span>
                         </div>
                     </div>
 
-                    <div className='space-y-6'>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-4'>
-                          <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Loan Amount</span>
-                          <span className='text-2xl font-black text-white'>€{Number(data.loanAmount).toLocaleString()}</span>
+                    <div className='space-y-4'>
+                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
+                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Loan Amount</span>
+                          <span className='text-xl font-black text-white'>€{Number(data.loanAmount).toLocaleString()}</span>
                        </div>
-                        <div className='flex justify-between items-end border-b border-white/10 pb-4'>
-                           <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Interest Rate</span>
-                           <span className='text-2xl font-black text-blue-400'>{Number(formData.interestRate).toFixed(2)}%</span>
+                        <div className='flex justify-between items-end border-b border-white/10 pb-2'>
+                           <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Interest Rate</span>
+                           <span className='text-xl font-black text-blue-400'>{Number(formData.interestRate).toFixed(2)}%</span>
                         </div>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-4'>
-                          <span className='text-xs font-bold text-primary-foreground/60 uppercase tracking-widest'>Total Capital</span>
-                          <span className='text-2xl font-black text-white'>€{Number(data.totalCost).toLocaleString()}</span>
+                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
+                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Notary (2.0%)</span>
+                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.notary).toLocaleString()}</span>
+                       </div>
+                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
+                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Tax ({GERMAN_STATES.find(s => s.name === formData.state).tax}%)</span>
+                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.tax).toLocaleString()}</span>
+                       </div>
+                       <div className={`flex justify-between items-end border-b border-white/10 pb-2 ${!formData.hasAgent && 'opacity-40'}`}>
+                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Agent {formData.hasAgent && `(${Number(formData.agentFee).toFixed(2)}%)`}</span>
+                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.agent).toLocaleString()}</span>
+                       </div>
+                       <div className='flex justify-between items-end pt-2'>
+                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Total Fees</span>
+                          <span className='text-xl font-black text-[#FAC51C]'>€{Number(data.totalBuyingCosts).toLocaleString()}</span>
                        </div>
                     </div>
-                 </div>
-              </div>
-
-              {/* Buying Costs Breakdown */}
-              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-                 <div className='bg-card border border-border rounded-3xl p-5 text-center space-y-1 hover:border-accent/30 transition-colors'>
-                    <p className='text-[10px] font-black uppercase tracking-widest text-muted-foreground'>Notary</p>
-                    <p className='text-lg font-bold'>€{(data.buyingCosts.notary).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
-                 </div>
-                 <div className='bg-card border border-border rounded-3xl p-5 text-center space-y-1 hover:border-accent/30 transition-colors'>
-                    <p className='text-[10px] font-black uppercase tracking-widest text-muted-foreground'>Tax ({GERMAN_STATES.find(s => s.name === formData.state).tax}%)</p>
-                    <p className='text-lg font-bold'>€{(data.buyingCosts.tax).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
-                 </div>
-                 <div className={`bg-card border border-border rounded-3xl p-5 text-center space-y-1 transition-colors ${formData.hasAgent ? 'opacity-100' : 'opacity-40'}`}>
-                    <p className='text-[10px] font-black uppercase tracking-widest text-muted-foreground'>Agent</p>
-                    <p className='text-lg font-bold'>€{(data.buyingCosts.agent).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
-                 </div>
-                 <div className='bg-[#FAC51C] text-[#155FA0] rounded-3xl p-5 text-center space-y-1 cursor-pointer hover:bg-[#FAC51C]/90 shadow-[0_0_20px_rgba(250,197,28,0.2)]'>
-                    <p className='text-[10px] font-black uppercase tracking-widest opacity-80'>Total Fees</p>
-                    <p className='text-lg font-black'>€{Number(data.totalBuyingCosts).toLocaleString()}</p>
                  </div>
               </div>
            </div>

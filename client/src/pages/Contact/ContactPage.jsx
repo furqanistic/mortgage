@@ -239,11 +239,6 @@ const ContactPage = () => {
               
               <div className='flex gap-4'>
                  <div className='p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md text-center min-w-[120px]'>
-                    <Zap size={24} className='text-[#FAC51C] mx-auto mb-2' />
-                    <p className='text-2xl font-black text-slate-50'>&lt; 15</p>
-                    <p className='text-[9px] font-bold uppercase tracking-widest text-slate-400'>Min Wait</p>
-                 </div>
-                 <div className='p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md text-center min-w-[120px]'>
                     <Clock size={24} className='text-[#FAC51C] mx-auto mb-2' />
                     <p className='text-2xl font-black text-slate-50'>24/7</p>
                     <p className='text-[9px] font-bold uppercase tracking-widest text-slate-400'>Support</p>

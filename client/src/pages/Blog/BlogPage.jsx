@@ -3,22 +3,22 @@ import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  ArrowRight,
-  BookOpen,
-  Calendar,
-  Clock,
-  Search,
-  Zap,
+    ArrowRight,
+    BookOpen,
+    Calendar,
+    Clock,
+    Search,
+    Zap,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -30,7 +30,7 @@ const blogPosts = [
     category: 'Analysis',
     date: 'Feb 18, 2025',
     readTime: '5 min',
-    image: 'https://images.unsplash.com/photo-1559599238-308793637427?q=80&w=2000',
+    image: '/blog/berlin_altbau.png',
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const blogPosts = [
     category: 'Guides',
     date: 'Feb 10, 2025',
     readTime: '8 min',
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2000',
+    image: '/blog/berlin_modern.png',
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const blogPosts = [
     category: 'Strategy',
     date: 'Feb 5, 2025',
     readTime: '6 min',
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000',
+    image: '/blog/berlin_villa.png',
   },
   {
     id: 4,
@@ -57,7 +57,7 @@ const blogPosts = [
     category: 'Evaluation',
     date: 'Jan 28, 2025',
     readTime: '4 min',
-    image: 'https://images.unsplash.com/photo-1600596542815-22b829377651?q=80&w=2000',
+    image: '/blog/berlin_townhouse.png',
   },
   {
     id: 5,
@@ -66,7 +66,7 @@ const blogPosts = [
     category: 'Finance',
     date: 'Jan 20, 2025',
     readTime: '7 min',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000',
+    image: '/blog/berlin_loft.png',
   },
   {
     id: 6,
@@ -75,7 +75,7 @@ const blogPosts = [
     category: 'Trends',
     date: 'Jan 15, 2025',
     readTime: '5 min',
-    image: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=2000',
+    image: '/blog/berlin_lakehouse.png',
   },
 ]
 
