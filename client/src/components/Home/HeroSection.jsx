@@ -141,16 +141,7 @@ const HeroSection = () => {
                   </motion.div>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.8 }}
-                  className="absolute -right-6 top-10 bg-background/90 backdrop-blur-xl border border-border/60 shadow-xl rounded-2xl p-4 w-44"
-                >
-                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Who We Are</p>
-                  <p className="text-sm font-heading font-black text-foreground mt-2">Certified Mortgage Consultant</p>
-                  <p className="text-[11px] text-muted-foreground mt-2">Practical guidance, no fluff.</p>
-                </motion.div>
+            
 
              </div>
           </motion.div>
