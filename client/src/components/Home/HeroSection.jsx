@@ -25,6 +25,9 @@ const HeroSection = () => {
                backgroundSize: '48px 48px' 
              }} 
         />
+        <div className="absolute -top-24 -right-24 w-[360px] h-[360px] rounded-full bg-[#155FA0]/10 blur-[80px]" />
+        <div className="absolute -bottom-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#FAC51C]/10 blur-[100px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(21,95,160,0.05),transparent)]" />
       </div>
 
       <ConsultationForm isOpen={isFormOpen} onClose={closeForm} />
@@ -126,24 +129,28 @@ const HeroSection = () => {
                   <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60' />
                     
                   <motion.div 
-                      initial={{ y: 40, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 1, duration: 0.8 }}
-                      className='absolute bottom-6 left-6 right-6 p-6 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-xl'
-                   >
-                      <div className='flex justify-between items-center'>
-                          <div className="space-y-1">
-                              <p className='text-[9px] text-white/60 font-black uppercase tracking-widest'>Current Best Rate</p>
-                              <p className='text-4xl font-black text-white tracking-tighter'>3.42<span className="text-xl">%</span></p>
-                          </div>
-                          <div className="text-right space-y-1">
-                               <p className='text-[9px] text-white/60 font-black uppercase tracking-widest'>Avg. Saving</p>
-                               <p className='text-3xl font-black text-[#FAC51C] tracking-tighter'>€12.5k</p>
-                          </div>
-                      </div>
-                   </motion.div>
+                    initial={{ y: 40, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 1, duration: 0.8 }}
+                    className='absolute bottom-6 left-6 right-6 p-6 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-xl'
+                  >
+                    <p className='text-[9px] text-white/60 font-black uppercase tracking-widest'>Guided By People, Backed By Data</p>
+                    <p className='text-lg sm:text-xl font-black text-white tracking-tight mt-2'>
+                      Clear steps, calm decisions, and a mortgage plan you can trust.
+                    </p>
+                  </motion.div>
                 </div>
 
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.8 }}
+                  className="absolute -right-6 top-10 bg-background/90 backdrop-blur-xl border border-border/60 shadow-xl rounded-2xl p-4 w-44"
+                >
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Who We Are</p>
+                  <p className="text-sm font-heading font-black text-foreground mt-2">Certified Mortgage Consultant</p>
+                  <p className="text-[11px] text-muted-foreground mt-2">Practical guidance, no fluff.</p>
+                </motion.div>
 
              </div>
           </motion.div>

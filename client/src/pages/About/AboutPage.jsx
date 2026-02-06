@@ -108,31 +108,15 @@ const AboutPage = () => {
                 className="relative group"
               >
                 <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-[2rem] overflow-hidden border border-border bg-muted shadow-2xl">
-                   <img 
-                    src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                    alt="Baufiking Vision" 
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <img
+                    src="/Ravinder.jpeg"
+                    alt="Ravinder Singh"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 
-                {/* Floating Badge */}
-                <motion.div 
-                  initial={{ rotate: -5, y: 10 }}
-                  animate={{ rotate: 0, y: 0 }}
-                  transition={{ repeat: Infinity, repeatType: 'reverse', duration: 4 }}
-                  className="absolute -bottom-6 -right-5 sm:-bottom-10 sm:-right-8 bg-card dark:bg-slate-900 shadow-2xl p-5 sm:p-8 rounded-3xl border border-border z-20"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-[#FAC51C]/10 rounded-2xl">
-                      <Award size={24} className="text-[#155FA0]" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-black text-foreground">Top Tier</p>
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Property Tech 2026</p>
-                    </div>
-                  </div>
-                </motion.div>
+                {/* Floating Badge removed per request */}
               </motion.div>
             </div>
           </div>
@@ -156,6 +140,33 @@ const AboutPage = () => {
                  </motion.div>
                ))}
             </div>
+          </div>
+        </section>
+
+        {/* About Our Team */}
+        <section className="py-16 sm:py-24 px-6 lg:px-8 max-w-4xl mx-auto">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">
+              About Our Team
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              We are a team dedicated to guiding clients through the complete home-buying journey—from the first dream to the moment you receive your keys.
+            </p>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              Our process is led by a certified mortgage consultant with nearly five years of experience, supported by a network of trusted partners including real estate agents, legal professionals, and service providers. With a foundation in engineering and an MBA-level understanding of finance and strategy, we combine technical expertise with practical, client-first advice.
+            </p>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              We believe the mortgage process should be clear, structured, and stress-free. That’s why we provide transparent guidance, step-by-step support, and the right connections at every stage of the journey.
+            </p>
+            <a
+              href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#155FA0] hover:text-[#0f4e83] transition-colors"
+            >
+              View Portfolio
+              <ChevronRight size={14} />
+            </a>
           </div>
         </section>
 

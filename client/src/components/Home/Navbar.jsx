@@ -170,17 +170,9 @@ const Navbar = () => {
       </AnimatePresence>
 
       {/* Main Navbar Wrapper */}
-      <div className={`w-full transition-all duration-500 ease-in-out ${
-        isScrolled ? 'pt-4 px-4' : 'pt-0 px-0'
-      }`}>
-        <nav
-          className={`mx-auto transition-all duration-500 ease-in-out relative
-            ${isScrolled 
-              ? 'max-w-5xl rounded-full glass-card shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/20 dark:border-white/10 py-2.5 px-2' 
-              : 'max-w-full border-b border-border/10 bg-background/5 backdrop-blur-[2px] py-4'
-            }`}
-        >
-          <div className={`${isScrolled ? 'px-6' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}`}>
+      <div className="w-full transition-all duration-500 ease-in-out">
+        <nav className="mx-auto transition-all duration-500 ease-in-out relative max-w-full border-b border-border/10 bg-background/80 backdrop-blur-md py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className='flex items-center justify-between'>
               {/* Logo */}
               <Link to='/' className='flex-shrink-0 group relative z-50 flex items-center gap-2'>
@@ -188,9 +180,7 @@ const Navbar = () => {
                   <img
                     src='/Logo.svg'
                     alt='Baufiking Logo'
-                    className={`transition-all duration-500 ease-out transform group-hover:scale-105 ${
-                      isScrolled ? 'h-8' : 'h-10'
-                    }`}
+                    className="transition-all duration-500 ease-out transform group-hover:scale-105 h-10"
                   />
                 </div>
               </Link>
@@ -293,8 +283,17 @@ const Navbar = () => {
                       <Menu className='h-5 w-5' />
                     </button>
                   </SheetTrigger>
-                  <SheetContent side='right' className='w-[300px] p-0 border-l border-border bg-background flex flex-col'>
-                    <div className="p-8 border-b border-border bg-accent/5 relative overflow-hidden">
+                  <SheetContent side='right' className='w-[320px] p-0 border-l border-border bg-background flex flex-col'>
+                    <div className="p-6 border-b border-border bg-gradient-to-br from-[#155FA0]/10 via-transparent to-[#FAC51C]/10 relative overflow-hidden">
+                      <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-[#155FA0]/10 blur-2xl" />
+                      <div className="absolute -bottom-10 -left-10 w-28 h-28 rounded-full bg-[#FAC51C]/10 blur-2xl" />
+                      <div className="relative z-10 flex items-center gap-3 mb-5">
+                        <img src="/Logo.svg" alt="Baufiking" className="h-8 w-auto" />
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold">Menu</p>
+                          <p className="text-sm font-heading font-black text-foreground">Navigate</p>
+                        </div>
+                      </div>
                       {isAuthenticated ? (
                         <div className='relative z-10 flex items-center gap-4 bg-background/80 backdrop-blur-md p-4 rounded-2xl border border-border/40 shadow-sm'>
                           <Avatar className='h-12 w-12 border-2 border-accent/20'>
@@ -320,18 +319,23 @@ const Navbar = () => {
                       )}
                     </div>
                     
-                    <div className='flex-1 overflow-y-auto py-8 px-6 space-y-2'>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4 px-4">Menu</p>
+                    <div className='flex-1 overflow-y-auto py-6 px-5 space-y-2'>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.25em] mb-3 px-3">Pages</p>
                       {navItems.map((item, index) => (
                         <Link
                           key={index}
                           to={item.path}
-                          className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group
+                          className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
                             ${location.pathname === item.path
                                 ? 'bg-accent/10 text-accent font-bold'
                                 : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                             }`}
                         >
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-colors
+                            ${location.pathname === item.path ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-secondary/60 border-transparent group-hover:bg-secondary group-hover:text-foreground'}`}
+                          >
+                            <item.icon className="w-4 h-4" />
+                          </div>
                           <span className='font-heading text-sm'>{item.label}</span>
                           {location.pathname === item.path && (
                              <motion.div layoutId="mobile-indicator" className="ml-auto w-1.5 h-1.5 rounded-full bg-accent" />
@@ -340,7 +344,7 @@ const Navbar = () => {
                       ))}
                     </div>
                     
-                    <div className="p-8 border-t border-border mt-auto bg-secondary/30">
+                    <div className="p-6 border-t border-border mt-auto bg-secondary/30">
                        <div className="flex flex-col gap-4">
                          <Dialog>
                             <DialogTrigger asChild>
