@@ -42,6 +42,7 @@ const GERMAN_STATES = [
 const MortgageCalculator = () => {
   const [formData, setFormData] = useState({
     propertyValue: 500000,
+    savings: 0,
     state: 'Bayern',
     hasAgent: false,
     agentFee: 3.57,
@@ -57,6 +58,7 @@ const MortgageCalculator = () => {
   }
 
   const parseNumber = (str) => {
+    if (str === '' || str === undefined || str === null) return ''
     return str.toString().replace(/,/g, '')
   }
 
@@ -71,20 +73,26 @@ const MortgageCalculator = () => {
   
   // Real-time calculation effect
   const calculate = () => {
-    const propertyValue = Number(formData.propertyValue)
-    const downPayment = Number(formData.savings)
+    const toNumber = (value) => {
+      const n = Number(value)
+      return Number.isFinite(n) ? n : 0
+    }
+
+    const propertyValue = toNumber(formData.propertyValue)
+    const downPayment = toNumber(formData.savings)
     
     // Buying costs
     const notaryFee = propertyValue * 0.02 // 2.0% covers Notary + Land Registry
     const selectedState = GERMAN_STATES.find(s => s.name === formData.state)
     const propertyAcquisitionTax = propertyValue * (selectedState.tax / 100)
-    const agentFee = formData.hasAgent ? propertyValue * (formData.agentFee / 100) : 0
+    const agentFeeRate = toNumber(formData.agentFee)
+    const agentFee = formData.hasAgent ? propertyValue * (agentFeeRate / 100) : 0
     const totalBuyingCosts = notaryFee + propertyAcquisitionTax + agentFee
 
     const totalCost = propertyValue + totalBuyingCosts
     const loanAmount = Math.max(0, totalCost - downPayment)
 
-    const annualInterestRate = formData.interestRate / 100
+    const annualInterestRate = toNumber(formData.interestRate) / 100
     const monthlyInterestRate = annualInterestRate / 12
 
     // Monthly payment calculation removed since duration is gone

@@ -5,7 +5,10 @@ import { Heart, MapPin, Quote, Sparkles } from 'lucide-react'
 const SuccessStories = () => {
     // Single real testimonial data
     const story = {
-        name: 'The Family',
+        clients: {
+            primary: 'Deepika Rajput',
+            secondary: 'Jagdish Rawat'
+        },
         role: 'Happy Homeowners',
         quote: "A big thank you from our whole family for helping us get our dream home! We had no idea about the German housing market, but you guided us through every step — from understanding the process to finding the right financing that fit our budget. What was once just a dream has now come true, thanks to your support and patience. We’ve finally moved in and couldn’t be happier! Thank you so much for everything!",
         location: 'Germany',
@@ -57,7 +60,15 @@ const SuccessStories = () => {
 
                         <div className="flex items-center gap-5 pt-4">
                             <div className="flex flex-col">
-                                <span className="font-heading font-black text-xl text-foreground uppercase tracking-wide">{story.name}</span>
+                                <div className="flex flex-col items-center text-center font-heading font-black text-xl text-foreground uppercase tracking-wide leading-none">
+                                    <span className="block">{story.clients.primary}</span>
+                                    <span className="inline-flex items-center gap-2 text-xs tracking-[0.35em] text-muted-foreground mt-2">
+                                        <span className="h-px w-6 bg-border/80" />
+                                        <span className="text-[10px] font-black">AND</span>
+                                        <span className="h-px w-6 bg-border/80" />
+                                    </span>
+                                    <span className="block mt-2">{story.clients.secondary}</span>
+                                </div>
                                 <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{story.role}</span>
                             </div>
                              <div className="h-10 w-px bg-border/60 mx-2" />
