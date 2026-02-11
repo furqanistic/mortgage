@@ -81,7 +81,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="relative group">
             <span className="font-heading text-2xl md:text-3xl font-bold text-primary dark:text-white tracking-tight">
-              Traumhaus
+              Baufiking
             </span>
             <span className="absolute -bottom-1 left-0 w-3/5 h-[3px] bg-gradient-to-r from-accent to-transparent transition-all duration-300 group-hover:w-full" />
           </Link>

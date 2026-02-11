@@ -12,7 +12,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
               <Home className="w-8 h-8 text-accent" />
-              <span className="font-heading text-2xl font-bold">Traumhaus</span>
+              <span className="font-heading text-2xl font-bold">Baufiking</span>
             </Link>
             <p className="text-white/60 mb-6 leading-relaxed">
               Ihr unabhängiger Partner für Immobilienfinanzierung. Wir vergleichen über 500 Banken, um Ihnen die besten Konditionen zu sichern.
