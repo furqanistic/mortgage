@@ -1,137 +1,88 @@
-// File: client/src/components/layout/Footer.jsx
-import { motion } from 'framer-motion'
-import { Globe, Instagram, Mail, Phone, Twitter } from 'lucide-react'
-import React from 'react'
+// File: client/src/components/Layout/Footer.jsx
 import { Link } from 'react-router-dom'
+import { Facebook, Twitter, Instagram, Linkedin, Home } from 'lucide-react'
 
 const Footer = () => {
-  const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Calculators', href: '/properties' }, // Properties has the calc in this project structure
-    { label: 'About', href: '/about' },
-    { label: 'Partners', href: '/partners' },
-    { label: 'Contact', href: '/contact' },
-  ]
-
-  const fadeInUpVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 },
-  }
-
   return (
-    <footer className='bg-background border-t border-border mt-auto'>
-      <div className='max-w-7xl mx-auto px-6 lg:px-8 py-6'>
-        <div className='flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between'>
-          <motion.div
-            initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true }}
-            variants={fadeInUpVariants}
-            className='flex flex-col gap-3 max-w-md'
-          >
-            <div className='flex items-center gap-3'>
-              <img src='/Logo.svg' alt='Baufiking' className='h-7 w-auto' />
-              <div className='flex gap-2'>
-                {[Globe, Twitter, Instagram].map((Icon, i) => (
-                  <a
-                    key={i}
-                    href='#'
-                    className='w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all'
-                  >
-                    <Icon size={14} />
-                  </a>
-                ))}
-              </div>
-            </div>
-            <p className='text-xs text-muted-foreground leading-relaxed'>
-              Engineering the future of German homeownership through data-driven mortgage solutions.
+    <footer className="bg-[#050f08] text-white pt-20 pb-10 border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+          {/* Brand Column */}
+          <div>
+            <Link to="/" className="flex items-center gap-2 mb-6">
+              <Home className="w-8 h-8 text-accent" />
+              <span className="font-heading text-2xl font-bold">Traumhaus</span>
+            </Link>
+            <p className="text-white/60 mb-6 leading-relaxed">
+              Ihr unabhängiger Partner für Immobilienfinanzierung. Wir vergleichen über 500 Banken, um Ihnen die besten Konditionen zu sichern.
             </p>
-          </motion.div>
-
-          <div className='grid grid-cols-2 sm:grid-cols-3 gap-6'>
-            <motion.div
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              transition={{ delay: 0.1 }}
-              className='space-y-3'
-            >
-              <h4 className='text-xs font-black uppercase tracking-widest text-foreground'>Platform</h4>
-              <ul className='space-y-2'>
-                {navItems.map((item, i) => (
-                  <li key={i}>
-                    <Link to={item.href} className='text-xs text-muted-foreground hover:text-accent transition-colors font-medium'>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              transition={{ delay: 0.2 }}
-              className='space-y-3'
-            >
-              <h4 className='text-xs font-black uppercase tracking-widest text-foreground'>Connection</h4>
-              <ul className='space-y-2'>
-                <li className='flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors'>
-                  <Phone size={12} className='text-accent' />
-                  <span className='text-xs font-medium'>+49 151 71618082</span>
-                </li>
-                <li className='flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors'>
-                  <Mail size={12} className='text-accent' />
-                  <span className='text-xs font-medium truncate'>ravinder.singh@baufiking.de</span>
-                </li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              variants={fadeInUpVariants}
-              transition={{ delay: 0.3 }}
-              className='space-y-3 sm:col-span-1 col-span-2'
-            >
-              <h4 className='text-xs font-black uppercase tracking-widest text-foreground'>Intelligence</h4>
-              <form className='flex gap-2' onSubmit={e => e.preventDefault()}>
-                <input
-                  type='email'
-                  placeholder='Email'
-                  className='flex-1 h-9 px-3 rounded-lg bg-secondary border-none text-xs outline-none focus:ring-1 focus:ring-accent transition-all'
-                />
-                <button className='h-9 w-9 flex items-center justify-center bg-primary text-primary-foreground rounded-lg shadow-lg shadow-primary/10 hover:scale-105 active:scale-95 transition-all'>
-                  <ArrowRight size={14} />
-                </button>
-              </form>
-            </motion.div>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
           </div>
+
+          {/* Links Column 1 */}
+          <div>
+            <h4 className="font-bold text-lg mb-6 text-white">Dienstleistungen</h4>
+            <ul className="space-y-4 text-white/60">
+              <li><a href="#" className="hover:text-accent transition-colors">Baufinanzierung</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Anschlussfinanzierung</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Kapitalanlage</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Forward-Darlehen</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Privatkredit</a></li>
+            </ul>
+          </div>
+
+          {/* Links Column 2 */}
+          <div>
+            <h4 className="font-bold text-lg mb-6 text-white">Unternehmen</h4>
+            <ul className="space-y-4 text-white/60">
+              <li><a href="#" className="hover:text-accent transition-colors">Über uns</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Karriere</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Partner werden</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Presse</a></li>
+              <li><a href="#" className="hover:text-accent transition-colors">Kontakt</a></li>
+            </ul>
+          </div>
+
+          {/* Contact Column */}
+          <div>
+            <h4 className="font-bold text-lg mb-6 text-white">Kontakt</h4>
+            <ul className="space-y-4 text-white/60">
+              <li>Musterstraße 123</li>
+              <li>10115 Berlin</li>
+              <li className="pt-2"><a href="tel:+49123456789" className="hover:text-accent transition-colors">+49 (0) 30 123 456 78</a></li>
+              <li><a href="mailto:info@baufiking.de" className="hover:text-accent transition-colors">info@baufiking.de</a></li>
+            </ul>
+          </div>
+
         </div>
 
-        <div className='mt-6 pt-4 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4'>
-          <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>
-            © {new Date().getFullYear()} Baufiking Ecosystem.
-          </p>
-          <div className='flex gap-6'>
-            <Link to='/privacy' className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-accent transition-colors'>Privacy</Link>
-            <Link to='/terms' className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-accent transition-colors'>Terms</Link>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
+          <div>
+            &copy; {new Date().getFullYear()} Baufiking GmbH. Alle Rechte vorbehalten.
+          </div>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-white transition-colors">Impressum</a>
+            <a href="#" className="hover:text-white transition-colors">Datenschutz</a>
+            <a href="#" className="hover:text-white transition-colors">AGB</a>
           </div>
         </div>
       </div>
     </footer>
   )
 }
-
-// Arrow icon for the newsletter button since it's not imported
-const ArrowRight = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14m-7-7 7 7-7 7" />
-  </svg>
-)
 
 export default Footer

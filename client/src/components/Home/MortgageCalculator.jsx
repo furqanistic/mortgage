@@ -1,327 +1,163 @@
 // File: client/src/components/Home/MortgageCalculator.jsx
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
-import { Switch } from '@/components/ui/switch'
-import { AnimatePresence, motion } from 'framer-motion'
-import {
-    ArrowRight,
-    Building,
-    Calculator,
-    CheckCircle,
-    Euro,
-    Info,
-    Landmark,
-    MapPin,
-    Pencil,
-    Percent,
-    RefreshCcw,
-} from 'lucide-react'
-import { useState } from 'react'
-
-// German states tax
-const GERMAN_STATES = [
-  { name: 'Baden-Württemberg', tax: 5.0 },
-  { name: 'Bayern', tax: 3.5 },
-  { name: 'Berlin', tax: 6.0 },
-  { name: 'Brandenburg', tax: 6.5 },
-  { name: 'Bremen', tax: 5.0 },
-  { name: 'Hamburg', tax: 5.5 },
-  { name: 'Hessen', tax: 6.0 },
-  { name: 'Mecklenburg-Vorpommern', tax: 6.0 },
-  { name: 'Niedersachsen', tax: 5.0 },
-  { name: 'Nordrhein-Westfalen', tax: 6.5 },
-  { name: 'Rheinland-Pfalz', tax: 5.0 },
-  { name: 'Saarland', tax: 6.5 },
-  { name: 'Sachsen', tax: 5.5 },
-  { name: 'Sachsen-Anhalt', tax: 5.0 },
-  { name: 'Schleswig-Holstein', tax: 6.5 },
-  { name: 'Thüringen', tax: 5.0 },
-]
+import { useState, useEffect } from 'react'
 
 const MortgageCalculator = () => {
-  const [formData, setFormData] = useState({
-    propertyValue: 500000,
-    savings: 0,
-    state: 'Bayern',
-    hasAgent: false,
-    agentFee: 3.57,
-    interestRate: 3.5,
-  })
+   const [income, setIncome] = useState(5000)
+   const [equity, setEquity] = useState(50000)
+   const [loan, setLoan] = useState(300000)
+   const [term, setTerm] = useState(25)
+   const [monthlyRate, setMonthlyRate] = useState(0)
+   const [totalCost, setTotalCost] = useState(0)
 
-  // Formatters
-  const formatNumber = (num) => {
-    if (num === '' || num === undefined || num === null) return ''
-    const parts = num.toString().split('.')
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    return parts.join('.')
-  }
+   // Assumed interest rate
+   const interestRate = 0.035 // 3.5%
 
-  const parseNumber = (str) => {
-    if (str === '' || str === undefined || str === null) return ''
-    return str.toString().replace(/,/g, '')
-  }
+   useEffect(() => {
+      // Mortgage Calculation Formula: M = P[r(1+r)^n]/[(1+r)^n-1]
+      const monthlyInterest = interestRate / 12
+      const numberOfPayments = term * 12
 
-  const handleInputChange = (field, value) => {
-    const rawValue = parseNumber(value)
-    if (rawValue === '' || !isNaN(rawValue)) {
-      setFormData(prev => ({ ...prev, [field]: rawValue }))
-    }
-  }
+      // Only calculate if loan > 0
+      if (loan > 0) {
+         const x = Math.pow(1 + monthlyInterest, numberOfPayments)
+         const monthly = (loan * x * monthlyInterest) / (x - 1)
 
-  const [results, setResults] = useState(null)
-  
-  // Real-time calculation effect
-  const calculate = () => {
-    const toNumber = (value) => {
-      const n = Number(value)
-      return Number.isFinite(n) ? n : 0
-    }
+         setMonthlyRate(monthly)
+         setTotalCost(monthly * numberOfPayments)
+      } else {
+         setMonthlyRate(0)
+         setTotalCost(0)
+      }
+   }, [loan, term, interestRate])
 
-    const propertyValue = toNumber(formData.propertyValue)
-    const downPayment = toNumber(formData.savings)
-    
-    // Buying costs
-    const notaryFee = propertyValue * 0.02 // 2.0% covers Notary + Land Registry
-    const selectedState = GERMAN_STATES.find(s => s.name === formData.state)
-    const propertyAcquisitionTax = propertyValue * (selectedState.tax / 100)
-    const agentFeeRate = toNumber(formData.agentFee)
-    const agentFee = formData.hasAgent ? propertyValue * (agentFeeRate / 100) : 0
-    const totalBuyingCosts = notaryFee + propertyAcquisitionTax + agentFee
+   const formatCurrency = (value) => {
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value)
+   }
 
-    const totalCost = propertyValue + totalBuyingCosts
-    const loanAmount = Math.max(0, totalCost - downPayment)
+   return (
+      <section className="py-20 relative overflow-hidden bg-gradient-to-br from-primary to-[#0f2919] text-white">
+         {/* Background Decoration */}
+         <div className="absolute top-[-50%] left-[-20%] w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-    const annualInterestRate = toNumber(formData.interestRate) / 100
-    const monthlyInterestRate = annualInterestRate / 12
+         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center mb-12">
+               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-white">
+                  Wie viel Haus können Sie sich leisten?
+               </h2>
+               <p className="text-white/80 text-lg">
+                  Nutzen Sie unseren Rechner für eine erste Einschätzung Ihres Budgets
+               </p>
+            </div>
 
-    // Monthly payment calculation removed since duration is gone
-    // We will show 0 or hide it if we only care about acquisition costs now
-    let monthlyPayment = 0
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden text-foreground">
+               <div className="p-8 md:p-12">
+                  <div className="grid gap-8 mb-8">
+                     {/* Income Slider */}
+                     <div className="space-y-4">
+                        <div className="flex justify-between items-center text-sm font-semibold">
+                           <label>Monatliches Nettoeinkommen</label>
+                           <span className="text-primary dark:text-accent font-bold text-lg">{formatCurrency(income)}</span>
+                        </div>
+                        <Slider
+                           value={[income]}
+                           onValueChange={(val) => setIncome(val[0])}
+                           min={2000}
+                           max={15000}
+                           step={500}
+                           className="py-2"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                           <span>€2.000</span>
+                           <span>€15.000</span>
+                        </div>
+                     </div>
 
-    return {
-        monthlyPayment: monthlyPayment.toFixed(0),
-        loanAmount: loanAmount.toFixed(0),
-        totalBuyingCosts: totalBuyingCosts.toFixed(0),
-        totalCost: totalCost.toFixed(0),
-        buyingCosts: {
-            tax: propertyAcquisitionTax,
-            notary: notaryFee,
-            agent: agentFee
-        }
-    }
-  }
-
-  const data = calculate()
-
-  return (
-    <section className='relative py-20 bg-background overflow-hidden border-b border-border/50'> 
-       {/* Background */}
-       <div className='absolute inset-0 opacity-[0.03] pointer-events-none' 
-           style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
-       />
-
-      <div className='max-w-7xl mx-auto px-6 lg:px-8 relative z-10'>
-        <div className='flex flex-col md:flex-row items-end justify-between gap-8 mb-16'>
-           <div className='space-y-4'>
-               <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className='inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-accent text-[10px] font-bold uppercase tracking-widest border border-accent/20'>
-                 <Calculator className='w-3 h-3' /> Financial Engineering
-               </motion.div>
-               <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className='text-4xl md:text-6xl font-heading font-black tracking-tighter text-foreground leading-[0.9]'>
-                 Plan Your <br /><span className='text-[#155FA0]'>Investment</span>
-               </motion.h2>
-           </div>
-           
-           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className='text-muted-foreground font-medium max-w-sm text-sm text-right hidden md:block'>
-              Real-time mortgage simulation with current <br /> German market variables and tax rates.
-           </motion.p>
-        </div>
-
-        <div className='grid lg:grid-cols-12 gap-8 items-start'>
-           {/* Control Panel */}
-           <div className='lg:col-span-4 space-y-3'>
-              <div className='bg-card border border-border rounded-[2rem] p-6 shadow-xl'>
-                 <div className='space-y-6'>
-                    
-                    {/* Property Price */}
-                     <div className='group space-y-3'>
-                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                           Buying Price
-                           <div className='flex items-center gap-2 text-foreground bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
-                              <Pencil className='w-3 h-3 text-muted-foreground' />
-                              <div className='flex items-center gap-1'>
-                                 <span>€</span>
-                                 <input 
-                                    type="text" 
-                                    value={formatNumber(formData.propertyValue)} 
-                                    onChange={e => handleInputChange('propertyValue', e.target.value)}
-                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                                 />
-                              </div>
-                           </div>
-                        </label>
-                        <Slider 
-                           value={[Number(formData.propertyValue)]} 
-                           min={100000} max={2000000} step={10000} 
-                           onValueChange={v => setFormData({...formData, propertyValue: v[0]})} 
-                           className='py-2'
+                     {/* Equity Input */}
+                     <div className="space-y-4">
+                        <label className="text-sm font-semibold block">Vorhandenes Eigenkapital (€)</label>
+                        <input
+                           type="number"
+                           value={equity}
+                           onChange={(e) => setEquity(Number(e.target.value))}
+                           className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-slate-950 dark:border-slate-800"
+                           placeholder="z.B. 50000"
                         />
                      </div>
 
-                    {/* Savings */}
-                     <div className='group space-y-3'>
-                        <label className='flex justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-                           Down Payment
-                           <div className='flex items-center gap-2 text-accent bg-secondary/30 px-3 py-1.5 rounded-xl border border-border group-hover:border-accent/50 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/10 transition-all cursor-text'>
-                              <Pencil className='w-3 h-3 text-muted-foreground/50' />
-                              <div className='flex items-center gap-1'>
-                                 <span>€</span>
-                                 <input 
-                                    type="text" 
-                                    value={formatNumber(formData.savings)} 
-                                    onChange={e => handleInputChange('savings', e.target.value)}
-                                    className='w-24 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                                 />
-                              </div>
-                           </div>
-                        </label>
-                        <Slider 
-                           value={[Number(formData.savings)]} 
-                           min={0} max={Number(formData.propertyValue)} step={5000} 
-                           onValueChange={v => setFormData({...formData, savings: v[0]})} 
-                           className='py-2'
+                     {/* Loan Slider */}
+                     <div className="space-y-4">
+                        <div className="flex justify-between items-center text-sm font-semibold">
+                           <label>Gewünschte Kreditsumme</label>
+                           <span className="text-primary dark:text-accent font-bold text-lg">{formatCurrency(loan)}</span>
+                        </div>
+                        <Slider
+                           value={[loan]}
+                           onValueChange={(val) => setLoan(val[0])}
+                           min={100000}
+                           max={1000000}
+                           step={10000}
+                           className="py-2"
                         />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                           <span>€100k</span>
+                           <span>€1M</span>
+                        </div>
                      </div>
-                    
-                     {/* Income removed */}
 
-                 </div>
-              </div>
-
-              {/* Toggles Panel */}
-              <div className='bg-secondary/30 border border-border rounded-[2rem] p-6 space-y-5'>
-                  <div className='space-y-1.5'>
-                      <label className='text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>Region</label>
-                      <select 
-                        title="state"
-                        value={formData.state} 
-                        onChange={e => setFormData({...formData, state: e.target.value})}
-                        className='w-full h-10 bg-background rounded-xl px-3 text-sm font-bold border-none outline-none focus:ring-1 focus:ring-accent'
-                      >
-                         {GERMAN_STATES.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
-                      </select>
+                     {/* Term Slider */}
+                     <div className="space-y-4">
+                        <div className="flex justify-between items-center text-sm font-semibold">
+                           <label>Laufzeit (Jahre)</label>
+                           <span className="text-primary dark:text-accent font-bold text-lg">{term} Jahre</span>
+                        </div>
+                        <Slider
+                           value={[term]}
+                           onValueChange={(val) => setTerm(val[0])}
+                           min={10}
+                           max={35}
+                           step={5}
+                           className="py-2"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                           <span>10</span>
+                           <span>35</span>
+                        </div>
+                     </div>
                   </div>
 
-                  <div className='flex items-center justify-between'>
-                      <span className='text-sm font-bold text-foreground'>Real Estate Agent</span>
-                      <Switch checked={formData.hasAgent} onCheckedChange={c => setFormData({...formData, hasAgent: c})} />
+                  <div className="bg-gradient-to-br from-primary to-[#0f2919] rounded-xl p-8 text-white shadow-lg">
+                     <h3 className="font-heading text-xl font-semibold mb-6 text-center border-b border-white/20 pb-4">
+                        Ihre geschätzte Finanzierung
+                     </h3>
+
+                     <div className="space-y-4 mb-8">
+                        <div className="flex justify-between items-center py-2 border-b border-white/10">
+                           <span className="opacity-90">Monatliche Rate</span>
+                           <span className="text-2xl font-bold">{formatCurrency(monthlyRate)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-white/10">
+                           <span className="opacity-90">Gesamtkosten</span>
+                           <span className="text-xl font-semibold">{formatCurrency(totalCost)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 text-accent">
+                           <span className="opacity-90">Empfohlener Kaufpreis</span>
+                           <span className="text-xl font-semibold">{formatCurrency(loan + equity)}</span>
+                        </div>
+                     </div>
+
+                     <div className="text-center">
+                        <Button variant="secondary" size="lg" className="bg-white text-primary hover:bg-white/90 font-bold w-full sm:w-auto transition-transform hover:-translate-y-1">
+                           Persönliches Angebot erhalten
+                        </Button>
+                     </div>
                   </div>
-
-                  {formData.hasAgent && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }} 
-                      animate={{ opacity: 1, height: 'auto' }} 
-                      className='group space-y-1.5'
-                    >
-                        <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
-                          <span>Agent Fee</span>
-                          <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
-                            <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
-                            <div className='flex items-center gap-1'>
-                              <input 
-                                 type="text" 
-                                 value={formData.agentFee} 
-                                 onChange={e => {
-                                    const val = e.target.value;
-                                    if (val === '' || /^[0-9]*\.?[0-9]*$/.test(val)) {
-                                       setFormData(prev => ({ ...prev, agentFee: val }));
-                                    }
-                                 }}
-                                 className='w-10 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                              />
-                              <span>%</span>
-                            </div>
-                          </div>
-                        </div>
-                        <Slider value={[Number(formData.agentFee)]} min={0.1} max={7} step={0.01} onValueChange={v => setFormData({...formData, agentFee: v[0]})} />
-                    </motion.div>
-                  )}
-                  
-                   <div className='group space-y-1.5'>
-                       <div className='flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground'>
-                         <span>Interest Rate</span>
-                         <div className='flex items-center gap-2 text-foreground bg-background/50 px-2 py-1 rounded-lg border border-border/50 group-hover:border-accent/50 focus-within:border-accent transition-all cursor-text'>
-                           <Pencil className='w-2.5 h-2.5 text-muted-foreground/50' />
-                           <div className='flex items-center gap-1'>
-                             <input 
-                                type="text" 
-                                value={formData.interestRate} 
-                                onChange={e => {
-                                   const val = e.target.value;
-                                   if (val === '' || /^[0-9]*\.?[0-9]*$/.test(val)) {
-                                      setFormData(prev => ({ ...prev, interestRate: val }));
-                                   }
-                                }}
-                                className='w-10 bg-transparent border-none outline-none text-right font-bold p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                             />
-                             <span>%</span>
-                           </div>
-                         </div>
-                       </div>
-                       <Slider value={[Number(formData.interestRate)]} min={0.1} max={10} step={0.1} onValueChange={v => setFormData({...formData, interestRate: v[0]})} />
-                   </div>
-              </div>
-           </div>
-
-           {/* Visualization Dashboard */}
-           <div className='lg:col-span-8 space-y-4'>
-              {/* Main Result Card */}
-              <div className='bg-[#155FA0] text-primary-foreground rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl'>
-                 <div className='absolute top-0 right-0 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none' />
-                 
-                 <div className='relative z-10 grid md:grid-cols-2 gap-12 items-end'>
-                    <div className='space-y-2'>
-                       <p className='text-sm font-bold text-primary-foreground/60 uppercase tracking-widest whitespace-nowrap'>Total Cost of Acquisition</p>
-                        <div className='flex items-baseline gap-1'>
-                           <span className='text-6xl md:text-7xl font-heading font-black tracking-tighter text-white'>
-                              €{Number(data.totalCost).toLocaleString()}
-                           </span>
-                        </div>
-                    </div>
-
-                    <div className='space-y-4'>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
-                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Loan Amount</span>
-                          <span className='text-xl font-black text-white'>€{Number(data.loanAmount).toLocaleString()}</span>
-                       </div>
-                        <div className='flex justify-between items-end border-b border-white/10 pb-2'>
-                           <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Interest Rate</span>
-                           <span className='text-xl font-black text-blue-400'>{Number(formData.interestRate).toFixed(2)}%</span>
-                        </div>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
-                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Notary (2.0%)</span>
-                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.notary).toLocaleString()}</span>
-                       </div>
-                       <div className='flex justify-between items-end border-b border-white/10 pb-2'>
-                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Tax ({GERMAN_STATES.find(s => s.name === formData.state).tax}%)</span>
-                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.tax).toLocaleString()}</span>
-                       </div>
-                       <div className={`flex justify-between items-end border-b border-white/10 pb-2 ${!formData.hasAgent && 'opacity-40'}`}>
-                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Agent {formData.hasAgent && `(${Number(formData.agentFee).toFixed(2)}%)`}</span>
-                          <span className='text-xl font-black text-white'>€{(data.buyingCosts.agent).toLocaleString()}</span>
-                       </div>
-                       <div className='flex justify-between items-end pt-2'>
-                          <span className='text-[10px] font-bold text-primary-foreground/60 uppercase tracking-widest'>Total Fees</span>
-                          <span className='text-xl font-black text-[#FAC51C]'>€{Number(data.totalBuyingCosts).toLocaleString()}</span>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
-      </div>
-    </section>
-  )
+               </div>
+            </div>
+         </div>
+      </section>
+   )
 }
 
 export default MortgageCalculator
