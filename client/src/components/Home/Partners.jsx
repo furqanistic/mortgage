@@ -26,7 +26,7 @@ const Partners = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className="h-20 bg-secondary/50 dark:bg-white/5 border-2 border-border/50 rounded-xl flex items-center justify-center text-muted-foreground font-semibold hover:border-accent hover:text-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                            className="h-16 bg-secondary/50 dark:bg-white/5 border-2 border-border/50 rounded-xl flex items-center justify-center text-muted-foreground font-semibold hover:border-accent hover:text-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base"
                         >
                             {partner}
                         </motion.div>

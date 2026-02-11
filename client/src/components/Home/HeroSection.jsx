@@ -33,7 +33,7 @@ const HeroSection = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-left relative z-20"
+            className="text-left relative z-30"
           >
             <motion.h1
               variants={itemVariants}
