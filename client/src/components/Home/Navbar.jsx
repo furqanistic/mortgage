@@ -1,5 +1,14 @@
 // File: client/src/components/Home/Navbar.jsx
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import {
@@ -10,24 +19,15 @@ import {
 } from '@/redux/userSlice'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  Menu,
   Globe,
-  Phone,
   LogOut,
+  Menu,
+  Phone,
   User
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 const Navbar = ({ language = 'de', onLanguageChange }) => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -64,11 +64,13 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
   const isEnglish = language === 'en'
   const navItems = isEnglish
     ? [
+        { label: 'Home', path: '/' },
         { label: 'Partners', path: '/partners' },
         { label: 'About', path: '/about' },
         { label: 'Contact', path: '/contact' },
       ]
     : [
+        { label: 'Startseite', path: '/' },
         { label: 'Partner', path: '/partners' },
         { label: 'Über uns', path: '/about' },
         { label: 'Kontakt', path: '/contact' },
@@ -97,7 +99,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
               alt="Baufiking logo"
               className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover shadow-sm ring-1 ring-border/40"
             />
-            <span className="font-heading text-lg sm:text-2xl md:text-3xl font-bold text-primary dark:text-white tracking-tight max-w-[140px] sm:max-w-none truncate">
+            <span className="font-logo text-lg sm:text-2xl md:text-3xl font-bold text-primary dark:text-white max-w-[140px] sm:max-w-none truncate">
               Baufiking
             </span>
             <span className="absolute -bottom-1 left-0 w-3/5 h-[3px] bg-gradient-to-r from-accent to-transparent transition-all duration-300 group-hover:w-full" />
@@ -217,7 +219,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                         alt="Baufiking logo"
                         className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-border/40"
                       />
-                      <span className="font-heading text-2xl font-bold text-primary dark:text-white">
+                      <span className="font-logo text-2xl font-bold text-primary dark:text-white">
                         Baufiking
                       </span>
                     </div>

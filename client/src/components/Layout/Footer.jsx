@@ -32,7 +32,7 @@ const Footer = ({ language = 'de' }) => {
                 alt="Baufiking logo"
                 className="h-9 w-9 rounded-full object-cover ring-1 ring-white/20"
               />
-              <span className="font-heading text-2xl font-bold">Baufiking</span>
+              <span className="font-logo text-2xl font-bold">Baufiking</span>
             </Link>
             <p className="text-white/60 mb-6 leading-relaxed">
               {aboutText}

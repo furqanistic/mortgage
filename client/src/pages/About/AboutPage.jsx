@@ -4,18 +4,18 @@ import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-    ArrowRight,
-    Award,
-    Building,
-    CheckCircle,
-    ChevronRight,
-    History,
-    Lightbulb,
-    MessageCircle,
-    Star,
-    Target,
-    Users,
-    Zap,
+  ArrowRight,
+  Award,
+  Building,
+  CheckCircle,
+  ChevronRight,
+  History,
+  Lightbulb,
+  MessageCircle,
+  Star,
+  Target,
+  Users,
+  Zap,
 } from 'lucide-react'
 import { useRef } from 'react'
 
@@ -208,99 +208,6 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
           </motion.div>
         </section>
 
-        {/* Our Approach Section */}
-        <section className="py-20 sm:py-32 bg-primary text-primary-foreground overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-             <div className="grid lg:grid-cols-2 gap-20 items-center">
-                <motion.div 
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="space-y-10"
-                >
-                  <div className="space-y-6">
-                    <h2 className="text-4xl sm:text-6xl font-heading font-black leading-tight tracking-tighter text-slate-50">Expertise Meets <br /><span className="text-accent">Empathy</span></h2>
-                    <p className="text-lg text-primary-foreground/70 leading-relaxed font-medium">
-                      The German mortgage market is complex. Our approach simplifies the math while respecting the emotional gravity of buying a home.
-                    </p>
-                  </div>
-
-                  <div className="space-y-8">
-                    {[
-                      { icon: History, title: 'Deep Roots', desc: 'Over a decade of navigating local banking frameworks.' },
-                      { icon: Lightbulb, title: 'Smart Tech', desc: 'Proprietary platform that finds hidden rate opportunities.' },
-                      { icon: MessageCircle, title: 'Always Open', desc: 'Communication is our top priority, ensuring zero blind spots.' }
-                    ].map((item, idx) => (
-                      <div key={idx} className="flex gap-6 group">
-                         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-300">
-                           <item.icon size={20} />
-                         </div>
-                         <div className="space-y-1">
-                            <h4 className="text-xl font-black text-slate-50">{item.title}</h4>
-                            <p className="text-primary-foreground/50 text-sm">{item.desc}</p>
-                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="relative p-6 sm:p-10 bg-white/5 backdrop-blur-xl rounded-[3rem] border border-white/10"
-                >
-                  <div className="grid grid-cols-2 gap-6 relative z-10">
-                     <div className="space-y-6">
-                        <div className="aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                           <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000" alt="team" className="w-full h-full object-cover filter brightness-75 hover:brightness-100 transition-all duration-700" />
-                        </div>
-                        <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                           <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000" alt="property" className="w-full h-full object-cover filter brightness-75 hover:brightness-100 transition-all duration-700" />
-                        </div>
-                     </div>
-                     <div className="space-y-6 pt-12">
-                        <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000" alt="design" className="w-full h-full object-cover filter brightness-75 hover:brightness-100 transition-all duration-700" />
-                        </div>
-                        <div className="aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                           <img src="https://images.unsplash.com/photo-1575908539614-0d196fa53506?q=80&w=1000" alt="happy family" className="w-full h-full object-cover filter brightness-75 hover:brightness-100 transition-all duration-700" />
-                        </div>
-                     </div>
-                  </div>
-                  
-                  {/* Decorative Elements */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px]" />
-                  <div className="absolute bottom-0 left-0 w-40 h-40 bg-indigo-500/10 rounded-full blur-[80px]" />
-                </motion.div>
-             </div>
-          </div>
-        </section>
-
-        {/* Streamlined CTA Section */}
-        <section className="py-24 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-[3rem] bg-secondary p-12 sm:p-24 text-center space-y-8 sm:space-y-12 relative overflow-hidden border border-border"
-          >
-            <div className="space-y-4 sm:space-y-6 relative z-10 text-center">
-              <h2 className="text-4xl sm:text-6xl font-heading font-black tracking-tight text-foreground">
-                Ready to Find Your <br />
-                <span className="text-primary">Future Home?</span>
-              </h2>
-              <p className="text-base sm:text-lg text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed">
-                Connect with our expert team today and discover how simple home ownership in Germany can be with Baufiking.
-              </p>
-            </div>
-            
-
-            
-            {/* Visual Decoration */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,var(--color-accent),transparent_50%)] opacity-5" />
-          </motion.div>
-        </section>
       </main>
 
       <Footer language={language} />
