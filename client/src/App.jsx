@@ -1,5 +1,6 @@
 // File: client/src/App.jsx
 import { Toaster } from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
     Navigate,
@@ -44,7 +45,7 @@ const ProtectedAdminRoute = () => {
  * RedirectIfAuthenticated - Prevents authenticated users from accessing auth page
  * Redirects to homepage or admin page if already logged in
  */
-const RedirectIfAuthenticated = () => {
+const RedirectIfAuthenticated = ({ language, onLanguageChange }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const isAdmin = useSelector(selectIsAdmin)
 
@@ -56,27 +57,42 @@ const RedirectIfAuthenticated = () => {
   }
 
   // If not logged in, show the auth page
-  return <Auth />
+  return <Auth language={language} onLanguageChange={onLanguageChange} />
 }
 
 const App = () => {
   const location = useLocation()
-  
+  const [language, setLanguage] = useState(() => {
+    try {
+      return localStorage.getItem('language') || 'de'
+    } catch (error) {
+      return 'de'
+    }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('language', language)
+    } catch (error) {
+      // Ignore write errors (privacy mode, etc.)
+    }
+  }, [language])
+
   return (
     <>
       <ScrollToTop />
       <Toaster position='top-center' />
       <Routes key={location.pathname}>
         {/* Public routes */}
-        <Route path='/' element={<HomePage />} />
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='/contact' element={<ContactPage />} />
-        <Route path='/partners' element={<PartnersPage />} />
-        <Route path='/properties' element={<PropertiesPage />} />
-        <Route path='/blog' element={<BlogPage />} />
+        <Route path='/' element={<HomePage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/about' element={<AboutPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/contact' element={<ContactPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/partners' element={<PartnersPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/properties' element={<PropertiesPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/blog' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
 
         {/* Auth route with redirect if already logged in */}
-        <Route path='/auth' element={<RedirectIfAuthenticated />} />
+        <Route path='/auth' element={<RedirectIfAuthenticated language={language} onLanguageChange={setLanguage} />} />
 
         {/* Protected admin routes */}
         <Route element={<ProtectedAdminRoute />}>

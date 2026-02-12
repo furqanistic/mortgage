@@ -1,27 +1,47 @@
 // File: client/src/components/Home/SuccessStories.jsx
+import { useEffect, useState } from 'react'
 import { Quote } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from '@/components/ui/carousel'
 
-const SuccessStories = () => {
+const SuccessStories = ({ language = 'de' }) => {
+    const [api, setApi] = useState(null)
+
+    useEffect(() => {
+        if (!api) return
+        const interval = setInterval(() => {
+            api.scrollNext()
+        }, 6000)
+        return () => clearInterval(interval)
+    }, [api])
+
     const testimonials = [
         {
-            name: "Julia & Thomas Müller",
-            role: "Erstkäufer",
-            text: "Dank Baufiking haben wir unsere Traumfinanzierung gefunden, obwohl unsere Bank zunächst abgelehnt hatte. Die Beratung war erstklassig und super persönlich.",
-            initials: "JM"
+            name: "Deepika Rajput & Jagdish Rawat",
+            role: language === 'en' ? "Home Buyers" : "Hauskauf",
+            text: "A big thank you from our whole family for helping us get our dream home! We had no idea about the German housing market, but you guided us through every step — from understanding the process to finding the right financing that fit our budget. What was once just a dream has now come true, thanks to your support and patience. We’ve finally moved in and couldn’t be happier! Thank you so much for everything!",
+            initials: "DR",
+            image: "/Testimonials/testimonial_1.jpeg"
         },
         {
-            name: "Markus Weber",
-            role: "Kapitalanleger",
-            text: "Schnell, effizient und professionell. Für meine dritte Immobilie habe ich direkt wieder hier angefragt. Die Konditionen sind unschlagbar.",
-            initials: "MW"
+            name: "Charanjit Singh",
+            role: language === 'en' ? "First-Time Buyer" : "Erstkäufer",
+            text: "From the very first call, I felt confident I was in the right hands. They explained every option clearly, secured a great rate, and handled the paperwork without stress. I moved in earlier than expected and the monthly payments fit perfectly with my plan.",
+            initials: "CS",
+            image: "/Testimonials/testimonial_3.png"
         },
         {
-            name: "Sarah K.",
-            role: "Anschlussfinanzierung",
-            text: "Ich habe durch den Wechsel und die Umschuldung fast 200€ im Monat gespart. Der Prozess war viel einfacher als gedacht.",
-            initials: "SK"
+            name: "Grewal, Mubashir Ali",
+            role: language === 'en' ? "Refinancing" : "Anschlussfinanzierung",
+            text: "Professional, patient, and truly honest advice. They compared multiple banks and negotiated terms that saved me money every month. The whole process was transparent, fast, and far easier than I imagined.",
+            initials: "GM",
+            image: "/Testimonials/testimonial_2.png"
         }
     ]
 
@@ -30,43 +50,54 @@ const SuccessStories = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="font-heading text-4xl font-bold text-primary dark:text-white mb-4">
-                        Was unsere Kunden sagen
+                        {language === 'en' ? 'What Our Clients Say' : 'Was unsere Kunden sagen'}
                     </h2>
                     <p className="text-muted-foreground text-lg">
-                        Vertrauen ist gut, Erfahrung ist besser. Das sagen Hausbesitzer über uns.
+                        {language === 'en'
+                            ? 'Real experiences from people who financed their dream home with us'
+                            : 'Vertrauen ist gut, Erfahrung ist besser. Das sagen Hausbesitzer über uns.'}
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    {testimonials.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="bg-card dark:bg-card border border-border p-8 rounded-2xl shadow-sm hover:shadow-xl transition-shadow relative"
-                        >
-                            <Quote className="w-12 h-12 text-accent/20 absolute top-6 right-6" />
+                <div className="max-w-5xl mx-auto">
+                    <Carousel opts={{ align: 'start', loop: true }} setApi={setApi} className="relative">
+                        <CarouselContent>
+                            {testimonials.map((item, index) => (
+                                <CarouselItem key={index}>
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.98 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: index * 0.05 }}
+                                        viewport={{ once: true }}
+                                        className="bg-card dark:bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl transition-shadow relative overflow-hidden grid lg:grid-cols-2 min-h-[520px]"
+                                    >
+                                        <div className="relative h-72 sm:h-full min-h-[280px]">
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </div>
 
-                            <div className="flex items-center gap-4 mb-6">
-                                <Avatar className="h-12 w-12 border-2 border-accent/20">
-                                    <AvatarImage src="" />
-                                    <AvatarFallback className="bg-primary/5 text-primary font-bold dark:bg-primary/20 dark:text-white">
-                                        {item.initials}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <div className="font-bold text-primary dark:text-white">{item.name}</div>
-                                    <div className="text-xs text-accent font-medium uppercase tracking-wider">{item.role}</div>
-                                </div>
-                            </div>
+                                        <div className="p-8 sm:p-10 flex flex-col justify-center">
+                                            <Quote className="w-12 h-12 text-accent/20 mb-6" />
 
-                            <p className="text-muted-foreground italic leading-relaxed">
-                                "{item.text}"
-                            </p>
-                        </motion.div>
-                    ))}
+                                            <div className="mb-6">
+                                                <div className="font-bold text-primary dark:text-white">{item.name}</div>
+                                                <div className="text-xs text-accent font-medium uppercase tracking-wider">{item.role}</div>
+                                            </div>
+
+                                            <p className="text-muted-foreground italic leading-relaxed">
+                                                "{item.text}"
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="-left-4 sm:-left-12" />
+                        <CarouselNext className="-right-4 sm:-right-12" />
+                    </Carousel>
                 </div>
             </div>
         </section>

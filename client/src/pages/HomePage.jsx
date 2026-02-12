@@ -10,26 +10,24 @@ import SuccessStories from '@/components/Home/SuccessStories' // Testimonials
 import FAQ from '@/components/Home/FAQ'
 import CTASection from '@/components/Home/CTASection'
 import Footer from '@/components/Layout/Footer'
-import { motion } from 'framer-motion'
-
-const HomePage = () => {
+const HomePage = ({ language = 'de', onLanguageChange }) => {
   return (
     <div className="min-h-screen bg-background font-body text-foreground overflow-x-hidden selection:bg-primary/20">
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main>
-        <HeroSection />
-        <Partners />
-        <ValueProps />
-        <TargetAudience />
-        <RoadmapSection />
-        <MortgageCalculator />
-        <SuccessStories />
-        <FAQ />
-        <CTASection />
+        <HeroSection language={language} />
+        <Partners language={language} />
+        <ValueProps language={language} />
+        <TargetAudience language={language} />
+        <RoadmapSection language={language} />
+        <MortgageCalculator language={language} />
+        <SuccessStories language={language} />
+        <FAQ language={language} />
+        <CTASection language={language} />
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   )
 }

@@ -11,6 +11,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Menu,
+  Globe,
   Phone,
   LogOut,
   User
@@ -28,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-const Navbar = () => {
+const Navbar = ({ language = 'de', onLanguageChange }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
@@ -60,13 +61,24 @@ const Navbar = () => {
     return nameParts[0][0] || 'U'
   }
 
-  const navItems = [
-    { label: 'Immobilien', path: '/properties' },
-    { label: 'Partner', path: '/partners' },
-    { label: 'Magazin', path: '/blog' },
-    { label: 'Über uns', path: '/about' },
-    { label: 'Kontakt', path: '/contact' },
-  ]
+  const isEnglish = language === 'en'
+  const navItems = isEnglish
+    ? [
+        { label: 'Partners', path: '/partners' },
+        { label: 'About', path: '/about' },
+        { label: 'Contact', path: '/contact' },
+      ]
+    : [
+        { label: 'Partner', path: '/partners' },
+        { label: 'Über uns', path: '/about' },
+        { label: 'Kontakt', path: '/contact' },
+      ]
+
+  const ctaLabel = isEnglish ? 'Free Consultation' : 'Kostenlose Beratung'
+  const logoutLabel = isEnglish ? 'Sign out' : 'Abmelden'
+  const signedInLabel = isEnglish ? 'Signed in as' : 'Angemeldet als'
+
+  const showLanguageToggle = typeof onLanguageChange === 'function'
 
   return (
     <header
@@ -79,8 +91,13 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
 
           {/* Logo */}
-          <Link to="/" className="relative group">
-            <span className="font-heading text-2xl md:text-3xl font-bold text-primary dark:text-white tracking-tight">
+          <Link to="/" className="relative group flex items-center gap-2 sm:gap-3">
+            <img
+              src="/logo.jpeg"
+              alt="Baufiking logo"
+              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover shadow-sm ring-1 ring-border/40"
+            />
+            <span className="font-heading text-lg sm:text-2xl md:text-3xl font-bold text-primary dark:text-white tracking-tight max-w-[140px] sm:max-w-none truncate">
               Baufiking
             </span>
             <span className="absolute -bottom-1 left-0 w-3/5 h-[3px] bg-gradient-to-r from-accent to-transparent transition-all duration-300 group-hover:w-full" />
@@ -99,7 +116,27 @@ const Navbar = () => {
               </a>
             ))}
 
-            <ThemeToggle />
+            {showLanguageToggle && (
+              <div className="flex items-center gap-1.5 rounded-full border border-border/60 bg-white/90 dark:bg-slate-900/70 px-1.5 py-1 shadow-sm">
+                <Globe className="h-3.5 w-3.5 text-accent" />
+                <div className="flex items-center gap-1">
+                  {['de', 'en'].map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => onLanguageChange(code)}
+                      className={`px-2 py-0.5 text-[11px] font-semibold rounded-full transition-colors ${language === code
+                        ? 'bg-primary text-white shadow-sm'
+                        : 'text-foreground/70 hover:text-primary'
+                        }`}
+                    >
+                      {code.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
 
             {isAuthenticated ? (
               <DropdownMenu>
@@ -115,7 +152,7 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end' className='w-56 mt-2'>
                   <DropdownMenuLabel>
-                    <p className="text-xs font-normal text-muted-foreground">Angemeldet als</p>
+                    <p className="text-xs font-normal text-muted-foreground">{signedInLabel}</p>
                     <p className="font-bold truncate">{currentUser?.name || 'User'}</p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -129,7 +166,7 @@ const Navbar = () => {
                     onClick={handleLogout}
                   >
                     <LogOut className='mr-2 h-4 w-4' />
-                    <span>Abmelden</span>
+                    <span>{logoutLabel}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -137,14 +174,34 @@ const Navbar = () => {
               <Button
                 className="bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
               >
-                Kostenlose Beratung
+                {ctaLabel}
               </Button>
             )}
           </nav>
 
           {/* Mobile Navigation */}
           <div className="lg:hidden flex items-center gap-4">
-            <ThemeToggle />
+            {showLanguageToggle && (
+              <div className="flex items-center gap-1.5 rounded-full border border-border/60 bg-white/90 dark:bg-slate-900/70 px-1.5 py-1 shadow-sm">
+                <Globe className="h-4 w-4 text-accent" />
+                <div className="flex items-center gap-1">
+                  {['de', 'en'].map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => onLanguageChange(code)}
+                      className={`px-2 py-0.5 text-[11px] font-semibold rounded-full transition-colors ${language === code
+                        ? 'bg-primary text-white shadow-sm'
+                        : 'text-foreground/70 hover:text-primary'
+                        }`}
+                    >
+                      {code.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover:bg-accent/10">
@@ -154,9 +211,16 @@ const Navbar = () => {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col h-full pt-10">
                   <div className="mb-8">
-                    <span className="font-heading text-2xl font-bold text-primary dark:text-white">
-                      Baufiking
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src="/logo.jpeg"
+                        alt="Baufiking logo"
+                        className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-border/40"
+                      />
+                      <span className="font-heading text-2xl font-bold text-primary dark:text-white">
+                        Baufiking
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-4">
@@ -179,12 +243,12 @@ const Navbar = () => {
                         </Avatar>
                         <div className="flex-1">
                           <p className="font-bold">{currentUser?.name}</p>
-                          <button onClick={handleLogout} className="text-xs text-destructive hover:underline">Abmelden</button>
+                          <button onClick={handleLogout} className="text-xs text-destructive hover:underline">{logoutLabel}</button>
                         </div>
                       </div>
                     ) : (
                       <Button className="w-full bg-primary text-white font-bold py-6">
-                        Kostenlose Beratung
+                        {ctaLabel}
                       </Button>
                     )}
                   </div>

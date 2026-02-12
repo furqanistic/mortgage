@@ -122,6 +122,7 @@ const Layout = ({ children }) => {
 
       {/* Main content */}
       <div className='flex-1 flex flex-col overflow-hidden'>
+        <div className='flex items-center justify-end px-6 py-4 bg-blue-50 border-b border-blue-100' />
         {/* Content area */}
         <main className='flex-1 overflow-auto p-6 bg-blue-50'>{children}</main>
       </div>

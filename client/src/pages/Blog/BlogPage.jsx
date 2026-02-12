@@ -79,7 +79,7 @@ const blogPosts = [
   },
 ]
 
-const BlogPage = () => {
+const BlogPage = ({ language = 'de', onLanguageChange }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredPosts, setFilteredPosts] = useState(blogPosts)
   const [activeCategory, setActiveCategory] = useState('all')
@@ -106,7 +106,7 @@ const BlogPage = () => {
 
   return (
     <div className="bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300">
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main className="flex-grow">
         {/* Premium Blog Hero */}
@@ -249,7 +249,7 @@ const BlogPage = () => {
         </section>
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   )
 }

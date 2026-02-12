@@ -2,34 +2,54 @@
 import { Zap, Banknote, Handshake } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-const ValueProps = () => {
-    const values = [
-        {
-            icon: Zap,
-            title: "Schnell & Einfach",
-            description: "Vorabgenehmigung in 24 Stunden. Digitaler Prozess ohne Papierkram. Transparente Kommunikation in jedem Schritt."
-        },
-        {
-            icon: Banknote,
-            title: "Beste Konditionen",
-            description: "Vergleich von über 100 Banken. Wir verhandeln die besten Zinssätze für Sie. Garantiert unabhängige Beratung."
-        },
-        {
-            icon: Handshake,
-            title: "Persönliche Betreuung",
-            description: "Expertenberatung auf Deutsch und Englisch. Vollständige Unterstützung von Anfang bis Ende. Ihr Erfolg ist unser Erfolg."
-        }
-    ]
+const ValueProps = ({ language = 'de' }) => {
+    const values = language === 'en'
+        ? [
+            {
+                icon: Zap,
+                title: "Fast & Easy",
+                description: "Pre-approval in 24 hours. Digital process without paperwork. Transparent communication at every step."
+            },
+            {
+                icon: Banknote,
+                title: "Best Rates",
+                description: "Compare over 100 banks. We negotiate the best interest rates for you. Guaranteed independent advice."
+            },
+            {
+                icon: Handshake,
+                title: "Personal Support",
+                description: "Expert advice in German and English. Complete support from start to finish. Your success is our success."
+            }
+        ]
+        : [
+            {
+                icon: Zap,
+                title: "Schnell & Einfach",
+                description: "Vorabgenehmigung in 24 Stunden. Digitaler Prozess ohne Papierkram. Transparente Kommunikation in jedem Schritt."
+            },
+            {
+                icon: Banknote,
+                title: "Beste Konditionen",
+                description: "Vergleich von über 100 Banken. Wir verhandeln die besten Zinssätze für Sie. Garantiert unabhängige Beratung."
+            },
+            {
+                icon: Handshake,
+                title: "Persönliche Betreuung",
+                description: "Expertenberatung auf Deutsch und Englisch. Vollständige Unterstützung von Anfang bis Ende. Ihr Erfolg ist unser Erfolg."
+            }
+        ]
 
     return (
         <section className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="font-heading text-4xl font-bold text-primary dark:text-white mb-4">
-                        Warum Baufiking wählen?
+                        {language === 'en' ? 'Why Choose Baufiking?' : 'Warum Baufiking wählen?'}
                     </h2>
                     <p className="text-muted-foreground text-lg">
-                        Ihre Vorteile auf einen Blick – wir machen Hausfinanzierung einfach, transparent und erfolgreich.
+                        {language === 'en'
+                            ? 'Your advantages at a glance – we make home financing simple, transparent, and successful.'
+                            : 'Ihre Vorteile auf einen Blick – wir machen Hausfinanzierung einfach, transparent und erfolgreich.'}
                     </p>
                 </div>
 

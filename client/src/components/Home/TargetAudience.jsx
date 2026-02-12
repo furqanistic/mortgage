@@ -2,38 +2,70 @@
 import { Home, RefreshCw, Globe, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const TargetAudience = () => {
-    const audiences = [
-        {
-            icon: Home,
-            title: "Erstkäufer",
-            subtitle: "Endlich ins Eigenheim",
-            description: "Wir führen Sie sicher durch den Dschungel der Immobilienfinanzierung. Von Förderungen bis zur Schlüsselübergabe.",
-            features: ["Fördermittel-Check", "Budget-Planung", "Verständliche Beratung"]
-        },
-        {
-            icon: RefreshCw,
-            title: "Anschlussfinanzierung",
-            subtitle: "Bessere Zinsen sichern",
-            description: "Ihre Zinsbindung läuft aus? Sichern Sie sich jetzt günstige Konditionen für die Zukunft, bis zu 5 Jahre im Voraus.",
-            features: ["Zins-Vergleich", "Termin-Sicherung", "Spar-Potenzial Analyse"]
-        },
-        {
-            icon: Globe,
-            title: "Kapitalanleger",
-            subtitle: "Vermögen aufbauen",
-            description: "Maßgeschneiderte Konzepte für Ihre Rendite-Immobile. Hebeln Sie Ihr Eigenkapital effektiv.",
-            features: ["Rendite-Kalkulation", "Steuer-Optimierung", "Portfolio-Strategie"]
-        }
-    ]
+const TargetAudience = ({ language = 'de' }) => {
+    const audiences = language === 'en'
+        ? [
+            {
+                icon: Home,
+                title: "First-Time Buyers",
+                subtitle: "Your first home purchase",
+                description: "Your first home purchase? We guide you step by step and explain every process clearly.",
+                features: ["Eligibility check", "Budget planning", "Step-by-step guidance"],
+                cta: "Learn More"
+            },
+            {
+                icon: Globe,
+                title: "Expats & International",
+                subtitle: "New to Germany",
+                description: "New to Germany? We speak your language and know the special requirements for international buyers.",
+                features: ["English-speaking advisors", "Document checklist", "International buyer support"],
+                cta: "Learn More"
+            },
+            {
+                icon: RefreshCw,
+                title: "Investors",
+                subtitle: "Strategic financing",
+                description: "Strategic financing solutions focused on sustainable wealth growth and intelligent tax optimisation.",
+                features: ["Portfolio strategy", "Tax optimisation", "Long-term growth"],
+                cta: "Check Now"
+            }
+        ]
+        : [
+            {
+                icon: Home,
+                title: "Erstkäufer",
+                subtitle: "Endlich ins Eigenheim",
+                description: "Wir führen Sie sicher durch den Dschungel der Immobilienfinanzierung. Von Förderungen bis zur Schlüsselübergabe.",
+                features: ["Fördermittel-Check", "Budget-Planung", "Verständliche Beratung"],
+                cta: "Mehr erfahren"
+            },
+            {
+                icon: RefreshCw,
+                title: "Anschlussfinanzierung",
+                subtitle: "Bessere Zinsen sichern",
+                description: "Ihre Zinsbindung läuft aus? Sichern Sie sich jetzt günstige Konditionen für die Zukunft, bis zu 5 Jahre im Voraus.",
+                features: ["Zins-Vergleich", "Termin-Sicherung", "Spar-Potenzial Analyse"],
+                cta: "Mehr erfahren"
+            },
+            {
+                icon: Globe,
+                title: "Kapitalanleger",
+                subtitle: "Vermögen aufbauen",
+                description: "Maßgeschneiderte Konzepte für Ihre Rendite-Immobile. Hebeln Sie Ihr Eigenkapital effektiv.",
+                features: ["Rendite-Kalkulation", "Steuer-Optimierung", "Portfolio-Strategie"],
+                cta: "Mehr erfahren"
+            }
+        ]
 
     return (
         <section id="for-whom" className="py-24 section-padding bg-gradient-to-b from-[#faf8f5] to-white dark:from-[#0a0a0a] dark:to-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <span className="text-accent font-bold uppercase tracking-widest text-sm block mb-2">Für wen wir da sind</span>
+                    <span className="text-accent font-bold uppercase tracking-widest text-sm block mb-2">
+                        {language === 'en' ? 'Who We Help' : 'Für wen wir da sind'}
+                    </span>
                     <h2 className="font-heading text-4xl font-bold text-primary dark:text-white mb-4">
-                        Finanzierungslösungen für jede Situation
+                        {language === 'en' ? 'Specialized advice for your individual situation' : 'Finanzierungslösungen für jede Situation'}
                     </h2>
                 </div>
 
@@ -65,7 +97,7 @@ const TargetAudience = () => {
                             </ul>
 
                             <Button variant="outline" className="w-full border-primary/20 hover:bg-primary hover:text-white dark:border-white/20 dark:hover:bg-white dark:hover:text-black transition-colors">
-                                Mehr erfahren
+                                {item.cta}
                             </Button>
                         </div>
                     ))}

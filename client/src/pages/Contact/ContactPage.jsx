@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
-const ContactPage = () => {
+const ContactPage = ({ language = 'de', onLanguageChange }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,7 +45,7 @@ const ContactPage = () => {
 
   return (
     <div className='bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300'>
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main className='flex-grow'>
         {/* Premium Compact Hero */}
@@ -248,7 +248,7 @@ const ContactPage = () => {
         </section>
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   )
 }

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-const PartnersPage = () => {
+const PartnersPage = ({ language = 'de', onLanguageChange }) => {
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [showSearch, setShowSearch] = useState(false)
@@ -179,7 +179,7 @@ const PartnersPage = () => {
 
   return (
     <div className='bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300'>
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main className='flex-grow'>
         {/* Compact Hero Section */}
@@ -413,7 +413,7 @@ const PartnersPage = () => {
         </section>
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   )
 }

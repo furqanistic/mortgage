@@ -126,7 +126,7 @@ const locations = [
 // Property types for the filter
 const propertyTypes = ['All', 'Apartment', 'House', 'Villa']
 
-const PropertiesPage = () => {
+const PropertiesPage = ({ language = 'de', onLanguageChange }) => {
   const [properties, setProperties] = useState(mockProperties)
   const [filteredProperties, setFilteredProperties] = useState(mockProperties)
   const [searchTerm, setSearchTerm] = useState('')
@@ -248,7 +248,7 @@ const PropertiesPage = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
       <div className='min-h-screen bg-white'>
         {/* Header */}
         <header className='bg-gradient-to-r from-[#155FA0] to-[#0D3B66] py-10 px-4 md:px-8 relative overflow-hidden'>
@@ -641,7 +641,7 @@ const PropertiesPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer language={language} />
     </>
   )
 }

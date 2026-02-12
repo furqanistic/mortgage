@@ -3,31 +3,50 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
 
-const FAQ = () => {
+const FAQ = ({ language = 'de' }) => {
     const [activeIndex, setActiveIndex] = useState(null)
 
-    const faqs = [
-        {
-            question: "Wie viel Eigenkapital benötige ich?",
-            answer: "In der Regel empfehlen wir mindestens 10-20% des Kaufpreises als Eigenkapital, um die Nebenkosten zu decken und bessere Zinsen zu erhalten. Es sind jedoch auch 100%-Finanzierungen möglich, abhängig von Ihrer Bonität."
-        },
-        {
-            question: "Wie lange dauert eine Finanzierungszusage?",
-            answer: "Mit Baufiking erhalten Sie eine erste Einschätzung oft schon innerhalb von 24 Stunden. Eine verbindliche Bankzusage dauert in der Regel 3-7 Werktage, je nach Vollständigkeit Ihrer Unterlagen."
-        },
-        {
-            question: "Welche Unterlagen werden benötigt?",
-            answer: "Standardmäßig benötigen Sie: Einkommensnachweise der letzten 3 Monate, den letzten Steuerbescheid, Personalausweis und Informationen zum Objekt (Exposé, Grundbuchauszug)."
-        },
-        {
-            question: "Kann ich Sondertilgungen leisten?",
-            answer: "Ja, wir verhandeln standardmäßig die Option auf 5% Sondertilgung pro Jahr für Sie. Höhere Sondertilgungsrechte können oft gegen einen geringen Zinsaufschlag vereinbart werden."
-        },
-        {
-            question: "Was passiert, wenn die Zinsen weiter steigen?",
-            answer: "Wir empfehlen oft längere Zinsbindungen (15, 20 oder 30 Jahre), um Sie vor steigenden Zinsen zu schützen. Ein Forward-Darlehen kann zudem helfen, sich heutige Zinsen für die Zukunft zu sichern."
-        }
-    ]
+    const faqs = language === 'en'
+        ? [
+            {
+                question: "How much equity do I need?",
+                answer: "Ideally 5% of the purchase price plus additional costs. However, we also find solutions with less equity."
+            },
+            {
+                question: "How long does the financing process take?",
+                answer: "From the first consultation to approval usually 2-4 weeks. In urgent cases, we can speed up the process."
+            },
+            {
+                question: "What does your consultation cost?",
+                answer: "Our consultation is completely free for you. We receive a commission from the banks upon successful placement."
+            },
+            {
+                question: "What documents do I need?",
+                answer: "Pay slips, bank statements, tax returns, and ID. We'll send you a detailed checklist after the initial consultation."
+            }
+        ]
+        : [
+            {
+                question: "Wie viel Eigenkapital benötige ich?",
+                answer: "In der Regel empfehlen wir mindestens 10-20% des Kaufpreises als Eigenkapital, um die Nebenkosten zu decken und bessere Zinsen zu erhalten. Es sind jedoch auch 100%-Finanzierungen möglich, abhängig von Ihrer Bonität."
+            },
+            {
+                question: "Wie lange dauert eine Finanzierungszusage?",
+                answer: "Mit Baufiking erhalten Sie eine erste Einschätzung oft schon innerhalb von 24 Stunden. Eine verbindliche Bankzusage dauert in der Regel 3-7 Werktage, je nach Vollständigkeit Ihrer Unterlagen."
+            },
+            {
+                question: "Welche Unterlagen werden benötigt?",
+                answer: "Standardmäßig benötigen Sie: Einkommensnachweise der letzten 3 Monate, den letzten Steuerbescheid, Personalausweis und Informationen zum Objekt (Exposé, Grundbuchauszug)."
+            },
+            {
+                question: "Kann ich Sondertilgungen leisten?",
+                answer: "Ja, wir verhandeln standardmäßig die Option auf 5% Sondertilgung pro Jahr für Sie. Höhere Sondertilgungsrechte können oft gegen einen geringen Zinsaufschlag vereinbart werden."
+            },
+            {
+                question: "Was passiert, wenn die Zinsen weiter steigen?",
+                answer: "Wir empfehlen oft längere Zinsbindungen (15, 20 oder 30 Jahre), um Sie vor steigenden Zinsen zu schützen. Ein Forward-Darlehen kann zudem helfen, sich heutige Zinsen für die Zukunft zu sichern."
+            }
+        ]
 
     const toggleFAQ = (index) => {
         setActiveIndex(activeIndex === index ? null : index)
@@ -38,10 +57,12 @@ const FAQ = () => {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="font-heading text-4xl font-bold text-primary dark:text-white mb-4">
-                        Häufig gestellte Fragen
+                        {language === 'en' ? 'Frequently Asked Questions' : 'Häufig gestellte Fragen'}
                     </h2>
                     <p className="text-muted-foreground text-lg">
-                        Alles was Sie über Baufinanzierung wissen müssen
+                        {language === 'en'
+                            ? 'Everything you need to know about home financing'
+                            : 'Alles was Sie über Baufinanzierung wissen müssen'}
                     </p>
                 </div>
 

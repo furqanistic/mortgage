@@ -28,7 +28,7 @@ import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-const Auth = () => {
+const Auth = ({ language = 'de', onLanguageChange }) => {
   const [activeTab, setActiveTab] = useState('login')
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -123,7 +123,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-500 overflow-x-hidden font-body">
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
       
       <div className='relative min-h-[calc(100vh-80px)] flex items-center justify-center p-6 md:p-10'>
         {/* Dynamic Background */}

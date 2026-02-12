@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useRef } from 'react'
 
-const AboutPage = () => {
+const AboutPage = ({ language = 'de', onLanguageChange }) => {
   const containerRef = useRef(null)
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 100])
@@ -61,7 +61,7 @@ const AboutPage = () => {
 
   return (
     <div className="bg-background min-h-screen flex flex-col font-body text-foreground transition-colors duration-300">
-      <Navbar />
+      <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main className="flex-grow">
         {/* Compact & High-Impact Hero */}
@@ -303,7 +303,7 @@ const AboutPage = () => {
         </section>
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   )
 }

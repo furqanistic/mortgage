@@ -10,4 +10,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  optimizeDeps: {
+    exclude: [
+      'workbox-cacheable-response',
+      'workbox-expiration',
+      'workbox-precaching',
+      'workbox-routing',
+      'workbox-strategies',
+    ],
+  },
 })

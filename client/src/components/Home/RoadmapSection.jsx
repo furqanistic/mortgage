@@ -2,39 +2,66 @@
 import { FileText, Phone, BarChart, Key } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-const RoadmapSection = () => {
-  const steps = [
-    {
-      icon: FileText,
-      title: "1. Antrag stellen",
-      description: "Füllen Sie unser einfaches Online-Formular in nur 2 Minuten aus. Unverbindlich & kostenlos."
-    },
-    {
-      icon: Phone,
-      title: "2. Beratung erhalten",
-      description: "Ein Finanzierungsexperte meldet sich bei Ihnen, um Ihre Wünsche und Möglichkeiten zu besprechen."
-    },
-    {
-      icon: BarChart,
-      title: "3. Angebote vergleichen",
-      description: "Wir vergleichen Angebote von über 500 Banken und finden die besten Zinsen für Sie."
-    },
-    {
-      icon: Key,
-      title: "4. Abschluss & Einzug",
-      description: "Wir begleiten Sie bis zum Notartermin und zur Schlüsselübergabe. Willkommen zuhause!"
-    }
-  ]
+const RoadmapSection = ({ language = 'de' }) => {
+  const steps = language === 'en'
+    ? [
+        {
+          icon: FileText,
+          title: "Free Consultation",
+          description: "30-45 minute personal conversation. We analyze your situation and wishes."
+        },
+        {
+          icon: Phone,
+          title: "Compare Offers",
+          description: "Over 100 banks compared. We find the best conditions for you."
+        },
+        {
+          icon: BarChart,
+          title: "Secure Financing",
+          description: "Best rate guarantee. Fast approval through our expertise."
+        },
+        {
+          icon: Key,
+          title: "Sign & Move In",
+          description: "We accompany you until key handover. Your dream becomes reality!"
+        }
+      ]
+    : [
+        {
+          icon: FileText,
+          title: "1. Antrag stellen",
+          description: "Füllen Sie unser einfaches Online-Formular in nur 2 Minuten aus. Unverbindlich & kostenlos."
+        },
+        {
+          icon: Phone,
+          title: "2. Beratung erhalten",
+          description: "Ein Finanzierungsexperte meldet sich bei Ihnen, um Ihre Wünsche und Möglichkeiten zu besprechen."
+        },
+        {
+          icon: BarChart,
+          title: "3. Angebote vergleichen",
+          description: "Wir vergleichen Angebote von über 500 Banken und finden die besten Zinsen für Sie."
+        },
+        {
+          icon: Key,
+          title: "4. Abschluss & Einzug",
+          description: "Wir begleiten Sie bis zum Notartermin und zur Schlüsselübergabe. Willkommen zuhause!"
+        }
+      ]
 
   return (
     <section id="how-it-works" className="py-24 bg-secondary/30 dark:bg-secondary/5 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl font-bold text-primary dark:text-white mb-4">
-            Ihr Weg zum Eigenheim
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary dark:text-white mb-4">
+            {language === 'en' ? 'Your Path to' : 'Ihr Weg zum'}
+            <span className="block sm:inline"> </span>
+            {language === 'en' ? 'Homeownership' : 'Eigenheim'}
           </h2>
           <p className="text-muted-foreground text-lg text-primary/80 dark:text-muted-foreground">
-            In 4 einfachen Schritten zur perfekten Finanzierung
+            {language === 'en'
+              ? 'Four simple steps to your dream home – we guide you every step of the way'
+              : 'In 4 einfachen Schritten zur perfekten Finanzierung'}
           </p>
         </div>
 
