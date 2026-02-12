@@ -1,9 +1,12 @@
 // File: client/src/components/Home/HeroSection.jsx
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { Home, Landmark, Star, ArrowRight } from 'lucide-react'
+import { ArrowRight, Home, Landmark, Star } from 'lucide-react'
+import { useState } from 'react'
+import ConsultationModal from './ConsultationModal'
 
 const HeroSection = ({ language = 'de' }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -99,6 +102,7 @@ const HeroSection = ({ language = 'de' }) => {
             >
               <Button
                 size="lg"
+                onClick={() => setIsModalOpen(true)}
                 className="w-full sm:flex-1 min-w-0 bg-primary hover:bg-primary/90 text-white font-semibold h-11 sm:h-13 px-3 sm:px-6 text-sm sm:text-sm md:text-base leading-tight text-center shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
                 {copy.ctaPrimary}
@@ -106,6 +110,7 @@ const HeroSection = ({ language = 'de' }) => {
               <Button
                 size="lg"
                 variant="outline"
+                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
                 className="w-full sm:flex-1 min-w-0 border-primary text-primary hover:bg-primary hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-primary font-semibold h-11 sm:h-13 px-3 sm:px-6 text-sm sm:text-sm md:text-base leading-tight text-center transition-all"
               >
                 {copy.ctaSecondary}
@@ -156,6 +161,12 @@ const HeroSection = ({ language = 'de' }) => {
 
         </div>
       </div>
+
+      <ConsultationModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        language={language}
+      />
     </section>
   )
 }

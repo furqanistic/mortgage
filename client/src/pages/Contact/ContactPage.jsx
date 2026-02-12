@@ -4,14 +4,14 @@ import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
-  ArrowRight,
-  Clock,
-  Mail,
-  MapPin,
-  MessageSquare,
-  Phone,
-  Send,
-  Zap,
+    ArrowRight,
+    Clock,
+    Mail,
+    MapPin,
+    MessageSquare,
+    Phone,
+    Send,
+    Zap,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -51,17 +51,17 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
         {/* Premium Compact Hero */}
         <section className='relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden border-b border-border/50'>
           <div className='absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40'>
-             <div className='absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-[#FAC51C]/10 rounded-full blur-[80px]' />
-             <div className='absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-[#155FA0]/5 rounded-full blur-[60px]' />
+             <div className='absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/10 rounded-full blur-[80px]' />
+             <div className='absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[60px]' />
           </div>
 
           <div className='max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center space-y-6'>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155FA0]/10 text-[#155FA0] border border-[#155FA0]/20'
+              className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20'
             >
-              <MessageSquare size={12} className='text-[#FAC51C]' />
+              <MessageSquare size={12} className='text-accent' />
               <span className='text-[10px] font-bold tracking-widest uppercase'>Direct Line</span>
             </motion.div>
 
@@ -70,7 +70,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
               animate={{ opacity: 1, scale: 1 }}
               className='text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight text-foreground'
             >
-              Initiate <span className='text-[#155FA0] underline decoration-[#FAC51C]/30 underline-offset-8'>Dialog</span>
+              Initiate <span className='text-primary underline decoration-accent/30 underline-offset-8'>Dialog</span>
             </motion.h1>
 
             <motion.p 
@@ -104,14 +104,14 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                    <motion.div 
                     key={i}
                     whileHover={{ scale: 1.02 }}
-                    className='group flex items-center gap-5 p-5 bg-card border border-border rounded-3xl hover:border-[#155FA0]/30 hover:shadow-lg hover:shadow-[#155FA0]/5 transition-all duration-300'
+                    className='group flex items-center gap-5 p-5 bg-card border border-border rounded-3xl hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300'
                    >
-                      <div className='w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground group-hover:bg-[#155FA0] group-hover:text-white transition-colors'>
+                      <div className='w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-white transition-colors'>
                         <item.icon size={20} />
                       </div>
                       <div>
                         <p className='text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1'>{item.title}</p>
-                        <p className='text-lg font-bold text-foreground leading-none mb-1 group-hover:text-[#155FA0] transition-colors'>{item.val}</p>
+                        <p className='text-lg font-bold text-foreground leading-none mb-1 group-hover:text-primary transition-colors'>{item.val}</p>
                         <p className='text-xs font-medium text-muted-foreground/70'>{item.sub}</p>
                       </div>
                    </motion.div>
@@ -142,7 +142,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
             >
               <div className='bg-card p-6 sm:p-10 rounded-[2.5rem] border border-border/50 shadow-2xl relative overflow-hidden'>
                  {/* Decorative background blob */}
-                 <div className='absolute top-0 right-0 w-64 h-64 bg-[#155FA0]/5 rounded-full blur-[80px] pointer-events-none' />
+                 <div className='absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none' />
 
                  <div className='space-y-2 mb-8 relative z-10'>
                     <h3 className='text-2xl font-heading font-black text-foreground'>Secure Transmission</h3>
@@ -160,7 +160,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="Full Name"
-                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-[#155FA0] transition-all text-sm font-medium'
+                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium'
                         />
                      </div>
                      <div className='space-y-1.5'>
@@ -171,7 +171,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="Phone Number"
-                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-[#155FA0] transition-all text-sm font-medium'
+                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium'
                         />
                      </div>
 
@@ -183,7 +183,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="Email Address"
-                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-[#155FA0] transition-all text-sm font-medium'
+                          className='w-full h-12 px-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium'
                         />
                     </div>
 
@@ -195,7 +195,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                           onChange={handleChange}
                           placeholder="How can we assist your acquisition?"
                           rows={5}
-                          className='w-full p-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-[#155FA0] transition-all text-sm font-medium resize-none'
+                          className='w-full p-5 rounded-2xl bg-secondary border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium resize-none'
                         />
                     </div>
 
@@ -205,16 +205,16 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
                          id="privacy" 
                          checked={agreedToPrivacy}
                          onChange={(e) => setAgreedToPrivacy(e.target.checked)}
-                         className='w-4 h-4 rounded border-border bg-secondary text-[#155FA0] focus:ring-[#155FA0]'
+                         className='w-4 h-4 rounded border-border bg-secondary text-primary focus:ring-primary'
                        />
                        <label htmlFor="privacy" className='text-[11px] font-medium text-muted-foreground cursor-pointer select-none'>
-                         I agree to the <span className='text-[#155FA0] font-bold'>Privacy Policy</span> and data processing terms.
+                         I agree to the <span className='text-primary font-bold'>Privacy Policy</span> and data processing terms.
                        </label>
                     </div>
 
                     <Button 
                       disabled={!agreedToPrivacy}
-                      className='w-full h-14 bg-[#155FA0] text-primary-foreground rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-[#155FA0]/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed select-none'
+                      className='w-full h-14 bg-primary text-primary-foreground rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed select-none'
                     >
                        Send
                        <Send size={14} />
@@ -227,10 +227,10 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
         </section>
 
         {/* High-Contrast Bottom Section */}
-        <section className='bg-[#155FA0] text-primary-foreground py-16 px-6 overflow-hidden'>
+        <section className='bg-primary text-primary-foreground py-16 px-6 overflow-hidden'>
            <div className='max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10'>
               <div className='space-y-4 max-w-lg text-center md:text-left'>
-                 <h2 className='text-3xl font-heading font-black text-slate-50'>Visit Our <span className='text-[#FAC51C]'>HQ</span></h2>
+                 <h2 className='text-3xl font-heading font-black text-slate-50'>Visit Our <span className='text-accent'>HQ</span></h2>
                  <p className='text-primary-foreground/70 font-medium leading-relaxed'>
                     Experience our workflow in person. Coffee is on us. 
                     <br />Open Mon-Fri, 09:00 - 18:00.
@@ -239,7 +239,7 @@ const ContactPage = ({ language = 'de', onLanguageChange }) => {
               
               <div className='flex gap-4'>
                  <div className='p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md text-center min-w-[120px]'>
-                    <Clock size={24} className='text-[#FAC51C] mx-auto mb-2' />
+                    <Clock size={24} className='text-accent mx-auto mb-2' />
                     <p className='text-2xl font-black text-slate-50'>24/7</p>
                     <p className='text-[9px] font-bold uppercase tracking-widest text-slate-400'>Support</p>
                  </div>

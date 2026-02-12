@@ -1,14 +1,14 @@
 // File: client/src/pages/HomePage.jsx
-import Navbar from '@/components/Home/Navbar'
-import HeroSection from '@/components/Home/HeroSection'
-import Partners from '@/components/Home/Partners'
-import ValueProps from '@/components/Home/ValueProps'
-import TargetAudience from '@/components/Home/TargetAudience'
-import RoadmapSection from '@/components/Home/RoadmapSection' // How It Works
-import MortgageCalculator from '@/components/Home/MortgageCalculator'
-import SuccessStories from '@/components/Home/SuccessStories' // Testimonials
-import FAQ from '@/components/Home/FAQ'
 import CTASection from '@/components/Home/CTASection'
+import FAQ from '@/components/Home/FAQ'
+import HeroSection from '@/components/Home/HeroSection'
+import MortgageCalculator from '@/components/Home/MortgageCalculator'
+import Navbar from '@/components/Home/Navbar'
+import Partners from '@/components/Home/Partners'
+import RoadmapSection from '@/components/Home/RoadmapSection'; // How It Works
+import SuccessStories from '@/components/Home/SuccessStories'; // Testimonials
+import TargetAudience from '@/components/Home/TargetAudience'
+import ValueProps from '@/components/Home/ValueProps'
 import Footer from '@/components/Layout/Footer'
 const HomePage = ({ language = 'de', onLanguageChange }) => {
   return (

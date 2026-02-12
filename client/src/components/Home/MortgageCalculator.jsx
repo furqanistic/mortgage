@@ -1,12 +1,12 @@
 // File: client/src/components/Home/MortgageCalculator.jsx
 import { useMemo, useState } from 'react'
 import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from 'recharts'
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
@@ -137,7 +137,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
   }
 
   return (
-    <section className="py-12 bg-gradient-to-br from-primary/10 to-white">
+    <section id="calculator" className="py-12 bg-gradient-to-br from-primary/10 to-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8 border border-border/60">
           <div className="text-center mb-8">

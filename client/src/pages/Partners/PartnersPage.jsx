@@ -3,19 +3,19 @@ import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
-  ArrowRight,
-  Award,
-  Briefcase,
-  Building,
-  CheckCircle,
-  ExternalLink,
-  MapPin,
-  Search,
-  Shield,
-  Star,
-  Users,
-  X,
-  Zap,
+    ArrowRight,
+    Award,
+    Briefcase,
+    Building,
+    CheckCircle,
+    ExternalLink,
+    MapPin,
+    Search,
+    Shield,
+    Star,
+    Users,
+    X,
+    Zap,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -185,8 +185,8 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
         {/* Compact Hero Section */}
         <section className='relative pt-8 pb-12 sm:pt-16 sm:pb-20 overflow-hidden border-b border-border/50'>
           <div className='absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40'>
-            <motion.div style={{ y: y1 }} className='absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-[#FAC51C]/10 rounded-full blur-[80px]' />
-            <motion.div style={{ y: y1 }} className='absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-[#155FA0]/5 rounded-full blur-[60px]' />
+            <motion.div style={{ y: y1 }} className='absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/10 rounded-full blur-[80px]' />
+            <motion.div style={{ y: y1 }} className='absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[60px]' />
           </div>
 
           <div className='max-w-7xl mx-auto px-6 lg:px-8 relative z-10'>
@@ -194,9 +194,9 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#155FA0]/10 text-[#155FA0] border border-[#155FA0]/20'
+                className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20'
               >
-                <Zap size={12} className='text-[#FAC51C] fill-[#FAC51C]' />
+                <Zap size={12} className='text-accent fill-accent' />
                 <span className='text-[10px] font-bold tracking-widest uppercase'>Trusted Partners</span>
               </motion.div>
 
@@ -205,7 +205,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 className='text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tight leading-tight text-foreground'
               >
-                Strategic <span className='text-[#155FA0] underline decoration-[#FAC51C]/30 underline-offset-8'>Ecosystem</span>
+                Strategic <span className='text-primary underline decoration-accent/30 underline-offset-8'>Ecosystem</span>
               </motion.h1>
 
               <motion.p 
@@ -240,8 +240,8 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                       onClick={() => setActiveCategory(category.id)}
                       className={`whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[11px] font-bold transition-all ${
                         activeCategory === category.id
-                          ? 'bg-[#155FA0] text-primary-foreground shadow-md shadow-[#155FA0]/20'
-                          : 'hover:bg-[#155FA0]/5 text-muted-foreground'
+                          ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                          : 'hover:bg-primary/5 text-muted-foreground'
                       }`}
                     >
                       {category.icon}
@@ -271,13 +271,13 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                     variants={cardVariants}
                     whileHover={{ y: -5 }}
                     className={`group relative bg-card rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${
-                      partner.featured ? 'border-[#FAC51C]/40 ring-1 ring-[#FAC51C]/10 shadow-md' : 'border-border hover:border-[#155FA0]/30'
+                      partner.featured ? 'border-accent/40 ring-1 ring-accent/10 shadow-md' : 'border-border hover:border-primary/30'
                     }`}
                   >
                     {partner.featured && (
                       <div className='absolute -top-3 right-4 z-10'>
-                        <div className='flex items-center gap-1 bg-[#155FA0] text-white px-3 py-1 rounded-full shadow-sm'>
-                          <Star size={10} className='fill-[#FAC51C] text-[#FAC51C]' />
+                        <div className='flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-full shadow-sm'>
+                          <Star size={10} className='fill-accent text-accent' />
                           <span className='text-[9px] font-black uppercase tracking-wider'>Premium</span>
                         </div>
                       </div>
@@ -302,7 +302,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                       </div>
 
                       <div className='space-y-2'>
-                        <h3 className='text-xl sm:text-2xl font-heading font-black tracking-tight text-foreground group-hover:text-[#155FA0] transition-colors'>
+                        <h3 className='text-xl sm:text-2xl font-heading font-black tracking-tight text-foreground group-hover:text-primary transition-colors'>
                           {partner.name}
                         </h3>
                         <p className='text-sm text-muted-foreground leading-relaxed line-clamp-3'>
@@ -311,7 +311,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                       </div>
 
                       <div className='flex items-center gap-2 py-3 border-y border-border/50'>
-                        <MapPin size={14} className='text-[#FAC51C]' />
+                        <MapPin size={14} className='text-accent' />
                         <span className='text-[11px] font-bold text-muted-foreground uppercase tracking-wider'>{partner.location}</span>
                       </div>
 
@@ -322,12 +322,12 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                                 <img src={`https://i.pravatar.cc/100?u=${partner.id + i}`} alt="user" />
                               </div>
                             ))}
-                            <div className='w-7 h-7 rounded-full border-2 border-card bg-[#155FA0] flex items-center justify-center text-[8px] font-bold text-white'>
+                            <div className='w-7 h-7 rounded-full border-2 border-card bg-primary flex items-center justify-center text-[8px] font-bold text-white'>
                               +10k
                             </div>
                          </div>
                         
-                        <button className='flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#155FA0] hover:text-[#51A0D0] transition-colors'>
+                        <button className='flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors'>
                           Profile
                           <ExternalLink size={12} />
                         </button>
@@ -344,7 +344,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                   </div>
                    <button
                     onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
-                    className='px-6 py-2 bg-[#155FA0] text-primary-foreground rounded-full font-bold text-xs uppercase tracking-widest transition-transform hover:scale-105'
+                    className='px-6 py-2 bg-primary text-primary-foreground rounded-full font-bold text-xs uppercase tracking-widest transition-transform hover:scale-105'
                   >
                     Clear Filters
                   </button>
@@ -355,13 +355,13 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
         </section>
 
         {/* Compact Business Section */}
-        <section className='bg-[#155FA0] text-primary-foreground py-16 sm:py-24 px-6 overflow-hidden'>
+        <section className='bg-primary text-primary-foreground py-16 sm:py-24 px-6 overflow-hidden'>
           <div className='max-w-7xl mx-auto'>
             <div className='grid lg:grid-cols-2 gap-12 sm:gap-20 items-center'>
               <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className='space-y-8'>
                 <div className='space-y-4'>
                   <h2 className='text-4xl sm:text-6xl font-heading font-black leading-tight tracking-tighter text-slate-50'>
-                    Partner with <span className='text-[#FAC51C]'>Authority</span>
+                    Partner with <span className='text-accent'>Authority</span>
                   </h2>
                   <p className='text-base sm:text-lg text-primary-foreground/70 leading-relaxed max-w-xl font-medium'>
                     Join Germany's fastest growing mortgage ecosystem. Connect with high-intent homebuyers and scale your business.
@@ -374,7 +374,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                     { title: 'Smart Integration', desc: 'Robust data protocols and security standards.', icon: <Zap size={18} /> },
                   ].map((feat, i) => (
                     <div key={i} className='flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10'>
-                      <div className='flex-shrink-0 w-10 h-10 rounded-xl bg-[#FAC51C] flex items-center justify-center text-[#155FA0]'>{feat.icon}</div>
+                      <div className='flex-shrink-0 w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-primary'>{feat.icon}</div>
                       <div>
                         <h4 className='font-black text-slate-50 text-base'>{feat.title}</h4>
                         <p className='text-sm text-primary-foreground/60'>{feat.desc}</p>
@@ -383,7 +383,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                   ))}
                 </div>
 
-                <button className='group px-8 py-4 bg-[#FAC51C] text-[#155FA0] font-black text-sm uppercase tracking-widest rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-[#FAC51C]/10'>
+                <button className='group px-8 py-4 bg-accent text-primary font-black text-sm uppercase tracking-widest rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-accent/10'>
                   Apply Now
                   <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
                 </button>
@@ -394,7 +394,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                   <h3 className='text-2xl font-black text-slate-50 px-2'>Network Performance</h3>
                   <div className='grid grid-cols-2 gap-4'>
                     <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
-                      <p className='text-3xl font-black text-[#FAC51C]'>€2.4B</p>
+                      <p className='text-3xl font-black text-accent'>€2.4B</p>
                       <p className='text-[10px] font-bold text-primary-foreground/50 uppercase tracing-widest'>Volume</p>
                     </div>
                     <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
