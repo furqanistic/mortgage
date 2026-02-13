@@ -34,10 +34,6 @@ const Partners = ({ language = 'de' }) => {
         {
             name: "Bausparkasse Schwäbisch Hall",
             logo: "https://play-lh.googleusercontent.com/a_8TkLz33oblA2NFoOdF72xqZE5qxzSY-jf-yJ6NJC3XchFABhKAA8GzKpSsW6wsf5s"
-        },
-        {
-            name: "ImmoScout24",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/ImmoScout24_Logo_2020.svg/2560px-ImmoScout24_Logo_2020.svg.png"
         }
     ]
 

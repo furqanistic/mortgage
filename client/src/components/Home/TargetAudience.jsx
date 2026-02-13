@@ -10,7 +10,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "First-Time Buyers",
                 subtitle: "Your first home purchase",
                 description: "Your first home purchase? We guide you step by step and explain every process clearly.",
-                features: ["Eligibility check", "Budget planning", "Step-by-step guidance"],
+                features: [],
                 cta: "Learn More"
             },
             {
@@ -18,7 +18,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "Expats & International",
                 subtitle: "New to Germany",
                 description: "New to Germany? We speak your language and know the special requirements for international buyers.",
-                features: ["English-speaking advisors", "Document checklist", "International buyer support"],
+                features: [],
                 cta: "Learn More"
             },
             {
@@ -26,7 +26,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "Investors",
                 subtitle: "Strategic financing",
                 description: "Strategic financing solutions focused on sustainable wealth growth and intelligent tax optimisation.",
-                features: ["Portfolio strategy", "Tax optimisation", "Long-term growth"],
+                features: [],
                 cta: "Check Now"
             }
         ]
@@ -36,7 +36,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "Erstkäufer",
                 subtitle: "Endlich ins Eigenheim",
                 description: "Wir führen Sie sicher durch den Dschungel der Immobilienfinanzierung. Von Förderungen bis zur Schlüsselübergabe.",
-                features: ["Fördermittel-Check", "Budget-Planung", "Verständliche Beratung"],
+                features: [],
                 cta: "Mehr erfahren"
             },
             {
@@ -44,7 +44,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "Anschlussfinanzierung",
                 subtitle: "Bessere Zinsen sichern",
                 description: "Ihre Zinsbindung läuft aus? Sichern Sie sich jetzt günstige Konditionen für die Zukunft, bis zu 5 Jahre im Voraus.",
-                features: ["Zins-Vergleich", "Termin-Sicherung", "Spar-Potenzial Analyse"],
+                features: [],
                 cta: "Mehr erfahren"
             },
             {
@@ -52,7 +52,7 @@ const TargetAudience = ({ language = 'de' }) => {
                 title: "Kapitalanleger",
                 subtitle: "Vermögen aufbauen",
                 description: "Maßgeschneiderte Konzepte für Ihre Rendite-Immobile. Hebeln Sie Ihr Eigenkapital effektiv.",
-                features: ["Rendite-Kalkulation", "Steuer-Optimierung", "Portfolio-Strategie"],
+                features: [],
                 cta: "Mehr erfahren"
             }
         ]
@@ -85,16 +85,18 @@ const TargetAudience = ({ language = 'de' }) => {
                                 {item.description}
                             </p>
 
-                            <ul className="space-y-3 mb-8">
-                                {item.features.map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-sm text-foreground/80">
-                                        <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center flex-shrink-0">
-                                            <Check className="w-3 h-3" />
-                                        </div>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
+                            {item.features.length > 0 && (
+                                <ul className="space-y-3 mb-8">
+                                    {item.features.map((feature, i) => (
+                                        <li key={i} className="flex items-center gap-3 text-sm text-foreground/80">
+                                            <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center flex-shrink-0">
+                                                <Check className="w-3 h-3" />
+                                            </div>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
 
                             <Button variant="outline" className="w-full border-primary/20 hover:bg-primary hover:text-white dark:border-white/20 dark:hover:bg-white dark:hover:text-black transition-colors">
                                 {item.cta}

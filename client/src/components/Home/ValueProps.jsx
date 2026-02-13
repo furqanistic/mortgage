@@ -1,39 +1,38 @@
 // File: client/src/components/Home/ValueProps.jsx
-import { Zap, Banknote, Handshake } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const ValueProps = ({ language = 'de' }) => {
     const values = language === 'en'
         ? [
             {
-                icon: Zap,
+                icon: "⚡",
                 title: "Fast & Easy",
                 description: "Pre-approval in 24 hours. Digital process without paperwork. Transparent communication at every step."
             },
             {
-                icon: Banknote,
+                icon: "💰",
                 title: "Best Rates",
                 description: "Compare over 100 banks. We negotiate the best interest rates for you. Guaranteed independent advice."
             },
             {
-                icon: Handshake,
+                icon: "🤝",
                 title: "Personal Support",
                 description: "Expert advice in German and English. Complete support from start to finish. Your success is our success."
             }
         ]
         : [
             {
-                icon: Zap,
+                icon: "⚡",
                 title: "Schnell & Einfach",
                 description: "Vorabgenehmigung in 24 Stunden. Digitaler Prozess ohne Papierkram. Transparente Kommunikation in jedem Schritt."
             },
             {
-                icon: Banknote,
+                icon: "💰",
                 title: "Beste Konditionen",
                 description: "Vergleich von über 100 Banken. Wir verhandeln die besten Zinssätze für Sie. Garantiert unabhängige Beratung."
             },
             {
-                icon: Handshake,
+                icon: "🤝",
                 title: "Persönliche Betreuung",
                 description: "Expertenberatung auf Deutsch und Englisch. Vollständige Unterstützung von Anfang bis Ende. Ihr Erfolg ist unser Erfolg."
             }
@@ -63,8 +62,8 @@ const ValueProps = ({ language = 'de' }) => {
                             viewport={{ once: true }}
                             className="bg-secondary/30 dark:bg-secondary/10 p-8 rounded-2xl hover:-translate-y-2 hover:shadow-lg transition-all duration-300 border border-transparent hover:border-accent/20 group"
                         >
-                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 mx-auto shadow-lg shadow-primary/20 group-hover:rotate-12 transition-transform duration-500">
-                                <item.icon className="w-10 h-10 text-white" />
+                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 mx-auto shadow-lg shadow-primary/20 group-hover:rotate-12 transition-transform duration-500 text-4xl">
+                                {item.icon}
                             </div>
                             <h3 className="font-heading text-xl font-bold text-primary dark:text-white mb-4 text-center">
                                 {item.title}

@@ -62,18 +62,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
       style={{ background: 'linear-gradient(135deg, #1a4d2e 0%, #0f2919 100%)' }}
     >
       <div
-        className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full opacity-30"
+        className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full opacity-40"
         style={{
           background:
-            'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
         }}
       />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <p className="text-sm uppercase tracking-[0.2em] text-white/70">
+          <p className="text-sm uppercase tracking-[0.2em] text-white/80">
             {labels.title}
           </p>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold mt-3">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mt-3 text-white">
             {labels.headline}
           </h2>
           <p className="text-sm sm:text-base text-white/80 mt-3">
@@ -81,8 +81,8 @@ const MortgageCalculator = ({ language = 'de' }) => {
           </p>
         </div>
 
-        <div className="bg-white text-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl">
-          <div className="grid gap-6">
+        <div className="bg-white text-slate-900 rounded-[20px] p-6 sm:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+          <div className="grid gap-6 lg:gap-8">
             <div className="space-y-6">
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-slate-700">
@@ -118,7 +118,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                   onChange={(e) =>
                     setEquity(clamp(Number(e.target.value || 0), 0, 500000))
                   }
-                  className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full rounded-lg border-2 border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
                 />
               </div>
 
@@ -165,7 +165,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-gradient-to-br from-primary to-emerald-900 text-white p-6 sm:p-7">
+            <div className="rounded-2xl bg-gradient-to-br from-primary to-emerald-950 text-white p-6 sm:p-7">
               <div className="text-center text-lg font-heading mb-5">
                 {labels.resultsTitle}
               </div>

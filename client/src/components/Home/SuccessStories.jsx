@@ -6,7 +6,6 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel'
-import { motion } from 'framer-motion'
 import { Quote } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -61,37 +60,38 @@ const SuccessStories = ({ language = 'de' }) => {
 
                 <div className="max-w-5xl mx-auto">
                     <Carousel opts={{ align: 'start', loop: true }} setApi={setApi} className="relative">
-                        <CarouselContent>
+                        <CarouselContent className="items-stretch">
                             {testimonials.map((item, index) => (
-                                <CarouselItem key={index}>
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.98 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: index * 0.05 }}
-                                        viewport={{ once: true }}
-                                        className="bg-card dark:bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl transition-shadow relative overflow-hidden grid lg:grid-cols-2 min-h-[520px]"
-                                    >
-                                        <div className="relative h-72 sm:h-full min-h-[280px]">
-                                            <img
-                                                src={item.image}
-                                                alt={item.name}
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </div>
-
-                                        <div className="p-8 sm:p-10 flex flex-col justify-center">
-                                            <Quote className="w-12 h-12 text-accent/20 mb-6" />
-
-                                            <div className="mb-6">
-                                                <div className="font-bold text-primary dark:text-white">{item.name}</div>
-                                                <div className="text-xs text-accent font-medium uppercase tracking-wider">{item.role}</div>
+                                <CarouselItem key={index} className="basis-full">
+                                    <div className="bg-card dark:bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl transition-shadow relative overflow-hidden h-full">
+                                        <div className="p-8 sm:p-10">
+                                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-6">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="h-14 w-14 rounded-full overflow-hidden ring-2 ring-accent/40 shadow-sm">
+                                                        <img
+                                                            src={item.image}
+                                                            alt={item.name}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold text-primary dark:text-white">{item.name}</div>
+                                                        <div className="text-xs text-accent font-medium uppercase tracking-wider">{item.role}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-1 text-accent/40 text-xl">
+                                                    <Quote className="w-5 h-5" />
+                                                    <Quote className="w-5 h-5" />
+                                                </div>
                                             </div>
 
-                                            <p className="text-muted-foreground italic leading-relaxed">
-                                                "{item.text}"
-                                            </p>
+                                            <div className="rounded-2xl bg-secondary/30 dark:bg-white/5 border border-border/60 p-6">
+                                                <p className="text-muted-foreground leading-relaxed">
+                                                    "{item.text}"
+                                                </p>
+                                            </div>
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
