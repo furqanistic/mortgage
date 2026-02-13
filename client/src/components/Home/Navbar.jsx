@@ -34,6 +34,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const Navbar = ({ language = 'de', onLanguageChange }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -94,16 +95,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
 
   const handlePhoneClick = (event) => {
     event.preventDefault()
-    const openWhatsApp = window.confirm(
-      isEnglish
-        ? 'Contact via WhatsApp? Click Cancel to call now.'
-        : 'Kontakt per WhatsApp? Klicken Sie auf Abbrechen, um jetzt anzurufen.'
-    )
-    if (openWhatsApp) {
-      window.open(`https://wa.me/${contact.phoneE164.replace('+', '')}`, '_blank', 'noopener')
-    } else {
-      window.location.href = `tel:${contact.phoneE164}`
-    }
+    setIsContactModalOpen(true)
   }
 
   return (
@@ -316,6 +308,50 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
       </div>
       </header>
       <div className="h-[120px] sm:h-[132px]" aria-hidden="true" />
+
+      {isContactModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+            <h3 className="font-heading text-lg font-bold text-primary">
+              {isEnglish ? 'Contact Us' : 'Kontakt'}
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {isEnglish
+                ? 'How would you like to reach us?'
+                : 'Wie möchten Sie uns erreichen?'}
+            </p>
+            <div className="mt-5 grid gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsContactModalOpen(false)
+                  window.open(`https://wa.me/${contact.phoneE164.replace('+', '')}`, '_blank', 'noopener')
+                }}
+                className="w-full rounded-xl bg-primary px-4 py-2.5 text-white font-semibold shadow hover:bg-primary/90 transition"
+              >
+                {isEnglish ? 'WhatsApp' : 'WhatsApp'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsContactModalOpen(false)
+                  window.location.href = `tel:${contact.phoneE164}`
+                }}
+                className="w-full rounded-xl border border-primary/30 px-4 py-2.5 text-primary font-semibold hover:border-primary/60 hover:bg-primary/5 transition"
+              >
+                {isEnglish ? 'Call Now' : 'Jetzt anrufen'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsContactModalOpen(false)}
+                className="w-full rounded-xl px-4 py-2 text-sm text-muted-foreground hover:text-primary transition"
+              >
+                {isEnglish ? 'Cancel' : 'Abbrechen'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <ConsultationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
