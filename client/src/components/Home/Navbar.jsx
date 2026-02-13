@@ -1,4 +1,5 @@
 // File: client/src/components/Home/Navbar.jsx
+import ConsultationModal from '@/components/Home/ConsultationModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,6 +32,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const Navbar = ({ language = 'de', onLanguageChange }) => {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -66,12 +68,14 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
     ? [
         { label: 'Home', path: '/' },
         { label: 'Partners', path: '/partners' },
-        { label: 'About', path: '/about' },
+        { label: 'Tools', path: '/tools' },
+        { label: 'Our Team', path: '/about' },
         { label: 'Contact', path: '/contact' },
       ]
     : [
         { label: 'Startseite', path: '/' },
         { label: 'Partner', path: '/partners' },
+        { label: 'Tools', path: '/tools' },
         { label: 'Über uns', path: '/about' },
         { label: 'Kontakt', path: '/contact' },
       ]
@@ -83,14 +87,15 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
   const showLanguageToggle = typeof onLanguageChange === 'function'
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-white/98 dark:bg-slate-950/98 backdrop-blur-md shadow-sm py-3'
-        : 'bg-transparent py-5'
-        }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+    <>
+      <header
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
+          ? 'bg-white/98 dark:bg-slate-950/98 backdrop-blur-md shadow-sm py-3'
+          : 'bg-transparent py-5'
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
 
           {/* Logo */}
           <Link to="/" className="relative group flex items-center gap-2 sm:gap-3">
@@ -175,6 +180,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
             ) : (
               <Button
                 className="bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                onClick={() => setIsModalOpen(true)}
               >
                 {ctaLabel}
               </Button>
@@ -249,7 +255,10 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                         </div>
                       </div>
                     ) : (
-                      <Button className="w-full bg-primary text-white font-bold py-6">
+                      <Button
+                        className="w-full bg-primary text-white font-bold py-6"
+                        onClick={() => setIsModalOpen(true)}
+                      >
                         {ctaLabel}
                       </Button>
                     )}
@@ -260,7 +269,13 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
           </div>
         </div>
       </div>
-    </header>
+      </header>
+      <ConsultationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        language={language}
+      />
+    </>
   )
 }
 

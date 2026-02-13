@@ -111,7 +111,7 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de' }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none rounded-[2.5rem] bg-white dark:bg-slate-950 shadow-2xl">
+      <DialogContent className="p-0 overflow-hidden border-none bg-white dark:bg-slate-950 shadow-2xl fixed bottom-0 left-0 right-0 top-auto translate-x-0 translate-y-0 w-full max-w-none rounded-t-[2rem] rounded-b-none data-[state=open]:slide-in-from-bottom-6 data-[state=closed]:slide-out-to-bottom-6 sm:fixed sm:top-[50%] sm:left-[50%] sm:bottom-auto sm:right-auto sm:w-full sm:max-w-[500px] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-[2.5rem]">
         <div className="p-8 sm:p-10 relative">
           <DialogHeader className="mb-8 pr-6">
             <DialogTitle className="text-3xl sm:text-4xl font-heading font-black text-primary dark:text-white leading-tight">
