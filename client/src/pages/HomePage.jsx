@@ -19,9 +19,9 @@ const HomePage = ({ language = 'de', onLanguageChange }) => {
         <HeroSection language={language} />
         <Partners language={language} />
         <ValueProps language={language} />
+        <MortgageCalculator language={language} />
         <TargetAudience language={language} />
         <RoadmapSection language={language} />
-        <MortgageCalculator language={language} />
         <SuccessStories language={language} />
         <FAQ language={language} />
         <CTASection language={language} />

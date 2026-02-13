@@ -22,6 +22,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Globe,
   LogOut,
+  Mail,
   Menu,
   Phone,
   User
@@ -85,11 +86,55 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
   const signedInLabel = isEnglish ? 'Signed in as' : 'Angemeldet als'
 
   const showLanguageToggle = typeof onLanguageChange === 'function'
+  const contact = {
+    phoneDisplay: '+49 151 71618082',
+    phoneE164: '+4915171618082',
+    email: 'ravinder.singh@baufiking.de',
+  }
+
+  const handlePhoneClick = (event) => {
+    event.preventDefault()
+    const openWhatsApp = window.confirm(
+      isEnglish
+        ? 'Contact via WhatsApp? Click Cancel to call now.'
+        : 'Kontakt per WhatsApp? Klicken Sie auf Abbrechen, um jetzt anzurufen.'
+    )
+    if (openWhatsApp) {
+      window.open(`https://wa.me/${contact.phoneE164.replace('+', '')}`, '_blank', 'noopener')
+    } else {
+      window.location.href = `tel:${contact.phoneE164}`
+    }
+  }
 
   return (
     <>
+      <div className="fixed top-0 w-full z-50 bg-primary text-white text-xs sm:text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 sm:h-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2">
+          <div className="text-white/70 text-[10px] sm:text-xs">
+            {isEnglish ? 'Fast response via WhatsApp or email.' : 'Schnelle Antwort per WhatsApp oder E-Mail.'}
+          </div>
+          <div className="flex items-center gap-4">
+            <a
+              href={`tel:${contact.phoneE164}`}
+              onClick={handlePhoneClick}
+              className="font-semibold hover:text-white/80 transition-colors inline-flex items-center gap-1.5"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              {contact.phoneDisplay}
+            </a>
+            <span className="hidden sm:inline text-white/60">•</span>
+            <a
+              href={`mailto:${contact.email}`}
+              className="text-white/80 hover:text-white transition-colors inline-flex items-center gap-1.5"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              {contact.email}
+            </a>
+          </div>
+        </div>
+      </div>
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
+        className={`fixed top-9 sm:top-10 w-full z-40 transition-all duration-300 ${isScrolled
           ? 'bg-white/98 dark:bg-slate-950/98 backdrop-blur-md shadow-sm py-3'
           : 'bg-transparent py-5'
           }`}
@@ -270,6 +315,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
         </div>
       </div>
       </header>
+      <div className="h-[120px] sm:h-[132px]" aria-hidden="true" />
       <ConsultationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

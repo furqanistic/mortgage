@@ -30,6 +30,7 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
   const [repaymentInput, setRepaymentInput] = useState('1.5')
   const [maxPaymentInput, setMaxPaymentInput] = useState('35')
   const [fixedPeriodInput, setFixedPeriodInput] = useState('10')
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat(locale, {
@@ -39,6 +40,10 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
     }).format(value)
 
   const formatNumber = (value) => Math.round(value).toLocaleString(locale)
+  const formatCurrencyPdf = (value) => {
+    const formatted = formatNumber(value)
+    return isEnglish ? `€ ${formatted}` : `${formatted} €`
+  }
 
   const totalRate = interestRate + repaymentRate
   const maxMonthlyPayment = (income * maxPaymentPercent) / 100
@@ -167,19 +172,24 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
     })
 
   const handleDownloadPdf = async () => {
+    if (isDownloading) return
+    setIsDownloading(true)
+    try {
     const doc = new jsPDF({ unit: 'pt', format: 'a4' })
     const pageWidth = doc.internal.pageSize.getWidth()
     const marginX = 48
     let cursorY = 64
 
-    doc.setFillColor(26, 77, 46)
+    doc.setFillColor(255, 255, 255)
     doc.rect(0, 0, pageWidth, 72, 'F')
-    doc.setTextColor(255, 255, 255)
+    doc.setDrawColor(230, 233, 237)
+    doc.line(0, 72, pageWidth, 72)
+    doc.setTextColor(26, 77, 46)
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(18)
     doc.text(isEnglish ? 'Mortgage Report' : 'Finanzierungs-Report', marginX + 54, 44)
     doc.setFontSize(11)
-    doc.setFont('helvetica', 'normal')
+    doc.setFont('times', 'bolditalic')
     doc.text('Baufiking', pageWidth - marginX, 44, { align: 'right' })
 
     try {
@@ -210,7 +220,7 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
     doc.setFontSize(11)
 
     const inputRows = [
-      [labels.inputs.income, formatCurrency(income)],
+      [labels.inputs.income, formatCurrencyPdf(income)],
       [labels.inputs.interest, `${interestRate.toFixed(2)}%`],
       [labels.inputs.repayment, `${repaymentRate.toFixed(2)}%`],
       [labels.inputs.maxPayment, `${maxPaymentPercent}%`],
@@ -233,11 +243,11 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
 
     cursorY += 16
     const resultRows = [
-      [labels.maxLoan, formatCurrency(maxLoan)],
-      [labels.monthlyPayment, formatCurrency(maxMonthlyPayment)],
+      [labels.maxLoan, formatCurrencyPdf(maxLoan)],
+      [labels.monthlyPayment, formatCurrencyPdf(maxMonthlyPayment)],
       [labels.loanTerm, `${totalYears.toFixed(1)} ${isEnglish ? 'years' : 'Jahre'}`],
-      [`${labels.afterFixed} ${fixedPeriodYears}`, formatCurrency(remainingAfterFixed)],
-      [labels.paidOff, formatCurrency(paidOffInPeriod)],
+      [`${labels.afterFixed} ${fixedPeriodYears}`, formatCurrencyPdf(remainingAfterFixed)],
+      [labels.paidOff, formatCurrencyPdf(paidOffInPeriod)],
     ]
 
     resultRows.forEach(([label, value]) => {
@@ -276,9 +286,9 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
       const rowX = marginX + 6
       doc.setTextColor(40, 55, 69)
       doc.text(String(item.year), rowX, rowY)
-      doc.text(formatCurrency(item.principal), rowX + colWidths[0], rowY)
-      doc.text(formatCurrency(item.interest), rowX + colWidths[0] + colWidths[1], rowY)
-      doc.text(formatCurrency(item.balance), rowX + colWidths[0] + colWidths[1] + colWidths[2], rowY)
+      doc.text(formatCurrencyPdf(item.principal), rowX + colWidths[0], rowY)
+      doc.text(formatCurrencyPdf(item.interest), rowX + colWidths[0] + colWidths[1], rowY)
+      doc.text(formatCurrencyPdf(item.balance), rowX + colWidths[0] + colWidths[1] + colWidths[2], rowY)
       if (index < 7) {
         doc.setDrawColor(230, 233, 237)
         doc.line(marginX, rowY + 6, pageWidth - marginX, rowY + 6)
@@ -297,6 +307,9 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
     )
 
     doc.save(isEnglish ? 'mortgage-report.pdf' : 'finanzierungs-report.pdf')
+    } finally {
+      setIsDownloading(false)
+    }
   }
 
   return (
@@ -582,9 +595,10 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
               <button
                 type="button"
                 onClick={handleDownloadPdf}
-                className="w-full border border-primary/30 text-primary font-semibold py-3 rounded-xl transition hover:border-primary/60 hover:bg-primary/5"
+                disabled={isDownloading}
+                className="w-full border border-primary/30 text-primary font-semibold py-3 rounded-xl transition hover:border-primary/60 hover:bg-primary/5 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {labels.download}
+                {isDownloading ? (isEnglish ? 'Preparing PDF...' : 'PDF wird erstellt...') : labels.download}
               </button>
             </div>
           </div>

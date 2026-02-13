@@ -1,7 +1,4 @@
 // File: client/src/components/Home/SuccessStories.jsx
-import { useEffect, useState } from 'react'
-import { Quote } from 'lucide-react'
-import { motion } from 'framer-motion'
 import {
     Carousel,
     CarouselContent,
@@ -9,6 +6,9 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel'
+import { motion } from 'framer-motion'
+import { Quote } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const SuccessStories = ({ language = 'de' }) => {
     const [api, setApi] = useState(null)
@@ -30,18 +30,18 @@ const SuccessStories = ({ language = 'de' }) => {
             image: "/Testimonials/testimonial_1.jpeg"
         },
         {
-            name: "Charanjit Singh",
-            role: language === 'en' ? "First-Time Buyer" : "Erstkäufer",
+            name: "Mr Charanjit Singh Grewal",
+            role: language === 'en' ? "Home Buyers" : "Hauskauf",
             text: "From the very first call, I felt confident I was in the right hands. They explained every option clearly, secured a great rate, and handled the paperwork without stress. I moved in earlier than expected and the monthly payments fit perfectly with my plan.",
             initials: "CS",
-            image: "/Testimonials/testimonial_3.png"
+            image: "/Testimonials/testimonial_3.jpeg"
         },
         {
-            name: "Grewal, Mubashir Ali",
-            role: language === 'en' ? "Refinancing" : "Anschlussfinanzierung",
+            name: "Mubashir Ali",
+            role: language === 'en' ? "Home Buyer" : "Hauskauf",
             text: "Professional, patient, and truly honest advice. They compared multiple banks and negotiated terms that saved me money every month. The whole process was transparent, fast, and far easier than I imagined.",
             initials: "GM",
-            image: "/Testimonials/testimonial_2.png"
+            image: "/Testimonials/testimonial_2.jpeg"
         }
     ]
 

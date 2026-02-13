@@ -41,7 +41,6 @@ const HeroSection = ({ language = 'de' }) => {
         ],
         placeholderTitle: 'Happy Family with House Keys',
         placeholderSubtitle: '(Image Placeholder)',
-        savingsLabel: 'Average Savings',
       }
     : {
         title: {
@@ -60,7 +59,6 @@ const HeroSection = ({ language = 'de' }) => {
         ],
         placeholderTitle: 'Glückliche Familie mit Hausschlüsseln',
         placeholderSubtitle: '(Image Placeholder)',
-        savingsLabel: 'Durchschnittliche Ersparnis',
       }
 
   return (
@@ -139,23 +137,6 @@ const HeroSection = ({ language = 'de' }) => {
                 />
               </div>
 
-              {/* Floating Badge */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute bottom-8 left-8 right-8 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl shadow-xl z-30 border border-white/50 dark:border-white/10"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
-                    <span className="font-bold text-lg">€</span>
-                  </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground font-medium">{copy.savingsLabel}</div>
-                    <div className="text-2xl font-bold text-primary dark:text-white">€24.500</div>
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
 
