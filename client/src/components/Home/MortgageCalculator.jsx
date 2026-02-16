@@ -33,10 +33,31 @@ const MortgageCalculator = ({ language = 'de' }) => {
 
   const monthlyInterest = (maxLoan * (interestRate / 100)) / 12
   const monthlyRepayment = Math.max(0, maxMonthlyPayment - monthlyInterest)
-  const remainingIncome = Math.max(0, income - maxMonthlyPayment)
 
   const interestShare = maxMonthlyPayment > 0 ? (monthlyInterest / maxMonthlyPayment) * 100 : 0
   const repaymentShare = maxMonthlyPayment > 0 ? (monthlyRepayment / maxMonthlyPayment) * 100 : 0
+
+  const monthlyRate = interestRate / 100 / 12
+  const loanDurationMonths = (() => {
+    if (maxMonthlyPayment <= 0) return 0
+    if (monthlyRate === 0) return maxLoan / maxMonthlyPayment
+    const paymentCoverage = maxMonthlyPayment - maxLoan * monthlyRate
+    if (paymentCoverage <= 0) return Infinity
+    return Math.log(maxMonthlyPayment / paymentCoverage) / Math.log(1 + monthlyRate)
+  })()
+  const remainingAfterTenYears = (() => {
+    const months = 120
+    if (maxLoan <= 0) return 0
+    if (monthlyRate === 0) return Math.max(0, maxLoan - maxMonthlyPayment * months)
+    const factor = Math.pow(1 + monthlyRate, months)
+    const balance = maxLoan * factor - (maxMonthlyPayment * (factor - 1)) / monthlyRate
+    return Math.max(0, balance)
+  })()
+  const totalInterestPaid = (() => {
+    if (!Number.isFinite(loanDurationMonths) || loanDurationMonths <= 0) return 0
+    const totalPaid = maxMonthlyPayment * loanDurationMonths
+    return Math.max(0, totalPaid - maxLoan)
+  })()
 
   const labels = {
     title: isEnglish ? 'Mortgage Affordability Calculator' : 'Finanzierungsrechner',
@@ -54,37 +75,33 @@ const MortgageCalculator = ({ language = 'de' }) => {
     },
     resultsTitle: isEnglish ? 'Your Maximum Mortgage' : 'Ihre maximale Finanzierung',
     maxLoan: isEnglish ? 'Maximum Loan Amount' : 'Maximale Darlehenssumme',
-    monthlyPayment: isEnglish ? 'Monthly Payment' : 'Monatliche Rate',
-    incomeUsed: isEnglish ? 'Income Used' : 'Einkommensanteil',
-    remainingIncome: isEnglish ? 'Remaining Income' : 'Verfügbares Einkommen',
-    annualPayment: isEnglish ? 'Annual Payment' : 'Jahresrate',
+    monthlyPayment: isEnglish ? 'Monthly Instalment' : 'Monatliche Rate',
+    loanDuration: isEnglish ? 'Loan Duration' : 'Darlehensdauer',
+    remainingAfterTenYears: isEnglish ? 'Remaining Loan after 10 years' : 'Restschuld nach 10 Jahren',
+    interestPaidTotal: isEnglish ? 'Interest paid during full loan period' : 'Gezahlte Zinsen über die gesamte Laufzeit',
     breakdownTitle: isEnglish ? 'Payment Breakdown' : 'Zahlungsaufteilung',
     totalPayment: isEnglish ? 'Total Monthly Payment' : 'Gesamtrate pro Monat',
     infoTitle: isEnglish ? 'How This Calculation Works' : 'So funktioniert die Berechnung',
     infoText: isEnglish
       ? 'This calculator determines your maximum affordable mortgage based on a customizable percentage of your net household income. Adjust interest rate, repayment rate, and maximum payment percentage to match your situation or bank requirements.'
       : 'Der Rechner bestimmt Ihre maximal leistbare Finanzierung basierend auf einem frei wählbaren Anteil Ihres Nettoeinkommens. Passen Sie Zins, Tilgung und maximalen Zahlungsanteil an.',
+    infoNote: isEnglish
+      ? '* This is an estimate only - actual loan approval depends on bank assessment'
+      : '* Nur eine Schätzung - tatsächliche Zusage hängt von der Bank ab',
     cta: isEnglish ? 'Get Personalized Advice' : 'Persönliche Beratung anfordern',
-    assumptionsTitle: isEnglish ? 'Calculation Assumptions' : 'Berechnungsannahmen',
-    assumptions: isEnglish
-      ? [
-          'All rates are adjustable and can be customized above',
-          'Default interest rate: 4.0% per year (adjustable from 1.0% to 10.0%)',
-          'Default repayment rate: 1.5% per year (adjustable from 0.5% to 5.0%)',
-          'Total annual rate = Interest rate + Repayment rate',
-          'Default maximum payment: 35% of net monthly household income (adjustable from 20% to 50%)',
-          'Calculation does not include additional costs (notary fees, taxes, insurance, maintenance)',
-          'This is an estimate only - actual loan approval depends on bank assessment',
-        ]
-      : [
-          'Alle Raten sind anpassbar und können oben geändert werden',
-          'Standardzinssatz: 4,0% p.a. (anpassbar von 1,0% bis 10,0%)',
-          'Standardtilgung: 1,5% p.a. (anpassbar von 0,5% bis 5,0%)',
-          'Gesamtrate p.a. = Zinssatz + Tilgungssatz',
-          'Standard maximale Rate: 35% des Nettoeinkommens (anpassbar von 20% bis 50%)',
-          'Berechnung berücksichtigt keine Nebenkosten (Notar, Steuern, Versicherung, Instandhaltung)',
-          'Nur eine Schätzung - tatsächliche Zusage hängt von der Bank ab',
-        ],
+  }
+
+  const formatDuration = (months) => {
+    if (!Number.isFinite(months) || months <= 0) return '—'
+    if (months < 12) {
+      return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(months)} ${
+        isEnglish ? 'months' : 'Monate'
+      }`
+    }
+    const years = months / 12
+    return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(years)} ${
+      isEnglish ? 'years' : 'Jahre'
+    }`
   }
 
   return (
@@ -344,16 +361,16 @@ const MortgageCalculator = ({ language = 'de' }) => {
                     <div className="text-lg font-semibold">{formatCurrency(maxMonthlyPayment)}</div>
                   </div>
                   <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.incomeUsed}</div>
-                    <div className="text-lg font-semibold">{maxPaymentPercent}%</div>
+                    <div className="text-[11px] text-white/70">{labels.loanDuration}</div>
+                    <div className="text-lg font-semibold">{formatDuration(loanDurationMonths)}</div>
                   </div>
                   <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.remainingIncome}</div>
-                    <div className="text-lg font-semibold">{formatCurrency(remainingIncome)}</div>
+                    <div className="text-[11px] text-white/70">{labels.remainingAfterTenYears}</div>
+                    <div className="text-lg font-semibold">{formatCurrency(remainingAfterTenYears)}</div>
                   </div>
                   <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.annualPayment}</div>
-                    <div className="text-lg font-semibold">{formatCurrency(annualPayment)}</div>
+                    <div className="text-[11px] text-white/70">{labels.interestPaidTotal}</div>
+                    <div className="text-lg font-semibold">{formatCurrency(totalInterestPaid)}</div>
                   </div>
                 </div>
               </div>
@@ -394,6 +411,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {labels.infoText}
                 </p>
+                <p className="text-xs text-muted-foreground/90 mt-3">{labels.infoNote}</p>
               </div>
 
               <button
@@ -404,17 +422,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 {labels.cta}
               </button>
 
-              <div className="rounded-2xl border border-border/60 bg-white p-5">
-                <div className="font-semibold text-primary mb-3 text-sm">{labels.assumptionsTitle}</div>
-                <ul className="space-y-2 text-xs text-muted-foreground">
-                  {labels.assumptions.map((item) => (
-                    <li key={item} className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </div>
         </div>
