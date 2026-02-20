@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Investment Calculator | German Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a2e;
+            --primary-light: #2d5a47;
+            --accent: #c9a961;
+            --accent-light: #e4d4a8;
+            --bg-main: #fafaf8;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-medium: #4a4a4a;
+            --text-light: #7a7a7a;
+            --border: #e0ddd5;
+            --positive: #2d5a47;
+            --negative: #a83232;
+            --shadow: rgba(26, 58, 46, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, #fafaf8 0%, #f5f3ed 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-medium);
+            font-weight: 300;
+        }
+
+        .decorative-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 15px auto;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 500px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .inputs-column {
+                position: relative !important;
+            }
+        }
+
+        .inputs-column {
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .results-column {
+            min-height: 100vh;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            animation: slideUp 0.6s ease-out backwards;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .input-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-subtitle::before {
+            content: '';
+            width: 3px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 500px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        .card-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--bg-main);
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .input-hint {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(26, 58, 46, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 6px;
+            font-weight: 400;
+        }
+
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 600;
+            font-family: 'DM Serif Display', serif;
+        }
+
+        .metric-change {
+            font-size: 0.8rem;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .metric-card-large {
+            grid-column: 1 / -1;
+        }
+
+        .breakdown {
+            background: var(--bg-main);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .breakdown-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .breakdown-total {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid var(--accent);
+        }
+
+        .breakdown-total .breakdown-label,
+        .breakdown-total .breakdown-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .roi-indicator {
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .roi-positive {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+        }
+
+        .roi-neutral {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100;
+        }
+
+        .roi-negative {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            color: #c62828;
+        }
+
+        .projection-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .projection-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .projection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .projection-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .projection-item-label {
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            margin-bottom: 5px;
+        }
+
+        .projection-item-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'DM Serif Display', serif;
+        }
+
+        .projection-item-large {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .projection-item-large .projection-item-value {
+            font-size: 2rem;
+            color: var(--positive);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        .info-box strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .tax-benefit-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .tax-benefit-title {
+            font-weight: 700;
+            color: var(--positive);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .tax-benefit-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .disclaimer {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        .disclaimer strong {
+            color: var(--primary);
+        }
+
+        .info-bulb {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 0.75rem;
+            cursor: help;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .info-bulb:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, var(--accent), var(--primary-light));
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px solid var(--border);
+        }
+
+        .chart-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Work Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 58, 46, 0.3);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 46, 0.4);
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, var(--accent), #d4af6a);
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 169, 97, 0.4);
+        }
+
+        /* Print styles for PDF export */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                color: #1a1a1a;
+            }
+
+            .inputs-column,
+            .action-buttons,
+            .disclaimer,
+            header .decorative-line,
+            .info-box {
+                display: none !important;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .results-column {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .card {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                margin-bottom: 15px;
+                background: white;
+            }
+
+            .card-title {
+                background: #f5f3ed;
+                padding: 10px 15px;
+                margin: -30px -30px 20px -30px;
+                border-radius: 16px 16px 0 0;
+            }
+
+            .projection-card {
+                page-break-inside: avoid;
+                border: 2px solid #1a3a2e;
+            }
+
+            .roi-indicator {
+                page-break-inside: avoid;
+                border: 2px solid currentColor;
+            }
+
+            h1 {
+                font-size: 24pt;
+                margin-bottom: 10px;
+                color: #1a3a2e;
+            }
+
+            .subtitle {
+                font-size: 12pt;
+                margin-bottom: 20px;
+                color: #4a4a4a;
+            }
+
+            .card-title {
+                font-size: 14pt;
+                page-break-after: avoid;
+                color: #1a3a2e;
+            }
+
+            .metric-card {
+                page-break-inside: avoid;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .metric-value {
+                font-size: 1.4rem;
+            }
+
+            .breakdown {
+                page-break-inside: avoid;
+            }
+
+            .breakdown-item {
+                font-size: 9pt;
+            }
+
+            .projection-grid {
+                page-break-inside: avoid;
+            }
+
+            .projection-item-value {
+                font-size: 1.2rem;
+            }
+
+            .tax-benefit-box {
+                page-break-inside: avoid;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            canvas {
+                max-height: 250px;
+                page-break-inside: avoid;
+            }
+
+            .chart-container {
+                page-break-inside: avoid;
+                padding: 15px;
+            }
+
+            /* Force color printing */
+            .metric-card,
+            .projection-card,
+            .tax-benefit-box,
+            .roi-indicator {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color-adjust: exact;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        /* Scrollbar styling for inputs column */
+        .inputs-column::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .inputs-column::-webkit-scrollbar-track {
+            background: var(--bg-main);
+            border-radius: 10px;
+        }
+
+        .inputs-column::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .inputs-column::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Property Investment Calculator</h1>
+            <div class="decorative-line"></div>
+            <p class="subtitle">Calculate returns, tax benefits, and 10-year projections for German property investments</p>
+            
+            <div class="action-buttons">
+                <button class="btn btn-download" onclick="downloadPDF()">
+                    <span>📥</span>
+                    <span>Download Report (PDF)</span>
+                </button>
+                <a href="https://calendly.com" target="_blank" class="btn btn-cta" id="scheduleCallBtn">
+                    <span>📞</span>
+                    <span>Schedule a Call</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <!-- Left Column - Inputs -->
+            <div class="inputs-column">
+                <!-- All Inputs in One Card -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="card-icon">📋</span>
+                        Property Details
+                    </h2>
+
+                    <!-- Basic Property Info -->
+                    <div class="input-section">
+                        <div class="section-subtitle">Basic Information</div>
+                        
+                        <div class="input-group">
+                            <label for="kaufpreis">
+                                <span>Purchase Price</span>
+                                <span class="info-bulb" title="Total purchase price of the property (Kaufpreis)">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kaufpreis" value="300000" step="1000">
+                                <span class="input-suffix">€</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="eigenkapital">
+                                <span>Your Down Payment</span>
+                                <span class="info-bulb" title="Your cash investment upfront (Eigenkapital). Typical: 10-30% of total investment">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="eigenkapital" value="60000" step="1000">
+                                <span class="input-suffix">€</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="kaltmiete">
+                                <span>Monthly Rent Income</span>
+                                <span class="info-bulb" title="Base monthly rent (Kaltmiete) excluding utilities. This is your gross rental income">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kaltmiete" value="1200" step="50">
+                                <span class="input-suffix">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Purchase Costs -->
+                    <div class="input-section">
+                        <div class="section-subtitle">Purchase Transaction Costs</div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="grunderwerbsteuer">
+                                    <span>Transfer Tax</span>
+                                    <span class="info-bulb" title="Grunderwerbsteuer: Varies by German state. Bavaria & Saxony: 3.5%, Berlin & Hamburg: 6%, NRW: 6.5%">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="grunderwerbsteuer" value="5.0" step="0.1" min="3.5" max="6.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="notar">
+                                    <span>Notary & Registry</span>
+                                    <span class="info-bulb" title="Notary fees and land registry costs. Typically 1.5-2% of purchase price">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="notar" value="1.5" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="makler">
+                                <span>Agent Commission</span>
+                                <span class="info-bulb" title="Broker commission (Maklerprovision). Often split 50/50 between buyer and seller. 0-7.14% including VAT">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="makler" value="3.57" step="0.01">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financing -->
+                    <div class="input-section">
+                        <div class="section-subtitle">Mortgage Terms</div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="zinssatz">
+                                    <span>Interest Rate</span>
+                                    <span class="info-bulb" title="Annual mortgage interest rate (Zinssatz). Current German rates: 3-4% for 10-year fixed">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="zinssatz" value="3.5" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tilgung">
+                                    <span>Repayment Rate</span>
+                                    <span class="info-bulb" title="Starting repayment rate (Anfangstilgung). Higher % means faster loan payoff. Typical: 2-3%">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="tilgung" value="2.0" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operating Costs -->
+                    <div class="input-section">
+                        <div class="section-subtitle">Monthly Operating Costs</div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="nebenkosten">
+                                    <span>Non-Transferable</span>
+                                    <span class="info-bulb" title="Nicht umlagefähige Kosten: Portion of Hausgeld you pay (management fees, insurance, repairs). Cannot be passed to tenant.">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="nebenkosten" value="200" step="10">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="instandhaltung">
+                                    <span>Maintenance</span>
+                                    <span class="info-bulb" title="Monthly contribution to building maintenance fund (Instandhaltungsrücklage). Used for major repairs">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="instandhaltung" value="150" step="10">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tax & Growth -->
+                    <div class="input-section">
+                        <div class="section-subtitle">Tax & Growth Assumptions</div>
+                        
+                        <div class="input-group">
+                            <label for="taxBracket">
+                                <span>Your Tax Rate</span>
+                                <span class="info-bulb" title="Your marginal income tax rate including Solidaritätszuschlag. Typical: 25%, 35%, 42%, 45%">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="taxBracket" value="35" step="1" min="0" max="45">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="afa">
+                                    <span>Depreciation (AfA)</span>
+                                    <span class="info-bulb" title="Annual depreciation rate. Standard: 2% for post-1924 buildings, 2.5% for pre-1924">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="afa" value="2.0" step="0.1" min="0" max="5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="buildingRatio">
+                                    <span>Building Ratio</span>
+                                    <span class="info-bulb" title="Percentage that is building (rest is land). Only building is depreciable. Typical: 70-85%">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="buildingRatio" value="80" step="1" min="50" max="95">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="appreciation">
+                                    <span>Property Growth</span>
+                                    <span class="info-bulb" title="Expected annual increase in property value. Historical average in Germany: 2-3% per year">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="appreciation" value="2.5" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="rentIncrease">
+                                    <span>Rent Increase</span>
+                                    <span class="info-bulb" title="Annual rent increase rate. German average: 2-2.5% per year, limited by Mietpreisbremse in some areas">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="rentIncrease" value="2.0" step="0.1" min="0" max="5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="costInflation">
+                                    <span>Cost Inflation</span>
+                                    <span class="info-bulb" title="Annual increase in operating costs (maintenance, management fees). Typical: 2% per year">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="costInflation" value="2.0" step="0.1" min="0" max="5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="sellingCosts">
+                                    <span>Selling Costs</span>
+                                    <span class="info-bulb" title="Expected costs when selling the property (agent commission, notary). Typical: 3-4%">ℹ️</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="sellingCosts" value="3.5" step="0.1" min="0" max="10">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="alternativeROI">
+                                <span>Alternative Return</span>
+                                <span class="info-bulb" title="Expected return if invested elsewhere (stocks, ETFs). Used for comparison. Historical avg: 7-8%">ℹ️</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="alternativeROI" value="7.0" step="0.1" min="0" max="20">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Results -->
+            <div class="results-column">
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="card-icon">💰</span>
+                        Key Results
+                    </h2>
+
+                    <div class="metrics">
+                        <div class="metric-card metric-card-large">
+                            <div class="metric-label">Monthly Cashflow (After Tax)</div>
+                            <div class="metric-value" id="cashflowAfterTax">-</div>
+                            <div class="metric-change">What you earn/pay monthly</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-label">Gross Yield</div>
+                            <div class="metric-value" id="bruttoRendite">-</div>
+                            <div class="metric-change">Annual return</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-label">Net Yield</div>
+                            <div class="metric-value" id="nettoRendite">-</div>
+                            <div class="metric-change">After all costs</div>
+                        </div>
+                    </div>
+
+                    <div class="roi-indicator" id="roiIndicator">
+                        Enter your data to calculate returns
+                    </div>
+                </div>
+
+                <!-- Tax Benefits -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="card-icon">📊</span>
+                        Tax Benefits
+                    </h2>
+
+                    <div class="tax-benefit-box">
+                        <div class="tax-benefit-item" style="font-weight: 700; color: var(--positive); font-size: 1.1rem; padding-bottom: 15px; border-bottom: 2px solid #86efac; margin-bottom: 15px;">
+                            <span>Annual Tax Savings</span>
+                            <span id="tax-savings">-</span>
+                        </div>
+                        <div class="tax-benefit-item">
+                            <span>Interest Deduction</span>
+                            <span id="tax-interest">-</span>
+                        </div>
+                        <div class="tax-benefit-item">
+                            <span>Depreciation (AfA)</span>
+                            <span id="tax-depreciation">-</span>
+                        </div>
+                        <div class="tax-benefit-item">
+                            <span>Operating Expenses</span>
+                            <span id="tax-expenses">-</span>
+                        </div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Rental Income</span>
+                            <span class="breakdown-value" id="tax-rental-income">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Deductible Expenses</span>
+                            <span class="breakdown-value" id="tax-deductible">-</span>
+                        </div>
+                        <div class="breakdown-item breakdown-total">
+                            <span class="breakdown-label">Taxable Income</span>
+                            <span class="breakdown-value" id="tax-taxable-income">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10 Year Projection -->
+                <div class="card">
+                    <div class="projection-card">
+                        <div class="projection-title">🎯 What You'll Have in 10 Years</div>
+                        
+                        <div class="projection-grid">
+                            <div class="projection-item projection-item-large">
+                                <div class="projection-item-label">Total Equity Value</div>
+                                <div class="projection-item-value" id="proj-equity-position">-</div>
+                            </div>
+                            
+                            <div class="projection-item">
+                                <div class="projection-item-label">Property Value</div>
+                                <div class="projection-item-value" id="proj-future-value">-</div>
+                            </div>
+                            <div class="projection-item">
+                                <div class="projection-item-label">Loan Balance</div>
+                                <div class="projection-item-value" id="proj-remaining-loan">-</div>
+                            </div>
+                            
+                            <div class="projection-item">
+                                <div class="projection-item-label">Principal Paid</div>
+                                <div class="projection-item-value" id="proj-principal-paid">-</div>
+                            </div>
+                            <div class="projection-item">
+                                <div class="projection-item-label">Cash Accumulated</div>
+                                <div class="projection-item-value" id="proj-cashflow">-</div>
+                            </div>
+                            
+                            <div class="projection-item projection-item-large">
+                                <div class="projection-item-label">Total Return on Investment</div>
+                                <div class="projection-item-value" id="proj-roe-10year">-</div>
+                            </div>
+                            
+                            <div class="projection-item projection-item-large">
+                                <div class="projection-item-label">Internal Rate of Return (IRR)</div>
+                                <div class="projection-item-value" style="color: #c9a961;" id="proj-irr">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investment Comparison Chart -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="card-icon">📈</span>
+                        Property vs Alternative Investment
+                    </h2>
+
+                    <div class="projection-grid" style="margin-bottom: 20px;">
+                        <div class="projection-item">
+                            <div class="projection-item-label">Property (10 years)</div>
+                            <div class="projection-item-value" style="color: #2d5a47;" id="comp-property-value">-</div>
+                        </div>
+                        <div class="projection-item">
+                            <div class="projection-item-label">Alternative (10 years)</div>
+                            <div class="projection-item-value" style="color: #c9a961;" id="comp-alternative-value">-</div>
+                        </div>
+                        <div class="projection-item projection-item-large">
+                            <div class="projection-item-label">You're Better Off By</div>
+                            <div class="projection-item-value" id="comp-difference">-</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdowns -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="card-icon">🔍</span>
+                        Detailed Breakdown
+                    </h2>
+
+                    <div class="breakdown">
+                        <div class="breakdown-title">Total Investment Required</div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Purchase Price</span>
+                            <span class="breakdown-value" id="display-kaufpreis">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Transfer Tax + Notary + Agent</span>
+                            <span class="breakdown-value" id="display-total-fees">-</span>
+                        </div>
+                        <div class="breakdown-item breakdown-total">
+                            <span class="breakdown-label">Total Investment</span>
+                            <span class="breakdown-value" id="display-gesamt">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Your Down Payment</span>
+                            <span class="breakdown-value" id="display-equity">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Mortgage Amount</span>
+                            <span class="breakdown-value" id="display-darlehen">-</span>
+                        </div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-title">Monthly Payment Breakdown</div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Mortgage Payment</span>
+                            <span class="breakdown-value" id="display-rate">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label" style="padding-left: 15px;">• Interest</span>
+                            <span class="breakdown-value" id="display-zinsen">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label" style="padding-left: 15px;">• Principal</span>
+                            <span class="breakdown-value" id="display-tilgung-betrag">-</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Operating Costs</span>
+                            <span class="breakdown-value" id="display-operating-costs">-</span>
+                        </div>
+                        <div class="breakdown-item breakdown-total">
+                            <span class="breakdown-label">Total Monthly Cost</span>
+                            <span class="breakdown-value" id="display-total-monthly">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="disclaimer">
+                    <strong>Disclaimer:</strong> This calculator is for informational purposes only and does not constitute investment or tax advice. 
+                    Calculations are based on simplified assumptions. Tax laws are complex and individual circumstances vary. Actual depreciation may 
+                    differ based on building vs. land value allocation. Property appreciation is not guaranteed. For professional evaluation, 
+                    consult with a tax advisor (Steuerberater) or financial advisor.
+                </div>
+
+                <div class="info-box" style="margin-top: 20px;">
+                    <strong>Customize This Calculator:</strong>
+                    To set your own Calendly or booking link, open the HTML file and look for the <code>updateCTALink()</code> function near the bottom. 
+                    Replace the example URL with your actual booking link. The "Schedule a Call" button will then direct users to your calendar.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const btn = document.querySelector('.btn-download');
+            if (!btn) return;
+            
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>⏳</span><span>Generating PDF...</span>';
+            btn.disabled = true;
+            
+            try {
+                // Check if libraries are loaded
+                if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                    console.error('PDF libraries not loaded');
+                    alert('PDF libraries are still loading. Please wait a moment and try again.');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                
+                // Get all the values
+                const data = {
+                    kaufpreis: formatCurrency(parseFloat(document.getElementById('kaufpreis').value) || 0),
+                    eigenkapital: formatCurrency(parseFloat(document.getElementById('eigenkapital').value) || 0),
+                    kaltmiete: formatCurrency(parseFloat(document.getElementById('kaltmiete').value) || 0),
+                    zinssatz: (document.getElementById('zinssatz').value || '0') + '%',
+                    appreciation: (document.getElementById('appreciation').value || '0') + '%',
+                    taxBracket: (document.getElementById('taxBracket').value || '0') + '%',
+                    cashflowAfterTax: document.getElementById('cashflowAfterTax')?.textContent || '€0',
+                    bruttoRendite: document.getElementById('bruttoRendite')?.textContent || '0%',
+                    nettoRendite: document.getElementById('nettoRendite')?.textContent || '0%',
+                    taxSavings: document.getElementById('tax-savings')?.textContent || '€0',
+                    taxInterest: document.getElementById('tax-interest')?.textContent || '€0',
+                    taxDepreciation: document.getElementById('tax-depreciation')?.textContent || '€0',
+                    taxExpenses: document.getElementById('tax-expenses')?.textContent || '€0',
+                    projEquity: document.getElementById('proj-equity-position')?.textContent || '€0',
+                    projFutureValue: document.getElementById('proj-future-value')?.textContent || '€0',
+                    projLoan: document.getElementById('proj-remaining-loan')?.textContent || '€0',
+                    projPrincipal: document.getElementById('proj-principal-paid')?.textContent || '€0',
+                    projCashflow: document.getElementById('proj-cashflow')?.textContent || '€0',
+                    projROE: document.getElementById('proj-roe-10year')?.textContent || '0%',
+                    projIRR: document.getElementById('proj-irr')?.textContent || 'N/A',
+                    compProperty: document.getElementById('comp-property-value')?.textContent || '€0',
+                    compAlternative: document.getElementById('comp-alternative-value')?.textContent || '€0',
+                    compDifference: document.getElementById('comp-difference')?.textContent || '€0',
+                    displayKaufpreis: document.getElementById('display-kaufpreis')?.textContent || '€0',
+                    displayFees: document.getElementById('display-total-fees')?.textContent || '€0',
+                    displayGesamt: document.getElementById('display-gesamt')?.textContent || '€0',
+                    displayEquity: document.getElementById('display-equity')?.textContent || '€0',
+                    displayDarlehen: document.getElementById('display-darlehen')?.textContent || '€0',
+                    displayRate: document.getElementById('display-rate')?.textContent || '€0',
+                    displayZinsen: document.getElementById('display-zinsen')?.textContent || '€0',
+                    displayTilgung: document.getElementById('display-tilgung-betrag')?.textContent || '€0',
+                    displayOperating: document.getElementById('display-operating-costs')?.textContent || '€0',
+                    displayTotal: document.getElementById('display-total-monthly')?.textContent || '€0'
+                };
+
+                // Ensure calculations have run
+                if (data.cashflowAfterTax === '€0' || data.cashflowAfterTax === '-') {
+                    alert('Please wait for calculations to complete before downloading PDF.');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 15;
+                const contentWidth = pageWidth - (margin * 2);
+                let yPos = margin;
+
+                // Helper function to add new page if needed
+                function checkNewPage(heightNeeded) {
+                    if (yPos + heightNeeded > pageHeight - margin) {
+                        pdf.addPage();
+                        yPos = margin;
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Helper to draw box
+                function drawBox(x, y, w, h, fillColor, borderColor) {
+                    pdf.setFillColor(fillColor);
+                    if (borderColor) pdf.setDrawColor(borderColor);
+                    pdf.rect(x, y, w, h, borderColor ? 'FD' : 'F');
+                }
+
+                // Header
+                pdf.setFillColor(26, 58, 46);
+                pdf.rect(0, 0, pageWidth, 35, 'F');
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFontSize(24);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Property Investment Analysis', pageWidth / 2, 15, { align: 'center' });
+                pdf.setFontSize(11);
+                pdf.setFont('helvetica', 'normal');
+                pdf.text('German Real Estate Investment Calculator', pageWidth / 2, 22, { align: 'center' });
+                pdf.setFontSize(9);
+                pdf.text('Generated on ' + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }), pageWidth / 2, 28, { align: 'center' });
+                
+                yPos = 45;
+
+                // Investment Parameters
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Investment Parameters', margin, yPos);
+                yPos += 8;
+
+                drawBox(margin, yPos, contentWidth, 40, [245, 243, 237], [224, 221, 213]);
+                pdf.setFontSize(10);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(0, 0, 0);
+                
+                const params = [
+                    ['Purchase Price:', data.kaufpreis, 'Down Payment:', data.eigenkapital],
+                    ['Monthly Rent:', data.kaltmiete, 'Interest Rate:', data.zinssatz],
+                    ['Property Growth:', data.appreciation, 'Tax Rate:', data.taxBracket]
+                ];
+                
+                let paramY = yPos + 7;
+                params.forEach(row => {
+                    pdf.text(row[0], margin + 5, paramY);
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.text(row[1], margin + 50, paramY);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.text(row[2], margin + 105, paramY);
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.text(row[3], margin + 150, paramY);
+                    paramY += 10;
+                });
+                
+                yPos += 50;
+
+                // Key Results
+                checkNewPage(60);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Key Results', margin, yPos);
+                yPos += 8;
+
+                const boxWidth = (contentWidth - 10) / 3;
+                drawBox(margin, yPos, boxWidth, 30, [45, 90, 71]);
+                drawBox(margin + boxWidth + 5, yPos, boxWidth, 30, [45, 90, 71]);
+                drawBox(margin + (boxWidth + 5) * 2, yPos, boxWidth, 30, [45, 90, 71]);
+
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFontSize(8);
+                pdf.setFont('helvetica', 'normal');
+                pdf.text('Monthly Cashflow (After Tax)', margin + boxWidth/2, yPos + 7, { align: 'center' });
+                pdf.text('Gross Yield', margin + boxWidth + 5 + boxWidth/2, yPos + 7, { align: 'center' });
+                pdf.text('Net Yield', margin + (boxWidth + 5) * 2 + boxWidth/2, yPos + 7, { align: 'center' });
+
+                pdf.setFontSize(16);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text(data.cashflowAfterTax, margin + boxWidth/2, yPos + 20, { align: 'center' });
+                pdf.text(data.bruttoRendite, margin + boxWidth + 5 + boxWidth/2, yPos + 20, { align: 'center' });
+                pdf.text(data.nettoRendite, margin + (boxWidth + 5) * 2 + boxWidth/2, yPos + 20, { align: 'center' });
+
+                yPos += 40;
+
+                // Tax Benefits
+                checkNewPage(50);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Tax Benefits', margin, yPos);
+                yPos += 8;
+
+                drawBox(margin, yPos, contentWidth, 42, [232, 245, 233], [134, 239, 172]);
+                pdf.setTextColor(45, 90, 71);
+                pdf.setFontSize(11);
+                pdf.text('Annual Tax Savings', margin + 5, yPos + 8);
+                pdf.setFontSize(14);
+                pdf.text(data.taxSavings, contentWidth + margin - 5, yPos + 8, { align: 'right' });
+
+                pdf.setFontSize(9);
+                pdf.setTextColor(0, 0, 0);
+                pdf.setFont('helvetica', 'normal');
+                const taxItems = [
+                    ['Interest Deduction', data.taxInterest],
+                    ['Depreciation (AfA)', data.taxDepreciation],
+                    ['Operating Expenses', data.taxExpenses]
+                ];
+                let taxY = yPos + 20;
+                taxItems.forEach(item => {
+                    pdf.text(item[0], margin + 5, taxY);
+                    pdf.text(item[1], contentWidth + margin - 5, taxY, { align: 'right' });
+                    taxY += 7;
+                });
+
+                yPos += 50;
+
+                // 10-Year Projection
+                checkNewPage(80);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('10-Year Investment Projection', margin, yPos);
+                yPos += 8;
+
+                drawBox(margin, yPos, contentWidth, 70, [248, 249, 250], [201, 169, 97]);
+                
+                pdf.setTextColor(74, 74, 74);
+                pdf.setFontSize(9);
+                pdf.text('Total Equity Value', pageWidth / 2, yPos + 8, { align: 'center' });
+                pdf.setTextColor(45, 90, 71);
+                pdf.setFontSize(18);
+                pdf.text(data.projEquity, pageWidth / 2, yPos + 18, { align: 'center' });
+
+                const projBoxW = (contentWidth - 15) / 2;
+                const projItems = [
+                    ['Property Value', data.projFutureValue, 'Loan Balance', data.projLoan],
+                    ['Principal Paid', data.projPrincipal, 'Cash Accumulated', data.projCashflow]
+                ];
+
+                let projY = yPos + 28;
+                projItems.forEach(row => {
+                    drawBox(margin + 5, projY, projBoxW, 12, [255, 255, 255], [224, 221, 213]);
+                    drawBox(margin + projBoxW + 10, projY, projBoxW, 12, [255, 255, 255], [224, 221, 213]);
+                    
+                    pdf.setFontSize(7);
+                    pdf.setTextColor(122, 122, 122);
+                    pdf.text(row[0], margin + 8, projY + 5);
+                    pdf.text(row[2], margin + projBoxW + 13, projY + 5);
+                    
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(26, 58, 46);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.text(row[1], margin + 8, projY + 10);
+                    pdf.text(row[3], margin + projBoxW + 13, projY + 10);
+                    pdf.setFont('helvetica', 'normal');
+                    
+                    projY += 16;
+                });
+
+                pdf.setFontSize(9);
+                pdf.setTextColor(74, 74, 74);
+                pdf.text('Total Return on Investment', pageWidth / 2, yPos + 62, { align: 'center' });
+                pdf.setFontSize(16);
+                pdf.setTextColor(45, 90, 71);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text(data.projROE, pageWidth / 2, yPos + 69, { align: 'center' });
+
+                yPos += 80;
+
+                // Investment Comparison
+                checkNewPage(40);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Investment Comparison (10 Years)', margin, yPos);
+                yPos += 8;
+
+                const compBoxW = (contentWidth - 5) / 2;
+                drawBox(margin, yPos, compBoxW, 18, [255, 255, 255], [45, 90, 71]);
+                drawBox(margin + compBoxW + 5, yPos, compBoxW, 18, [255, 255, 255], [201, 169, 97]);
+
+                pdf.setFontSize(8);
+                pdf.setTextColor(122, 122, 122);
+                pdf.text('Property Investment', margin + 5, yPos + 6);
+                pdf.text('Alternative Investment', margin + compBoxW + 10, yPos + 6);
+
+                pdf.setFontSize(13);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(45, 90, 71);
+                pdf.text(data.compProperty, margin + 5, yPos + 14);
+                pdf.setTextColor(201, 169, 97);
+                pdf.text(data.compAlternative, margin + compBoxW + 10, yPos + 14);
+
+                yPos += 23;
+                drawBox(margin, yPos, contentWidth, 18, [245, 243, 237], [201, 169, 97]);
+                pdf.setFontSize(9);
+                pdf.setTextColor(74, 74, 74);
+                pdf.setFont('helvetica', 'normal');
+                pdf.text('You\'re Better Off By', pageWidth / 2, yPos + 7, { align: 'center' });
+                pdf.setFontSize(15);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text(data.compDifference, pageWidth / 2, yPos + 14, { align: 'center' });
+
+                yPos += 25;
+
+                // Financial Breakdown
+                pdf.addPage();
+                yPos = margin;
+                
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Financial Breakdown', margin, yPos);
+                yPos += 10;
+
+                // Investment Required
+                pdf.setFontSize(11);
+                pdf.text('Total Investment Required', margin, yPos);
+                yPos += 5;
+
+                drawBox(margin, yPos, contentWidth, 50, [250, 250, 248]);
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(0, 0, 0);
+
+                const invItems = [
+                    ['Purchase Price', data.displayKaufpreis],
+                    ['Transfer Tax + Notary + Agent', data.displayFees],
+                    ['', '', true], // separator
+                    ['Total Investment', data.displayGesamt, true],
+                    ['Your Down Payment', data.displayEquity],
+                    ['Mortgage Amount', data.displayDarlehen]
+                ];
+
+                let invY = yPos + 7;
+                invItems.forEach(item => {
+                    if (item[2]) { // separator or bold
+                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFontSize(10);
+                    } else {
+                        pdf.setFont('helvetica', 'normal');
+                        pdf.setFontSize(9);
+                    }
+                    pdf.text(item[0], margin + 5, invY);
+                    pdf.text(item[1], contentWidth + margin - 5, invY, { align: 'right' });
+                    invY += 7;
+                });
+
+                yPos += 55;
+
+                // Monthly Payment
+                pdf.setFontSize(11);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(26, 58, 46);
+                pdf.text('Monthly Payment Breakdown', margin, yPos);
+                yPos += 5;
+
+                drawBox(margin, yPos, contentWidth, 45, [250, 250, 248]);
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(0, 0, 0);
+
+                const payItems = [
+                    ['Mortgage Payment', data.displayRate],
+                    ['  • Interest', data.displayZinsen],
+                    ['  • Principal', data.displayTilgung],
+                    ['Operating Costs', data.displayOperating],
+                    ['', '', true],
+                    ['Total Monthly Cost', data.displayTotal, true]
+                ];
+
+                let payY = yPos + 7;
+                payItems.forEach(item => {
+                    if (item[2]) {
+                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFontSize(10);
+                    } else {
+                        pdf.setFont('helvetica', 'normal');
+                        pdf.setFontSize(9);
+                    }
+                    pdf.text(item[0], margin + 5, payY);
+                    pdf.text(item[1], contentWidth + margin - 5, payY, { align: 'right' });
+                    payY += 7;
+                });
+
+                yPos += 50;
+
+                // Footer
+                yPos = pageHeight - 35;
+                pdf.setFillColor(245, 243, 237);
+                pdf.rect(margin, yPos, contentWidth, 25, 'F');
+                pdf.setFontSize(7);
+                pdf.setTextColor(122, 122, 122);
+                pdf.setFont('helvetica', 'normal');
+                const disclaimerText = 'Disclaimer: This analysis is for informational purposes only and does not constitute investment or tax advice. Calculations are based on simplified assumptions.';
+                pdf.text(disclaimerText, pageWidth / 2, yPos + 5, { align: 'center', maxWidth: contentWidth - 10 });
+                pdf.text('Consult with a financial advisor (Finanzberater) or tax advisor (Steuerberater) for professional evaluation.', pageWidth / 2, yPos + 10, { align: 'center', maxWidth: contentWidth - 10 });
+                
+                pdf.setFontSize(9);
+                pdf.setTextColor(26, 58, 46);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Ready to discuss your investment strategy?', pageWidth / 2, yPos + 17, { align: 'center' });
+                pdf.setTextColor(201, 169, 97);
+                pdf.text('📞 Schedule a consultation to explore your options', pageWidth / 2, yPos + 22, { align: 'center' });
+
+                // Save PDF
+                pdf.save(`Property_Investment_Analysis_${new Date().toISOString().split('T')[0]}.pdf`);
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                alert('Error generating PDF: ' + error.message);
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+        // Update CTA button link (can be customized)
+        function updateCTALink(calendlyUrl) {
+            const ctaBtn = document.getElementById('scheduleCallBtn');
+            if (calendlyUrl) {
+                ctaBtn.href = calendlyUrl;
+            }
+        }
+        
+        // Example: Call this function to set your Calendly link
+        // updateCTALink('https://calendly.com/your-username/consultation');
+    
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatPercent(value) {
+            return value.toFixed(2) + '%';
+        }
+
+        function calculate() {
+            // Get input values
+            const kaufpreis = parseFloat(document.getElementById('kaufpreis').value) || 0;
+            const eigenkapital = parseFloat(document.getElementById('eigenkapital').value) || 0;
+            const grunderwerbsteuerProzent = parseFloat(document.getElementById('grunderwerbsteuer').value) || 0;
+            const notarProzent = parseFloat(document.getElementById('notar').value) || 0;
+            const maklerProzent = parseFloat(document.getElementById('makler').value) || 0;
+            const zinssatz = parseFloat(document.getElementById('zinssatz').value) || 0;
+            const tilgung = parseFloat(document.getElementById('tilgung').value) || 0;
+            const kaltmiete = parseFloat(document.getElementById('kaltmiete').value) || 0;
+            const nebenkosten = parseFloat(document.getElementById('nebenkosten').value) || 0;
+            const instandhaltung = parseFloat(document.getElementById('instandhaltung').value) || 0;
+            const appreciationRate = parseFloat(document.getElementById('appreciation').value) || 0;
+            const rentIncreaseRate = parseFloat(document.getElementById('rentIncrease').value) || 0;
+            const costInflationRate = parseFloat(document.getElementById('costInflation').value) || 0;
+            const sellingCostsPct = parseFloat(document.getElementById('sellingCosts').value) || 0;
+            const taxBracket = parseFloat(document.getElementById('taxBracket').value) || 0;
+            const afaRate = parseFloat(document.getElementById('afa').value) || 0;
+            const buildingRatio = parseFloat(document.getElementById('buildingRatio').value) || 80;
+            const alternativeROI = parseFloat(document.getElementById('alternativeROI').value) || 7;
+
+            // Calculate acquisition costs
+            const grunderwerbsteuer = kaufpreis * (grunderwerbsteuerProzent / 100);
+            const notarKosten = kaufpreis * (notarProzent / 100);
+            const maklerKosten = kaufpreis * (maklerProzent / 100);
+            const nebenerwerbskosten = grunderwerbsteuer + notarKosten + maklerKosten;
+            const gesamtinvestition = kaufpreis + nebenerwerbskosten;
+
+            // Calculate financing
+            const darlehensbetrag = gesamtinvestition - eigenkapital;
+            const monthlyRate = zinssatz / 100 / 12;
+            const monatlicheRate = darlehensbetrag * ((zinssatz + tilgung) / 100) / 12;
+
+            // Initial values for year 1
+            const buildingValue = kaufpreis * (buildingRatio / 100);
+            const jahresAbschreibung = buildingValue * (afaRate / 100);
+
+            // Calculate first year values
+            let currentRent = kaltmiete;
+            let currentNebenkosten = nebenkosten;
+            let currentInstandhaltung = instandhaltung;
+            
+            const jahresMieteinnahmen = currentRent * 12;
+            const jahresNebenkosten = currentNebenkosten * 12;
+            const jahresInstandhaltung = currentInstandhaltung * 12;
+
+            // Monthly amortization for first year
+            let loanBalance = darlehensbetrag;
+            let totalInterestYear1 = 0;
+            let totalPrincipalYear1 = 0;
+
+            for (let month = 1; month <= 12; month++) {
+                const monthlyInterest = loanBalance * monthlyRate;
+                const monthlyPrincipal = monatlicheRate - monthlyInterest;
+                totalInterestYear1 += monthlyInterest;
+                totalPrincipalYear1 += monthlyPrincipal;
+                loanBalance -= monthlyPrincipal;
+            }
+
+            const jahresZinsen = totalInterestYear1;
+            const jahresFinanzierung = monatlicheRate * 12;
+
+            // Tax calculations for year 1
+            const deductibleExpenses = jahresZinsen + jahresNebenkosten + jahresInstandhaltung + jahresAbschreibung;
+            const taxableRentalIncome = jahresMieteinnahmen - deductibleExpenses;
+            const taxLiability = taxableRentalIncome * (taxBracket / 100);
+            const annualTaxSavings = Math.max(0, -taxLiability);
+            const taxOnRentalIncome = Math.max(0, taxLiability);
+
+            // Calculate pre-tax and after-tax cashflow for year 1
+            const jahresCashflow = jahresMieteinnahmen - jahresNebenkosten - jahresInstandhaltung - jahresFinanzierung;
+            const jahresCashflowAfterTax = jahresCashflow - taxOnRentalIncome + annualTaxSavings;
+            const monatsCashflow = jahresCashflow / 12;
+            const monatsCashflowAfterTax = jahresCashflowAfterTax / 12;
+
+            // Calculate yields based on year 1
+            const bruttomietrendite = (jahresMieteinnahmen / kaufpreis) * 100;
+            const nettoMieteinnahmen = jahresMieteinnahmen - jahresNebenkosten - jahresInstandhaltung;
+            const nettomietrendite = (nettoMieteinnahmen / gesamtinvestition) * 100;
+
+            // 10-year projections with year-by-year calculations
+            const years = 10;
+            const cashflows = [-eigenkapital]; // Initial investment as negative cashflow
+            let cumulativeCashflowAfterTax = 0;
+            let totalPrincipalPaid = 0;
+            let currentPropertyValue = kaufpreis;
+            loanBalance = darlehensbetrag;
+            currentRent = kaltmiete;
+            currentNebenkosten = nebenkosten;
+            currentInstandhaltung = instandhaltung;
+
+            for (let year = 1; year <= years; year++) {
+                // Calculate annual values with inflation
+                const yearlyRent = currentRent * 12;
+                const yearlyNebenkosten = currentNebenkosten * 12;
+                const yearlyInstandhaltung = currentInstandhaltung * 12;
+                
+                // Monthly amortization for this year
+                let yearlyInterest = 0;
+                let yearlyPrincipal = 0;
+                
+                for (let month = 1; month <= 12; month++) {
+                    const monthlyInterest = loanBalance * monthlyRate;
+                    const monthlyPrincipal = monatlicheRate - monthlyInterest;
+                    yearlyInterest += monthlyInterest;
+                    yearlyPrincipal += monthlyPrincipal;
+                    loanBalance -= monthlyPrincipal;
+                }
+                
+                totalPrincipalPaid += yearlyPrincipal;
+                
+                // Tax calculation for this year
+                const yearlyDeductible = yearlyInterest + yearlyNebenkosten + yearlyInstandhaltung + jahresAbschreibung;
+                const yearlyTaxableIncome = yearlyRent - yearlyDeductible;
+                const yearlyTaxLiability = yearlyTaxableIncome * (taxBracket / 100);
+                const yearlyTaxSavings = Math.max(0, -yearlyTaxLiability);
+                const yearlyTax = Math.max(0, yearlyTaxLiability);
+                
+                // Cashflow for this year
+                const yearlyGrossCashflow = yearlyRent - yearlyNebenkosten - yearlyInstandhaltung - (monatlicheRate * 12);
+                const yearlyNetCashflow = yearlyGrossCashflow - yearlyTax + yearlyTaxSavings;
+                cumulativeCashflowAfterTax += yearlyNetCashflow;
+                
+                // For IRR calculation
+                cashflows.push(yearlyNetCashflow);
+                
+                // Grow property value, rent, and costs for next year
+                currentPropertyValue *= (1 + appreciationRate / 100);
+                currentRent *= (1 + rentIncreaseRate / 100);
+                currentNebenkosten *= (1 + costInflationRate / 100);
+                currentInstandhaltung *= (1 + costInflationRate / 100);
+            }
+
+            const futurePropertyValue = currentPropertyValue;
+            const remainingBalance = loanBalance;
+            
+            // Calculate exit scenario
+            const sellingCostsAmount = futurePropertyValue * (sellingCostsPct / 100);
+            const netProceedsFromSale = futurePropertyValue - sellingCostsAmount - remainingBalance;
+            
+            // Add final sale proceeds to cashflows for IRR
+            cashflows[cashflows.length - 1] += netProceedsFromSale;
+            
+            // Net equity position (without selling)
+            const netEquityPosition = futurePropertyValue - remainingBalance;
+            
+            // Total return
+            const totalReturn = netProceedsFromSale + cumulativeCashflowAfterTax - eigenkapital;
+            const roe10Year = eigenkapital > 0 ? (totalReturn / eigenkapital) * 100 : 0;
+            
+            // Calculate IRR using Newton-Raphson method
+            function calculateIRR(cashflows) {
+                let guess = 0.1; // Start with 10%
+                const maxIterations = 100;
+                const tolerance = 0.0001;
+                
+                for (let i = 0; i < maxIterations; i++) {
+                    let npv = 0;
+                    let dnpv = 0;
+                    
+                    for (let t = 0; t < cashflows.length; t++) {
+                        npv += cashflows[t] / Math.pow(1 + guess, t);
+                        dnpv += -t * cashflows[t] / Math.pow(1 + guess, t + 1);
+                    }
+                    
+                    const newGuess = guess - npv / dnpv;
+                    
+                    if (Math.abs(newGuess - guess) < tolerance) {
+                        return newGuess * 100; // Convert to percentage
+                    }
+                    
+                    guess = newGuess;
+                }
+                
+                return null; // Failed to converge
+            }
+            
+            const irr = calculateIRR(cashflows);
+
+            // Alternative investment calculation
+            const alternativeInvestmentValue = eigenkapital * Math.pow(1 + alternativeROI / 100, years);
+            const propertyTotalValue = netProceedsFromSale + cumulativeCashflowAfterTax;
+            const investmentDifference = propertyTotalValue - alternativeInvestmentValue;
+
+            // Update displays - Acquisition costs
+            document.getElementById('display-kaufpreis').textContent = formatCurrency(kaufpreis);
+            const totalFees = grunderwerbsteuer + notarKosten + maklerKosten;
+            document.getElementById('display-total-fees').textContent = formatCurrency(totalFees);
+            document.getElementById('display-gesamt').textContent = formatCurrency(gesamtinvestition);
+            document.getElementById('display-equity').textContent = formatCurrency(eigenkapital);
+
+            // Update displays - Financing
+            document.getElementById('display-darlehen').textContent = formatCurrency(darlehensbetrag);
+            document.getElementById('display-rate').textContent = formatCurrency(monatlicheRate);
+            document.getElementById('display-zinsen').textContent = formatCurrency(totalInterestYear1 / 12);
+            document.getElementById('display-tilgung-betrag').textContent = formatCurrency(totalPrincipalYear1 / 12);
+            
+            const monthlyOperatingCosts = nebenkosten + instandhaltung;
+            const totalMonthlyCost = monatlicheRate + monthlyOperatingCosts;
+            document.getElementById('display-operating-costs').textContent = formatCurrency(monthlyOperatingCosts);
+            document.getElementById('display-total-monthly').textContent = formatCurrency(totalMonthlyCost);
+
+            // Update key metrics
+            document.getElementById('bruttoRendite').textContent = formatPercent(bruttomietrendite);
+            document.getElementById('nettoRendite').textContent = formatPercent(nettomietrendite);
+            document.getElementById('cashflowAfterTax').textContent = formatCurrency(monatsCashflowAfterTax);
+
+            // Update tax information - FIXED
+            document.getElementById('tax-interest').textContent = formatCurrency(jahresZinsen);
+            document.getElementById('tax-depreciation').textContent = formatCurrency(jahresAbschreibung);
+            document.getElementById('tax-expenses').textContent = formatCurrency(jahresNebenkosten + jahresInstandhaltung);
+            document.getElementById('tax-savings').textContent = formatCurrency(annualTaxSavings);
+            document.getElementById('tax-rental-income').textContent = formatCurrency(jahresMieteinnahmen);
+            document.getElementById('tax-deductible').textContent = formatCurrency(deductibleExpenses);
+            document.getElementById('tax-taxable-income').textContent = formatCurrency(Math.max(0, taxableRentalIncome));
+
+            // Update 10-year projections
+            document.getElementById('proj-future-value').textContent = formatCurrency(futurePropertyValue);
+            document.getElementById('proj-remaining-loan').textContent = formatCurrency(remainingBalance);
+            document.getElementById('proj-principal-paid').textContent = formatCurrency(totalPrincipalPaid);
+            document.getElementById('proj-cashflow').textContent = formatCurrency(cumulativeCashflowAfterTax);
+            document.getElementById('proj-equity-position').textContent = formatCurrency(netEquityPosition);
+            document.getElementById('proj-roe-10year').textContent = formatPercent(roe10Year);
+            document.getElementById('proj-irr').textContent = irr !== null ? formatPercent(irr) : 'N/A';
+
+            // Update comparison values
+            document.getElementById('comp-property-value').textContent = formatCurrency(propertyTotalValue);
+            document.getElementById('comp-alternative-value').textContent = formatCurrency(alternativeInvestmentValue);
+            document.getElementById('comp-difference').textContent = formatCurrency(investmentDifference);
+
+            // Update comparison chart
+            updateComparisonChart(eigenkapital, propertyTotalValue, alternativeInvestmentValue, years, appreciationRate, alternativeROI);
+
+            // Update ROI indicator
+            const roiIndicator = document.getElementById('roiIndicator');
+            roiIndicator.className = 'roi-indicator';
+            
+            if (monatsCashflowAfterTax > 200) {
+                roiIndicator.classList.add('roi-positive');
+                roiIndicator.textContent = `Excellent! Positive monthly cashflow of ${formatCurrency(monatsCashflowAfterTax)} after taxes. This property generates income.`;
+            } else if (monatsCashflowAfterTax > 0) {
+                roiIndicator.classList.add('roi-positive');
+                roiIndicator.textContent = `Positive cashflow! ${formatCurrency(monatsCashflowAfterTax)} monthly after taxes. Building equity while covering costs.`;
+            } else if (monatsCashflowAfterTax > -200) {
+                roiIndicator.classList.add('roi-neutral');
+                roiIndicator.textContent = `Nearly break-even. Monthly cost: ${formatCurrency(Math.abs(monatsCashflowAfterTax))} after taxes, but building equity through principal repayment.`;
+            } else {
+                roiIndicator.classList.add('roi-negative');
+                roiIndicator.textContent = `Negative cashflow! This investment costs you ${formatCurrency(Math.abs(monatsCashflowAfterTax))} monthly after taxes. Review your calculations.`;
+            }
+        }
+
+        let comparisonChart = null;
+
+        function updateComparisonChart(initialInvestment, propertyValue, alternativeValue, years, propertyGrowth, alternativeGrowth) {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            // Get all necessary values for simulation
+            const kaufpreis = parseFloat(document.getElementById('kaufpreis').value) || 0;
+            const eigenkapital = parseFloat(document.getElementById('eigenkapital').value) || 0;
+            const grunderwerbsteuerProzent = parseFloat(document.getElementById('grunderwerbsteuer').value) || 0;
+            const notarProzent = parseFloat(document.getElementById('notar').value) || 0;
+            const maklerProzent = parseFloat(document.getElementById('makler').value) || 0;
+            
+            const grunderwerbsteuer = kaufpreis * (grunderwerbsteuerProzent / 100);
+            const notarKosten = kaufpreis * (notarProzent / 100);
+            const maklerKosten = kaufpreis * (maklerProzent / 100);
+            const gesamtinvestition = kaufpreis + grunderwerbsteuer + notarKosten + maklerKosten;
+            const darlehensbetrag = gesamtinvestition - eigenkapital;
+            
+            const zinssatz = parseFloat(document.getElementById('zinssatz').value) || 0;
+            const tilgung = parseFloat(document.getElementById('tilgung').value) || 0;
+            const kaltmiete = parseFloat(document.getElementById('kaltmiete').value) || 0;
+            const nebenkosten = parseFloat(document.getElementById('nebenkosten').value) || 0;
+            const instandhaltung = parseFloat(document.getElementById('instandhaltung').value) || 0;
+            const taxBracket = parseFloat(document.getElementById('taxBracket').value) || 0;
+            const afaRate = parseFloat(document.getElementById('afa').value) || 0;
+            const buildingRatio = parseFloat(document.getElementById('buildingRatio').value) || 80;
+            const rentIncreaseRate = parseFloat(document.getElementById('rentIncrease').value) || 0;
+            const costInflationRate = parseFloat(document.getElementById('costInflation').value) || 0;
+            
+            const monatlicheRate = darlehensbetrag * ((zinssatz + tilgung) / 100) / 12;
+            const monthlyRate = zinssatz / 100 / 12;
+            const buildingValue = kaufpreis * (buildingRatio / 100);
+            const jahresAbschreibung = buildingValue * (afaRate / 100);
+            
+            // Generate data points for each year
+            const labels = ['Start'];
+            const propertyData = [eigenkapital];
+            const alternativeData = [eigenkapital];
+            
+            let loanBalance = darlehensbetrag;
+            let cumulativeCashflow = 0;
+            let currentPropertyValue = kaufpreis;
+            let currentRent = kaltmiete;
+            let currentNebenkosten = nebenkosten;
+            let currentInstandhaltung = instandhaltung;
+            
+            for (let year = 1; year <= years; year++) {
+                labels.push(`Year ${year}`);
+                
+                // Calculate this year's values with inflation
+                const yearlyRent = currentRent * 12;
+                const yearlyNebenkosten = currentNebenkosten * 12;
+                const yearlyInstandhaltung = currentInstandhaltung * 12;
+                
+                // Monthly amortization for this year
+                let yearlyInterest = 0;
+                for (let month = 1; month <= 12; month++) {
+                    const monthlyInterest = loanBalance * monthlyRate;
+                    const monthlyPrincipal = monatlicheRate - monthlyInterest;
+                    yearlyInterest += monthlyInterest;
+                    loanBalance -= monthlyPrincipal;
+                }
+                
+                // Tax calculation for this year
+                const yearlyDeductible = yearlyInterest + yearlyNebenkosten + yearlyInstandhaltung + jahresAbschreibung;
+                const yearlyTaxableIncome = yearlyRent - yearlyDeductible;
+                const yearlyTaxLiability = yearlyTaxableIncome * (taxBracket / 100);
+                const yearlyTaxSavings = Math.max(0, -yearlyTaxLiability);
+                const yearlyTax = Math.max(0, yearlyTaxLiability);
+                
+                // Cashflow for this year
+                const yearlyGrossCashflow = yearlyRent - yearlyNebenkosten - yearlyInstandhaltung - (monatlicheRate * 12);
+                const yearlyNetCashflow = yearlyGrossCashflow - yearlyTax + yearlyTaxSavings;
+                cumulativeCashflow += yearlyNetCashflow;
+                
+                // Property value growth
+                currentPropertyValue *= (1 + propertyGrowth / 100);
+                
+                // Net equity = Property value - Loan balance
+                const netEquityInProperty = currentPropertyValue - loanBalance;
+                
+                // Total value = Equity in property + Cash accumulated
+                const totalPropertyValue = netEquityInProperty + cumulativeCashflow;
+                propertyData.push(totalPropertyValue);
+                
+                // Alternative investment with compound growth
+                const altValue = eigenkapital * Math.pow(1 + alternativeGrowth / 100, year);
+                alternativeData.push(altValue);
+                
+                // Grow rent and costs for next year
+                currentRent *= (1 + rentIncreaseRate / 100);
+                currentNebenkosten *= (1 + costInflationRate / 100);
+                currentInstandhaltung *= (1 + costInflationRate / 100);
+            }
+
+            if (comparisonChart) {
+                comparisonChart.destroy();
+            }
+
+            comparisonChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Property Investment',
+                            data: propertyData,
+                            borderColor: '#2d5a47',
+                            backgroundColor: 'rgba(45, 90, 71, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#2d5a47'
+                        },
+                        {
+                            label: 'Alternative Investment',
+                            data: alternativeData,
+                            borderColor: '#c9a961',
+                            backgroundColor: 'rgba(201, 169, 97, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#c9a961'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Work Sans'
+                                },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
+                                }
+                            },
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + (value / 1000).toFixed(0) + 'k';
+                                },
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Calculate on page load
+        window.addEventListener('load', calculate);
+
+        // Add input event listeners for live updates
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+    </script>
+</body>
+</html>

@@ -60,12 +60,12 @@ const MortgageCalculator = ({ language = 'de' }) => {
   })()
 
   const labels = {
-    title: isEnglish ? 'Mortgage Affordability Calculator' : 'Finanzierungsrechner',
+    title: isEnglish ? 'Affordability Calculator' : 'Finanzierungsrechner',
     headline: isEnglish
       ? 'How much can you afford?'
       : 'Wie viel können Sie sich leisten?',
     subtitle: isEnglish
-      ? 'Calculate your maximum mortgage amount based on your household income'
+      ? 'Calculate your maximum financing amount based on your household income'
       : 'Berechnen Sie Ihre maximale Finanzierung basierend auf Ihrem Haushaltseinkommen',
     inputs: {
       income: isEnglish ? 'Net Household Income (Monthly)' : 'Nettoeinkommen (monatlich)',
@@ -73,8 +73,8 @@ const MortgageCalculator = ({ language = 'de' }) => {
       repayment: isEnglish ? 'Repayment Rate (Annual)' : 'Tilgungssatz (jährlich)',
       maxPayment: isEnglish ? 'Maximum Payment (% of Income)' : 'Max. Rate (% vom Einkommen)',
     },
-    resultsTitle: isEnglish ? 'Your Maximum Mortgage' : 'Ihre maximale Finanzierung',
-    maxLoan: isEnglish ? 'Maximum Loan Amount' : 'Maximale Darlehenssumme',
+    resultsTitle: isEnglish ? 'Your Maximum Amount' : 'Ihre maximale Finanzierung',
+    maxLoan: isEnglish ? 'Maximum Financing Amount' : 'Maximale Finanzierungssumme',
     monthlyPayment: isEnglish ? 'Monthly Instalment' : 'Monatliche Rate',
     loanDuration: isEnglish ? 'Loan Duration' : 'Darlehensdauer',
     remainingAfterTenYears: isEnglish ? 'Remaining Loan after 10 years' : 'Restschuld nach 10 Jahren',
@@ -83,7 +83,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
     totalPayment: isEnglish ? 'Total Monthly Payment' : 'Gesamtrate pro Monat',
     infoTitle: isEnglish ? 'How This Calculation Works' : 'So funktioniert die Berechnung',
     infoText: isEnglish
-      ? 'This calculator determines your maximum affordable mortgage based on a customizable percentage of your net household income. Adjust interest rate, repayment rate, and maximum payment percentage to match your situation or bank requirements.'
+      ? 'This calculator determines your maximum affordable amount based on a customizable percentage of your net household income. Adjust interest rate, repayment rate, and maximum payment percentage to match your situation or bank requirements.'
       : 'Der Rechner bestimmt Ihre maximal leistbare Finanzierung basierend auf einem frei wählbaren Anteil Ihres Nettoeinkommens. Passen Sie Zins, Tilgung und maximalen Zahlungsanteil an.',
     infoNote: isEnglish
       ? '* This is an estimate only - actual loan approval depends on bank assessment'
@@ -117,7 +117,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
             'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
         }}
       />
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <p className="text-sm uppercase tracking-[0.2em] text-white/80">
             {labels.title}
@@ -131,17 +131,50 @@ const MortgageCalculator = ({ language = 'de' }) => {
         </div>
 
         <div className="bg-white text-slate-900 rounded-[24px] p-6 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
-          <div className="grid gap-8">
-            <div className="space-y-8">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
+          <div className="sticky top-4 z-20 -mx-6 sm:-mx-10 px-6 sm:px-10 py-5 bg-white/95 backdrop-blur border-b border-border/60">
+            <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+              <div className="space-y-1">
+                <div className="text-xs uppercase tracking-[0.2em] text-slate-400">{labels.resultsTitle}</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-primary">{formatCurrency(maxLoan)}</div>
+                <div className="text-xs text-slate-500">
+                  {isEnglish ? 'Based on monthly income of' : 'Basierend auf einem Einkommen von'} {formatCurrency(income)}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
+                  <div className="text-[11px] text-slate-400">{labels.monthlyPayment}</div>
+                  <div className="text-base font-extrabold text-slate-900">{formatCurrency(maxMonthlyPayment)}</div>
+                </div>
+                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
+                  <div className="text-[11px] text-slate-400">{labels.loanDuration}</div>
+                <div className="text-base font-extrabold text-slate-900 whitespace-nowrap">{formatDuration(loanDurationMonths)}</div>
+                </div>
+                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
+                  <div className="text-[11px] text-slate-400">{isEnglish ? 'Total Annual Rate' : 'Gesamtrate p.a.'}</div>
+                  <div className="text-base font-extrabold text-slate-900">{totalRate.toFixed(1)}%</div>
+                </div>
+                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
+                  <div className="text-[11px] text-slate-400">{isEnglish ? 'Max Payment' : 'Max. Rate'}</div>
+                  <div className="text-base font-extrabold text-slate-900">{maxPaymentPercent}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] pt-6">
+              <div className="grid gap-4 sm:grid-cols-2 items-start">
+              <div className="space-y-2">
+                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
                   <div className="flex items-center gap-2">
-                    <span>{labels.inputs.income}</span>
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent/70 text-[10px] text-white" title={isEnglish ? 'Combined monthly income after taxes' : 'Monatliches Einkommen nach Steuern'}>
-                      i
+                    <span className="lg:whitespace-nowrap">{labels.inputs.income}</span>
+                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
+                      ?
+                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                        {isEnglish ? 'Combined monthly income after taxes' : 'Monatliches Einkommen nach Steuern'}
+                      </span>
                     </span>
                   </div>
-                  <span className="text-base font-bold text-primary">{formatCurrency(income)}</span>
+                  <span className="text-lg font-extrabold text-primary">{formatCurrency(income)}</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">€</span>
@@ -157,7 +190,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       setIncome(next)
                       setIncomeInput(String(next))
                     }}
-                    className="w-full rounded-xl border-2 border-slate-200 px-10 py-3 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="w-full rounded-xl border-2 border-slate-200 px-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
                   />
                 </div>
                 <input
@@ -179,15 +212,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
+              <div className="space-y-2">
+                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
                   <div className="flex items-center gap-2">
-                    <span>{labels.inputs.interest}</span>
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent/70 text-[10px] text-white" title={isEnglish ? 'Annual interest rate charged by the bank' : 'Jährlicher Zinssatz der Bank'}>
-                      i
+                    <span className="lg:whitespace-nowrap">{labels.inputs.interest}</span>
+                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
+                      ?
+                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                        {isEnglish ? 'Annual interest rate charged by the bank' : 'Jährlicher Zinssatz der Bank'}
+                      </span>
                     </span>
                   </div>
-                  <span className="text-base font-bold text-primary">{interestRate.toFixed(1)}%</span>
+                  <span className="text-lg font-extrabold text-primary">{interestRate.toFixed(1)}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -203,7 +239,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       setInterestRate(next)
                       setInterestInput(next.toFixed(1))
                     }}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-3 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
                   />
                 </div>
                 <input
@@ -225,15 +261,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
+              <div className="space-y-2">
+                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
                   <div className="flex items-center gap-2">
-                    <span>{labels.inputs.repayment}</span>
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent/70 text-[10px] text-white" title={isEnglish ? 'Annual percentage used for loan repayment' : 'Jährlicher Tilgungsanteil'}>
-                      i
+                    <span className="lg:whitespace-nowrap">{labels.inputs.repayment}</span>
+                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
+                      ?
+                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                        {isEnglish ? 'Annual percentage used for loan repayment' : 'Jährlicher Tilgungsanteil'}
+                      </span>
                     </span>
                   </div>
-                  <span className="text-base font-bold text-primary">{repaymentRate.toFixed(1)}%</span>
+                  <span className="text-lg font-extrabold text-primary">{repaymentRate.toFixed(1)}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -249,7 +288,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       setRepaymentRate(next)
                       setRepaymentInput(next.toFixed(1))
                     }}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-3 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
                   />
                 </div>
                 <input
@@ -271,15 +310,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm font-semibold text-slate-700">
+              <div className="space-y-2">
+                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
                   <div className="flex items-center gap-2">
-                    <span>{labels.inputs.maxPayment}</span>
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent/70 text-[10px] text-white" title={isEnglish ? 'Maximum percentage of income for mortgage payment' : 'Maximaler Anteil des Einkommens für die Rate'}>
-                      i
+                    <span className="lg:whitespace-nowrap">{labels.inputs.maxPayment}</span>
+                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
+                      ?
+                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                        {isEnglish ? 'Maximum percentage of income for housing payment' : 'Maximaler Anteil des Einkommens für die Rate'}
+                      </span>
                     </span>
                   </div>
-                  <span className="text-base font-bold text-primary">{maxPaymentPercent}%</span>
+                  <span className="text-lg font-extrabold text-primary">{maxPaymentPercent}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -295,7 +337,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       setMaxPaymentPercent(next)
                       setMaxPaymentInput(String(next))
                     }}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-3 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
                   />
                 </div>
                 <input
@@ -316,61 +358,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
                   <span>50%</span>
                 </div>
               </div>
-
-              <div className="rounded-2xl border border-border/60 bg-secondary/20 p-5">
-                <div className="text-sm font-semibold text-primary mb-3">
-                  {isEnglish ? 'Combined Rate Calculation' : 'Kombinierte Ratenberechnung'}
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-xs font-semibold text-slate-600">
-                  <div className="rounded-xl bg-white p-3 border border-border/60">
-                    <div className="text-[11px] text-slate-400">{isEnglish ? 'Interest Rate' : 'Zinssatz'}</div>
-                    <div className="text-primary text-base">{interestRate.toFixed(1)}%</div>
-                  </div>
-                  <div className="rounded-xl bg-white p-3 border border-border/60">
-                    <div className="text-[11px] text-slate-400">{isEnglish ? 'Repayment Rate' : 'Tilgung'}</div>
-                    <div className="text-primary text-base">{repaymentRate.toFixed(1)}%</div>
-                  </div>
-                  <div className="rounded-xl bg-white p-3 border border-border/60">
-                    <div className="text-[11px] text-slate-400">{isEnglish ? 'Total Annual Rate' : 'Gesamtrate p.a.'}</div>
-                    <div className="text-primary text-base">{totalRate.toFixed(1)}%</div>
-                  </div>
-                  <div className="rounded-xl bg-white p-3 border border-border/60">
-                    <div className="text-[11px] text-slate-400">{isEnglish ? 'Max Monthly Payment' : 'Max. Monatsrate'}</div>
-                    <div className="text-primary text-base">{maxPaymentPercent}%</div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="rounded-2xl bg-gradient-to-br from-primary to-emerald-950 text-white p-6 sm:p-7">
-                <div className="text-center text-lg font-heading mb-5">
-                  {labels.resultsTitle}
-                </div>
-                <div className="rounded-2xl bg-white/10 p-5 text-center mb-6">
-                  <div className="text-xs text-white/70">{labels.maxLoan}</div>
-                  <div className="text-3xl sm:text-4xl font-bold">{formatCurrency(maxLoan)}</div>
-                  <div className="text-xs text-white/70 mt-2">
-                    {isEnglish ? 'Based on your monthly income of' : 'Basierend auf Ihrem Einkommen von'} {formatCurrency(income)}
+            <div className="space-y-5">
+              <div className="rounded-2xl border border-border/60 bg-secondary/10 p-5">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl bg-white p-4 border border-border/60">
+                    <div className="text-[11px] text-slate-400">{labels.remainingAfterTenYears}</div>
+                    <div className="text-lg font-semibold text-slate-800">{formatCurrency(remainingAfterTenYears)}</div>
                   </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.monthlyPayment}</div>
-                    <div className="text-lg font-semibold">{formatCurrency(maxMonthlyPayment)}</div>
-                  </div>
-                  <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.loanDuration}</div>
-                    <div className="text-lg font-semibold">{formatDuration(loanDurationMonths)}</div>
-                  </div>
-                  <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.remainingAfterTenYears}</div>
-                    <div className="text-lg font-semibold">{formatCurrency(remainingAfterTenYears)}</div>
-                  </div>
-                  <div className="rounded-xl bg-white/10 p-4">
-                    <div className="text-[11px] text-white/70">{labels.interestPaidTotal}</div>
-                    <div className="text-lg font-semibold">{formatCurrency(totalInterestPaid)}</div>
+                  <div className="rounded-xl bg-white p-4 border border-border/60">
+                    <div className="text-[11px] text-slate-400">{labels.interestPaidTotal}</div>
+                    <div className="text-lg font-semibold text-slate-800">{formatCurrency(totalInterestPaid)}</div>
                   </div>
                 </div>
               </div>
@@ -403,17 +402,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 </div>
               </div>
 
-              <div className="bg-secondary/30 border border-border/60 rounded-2xl p-5">
-                <div className="flex items-center gap-2 font-semibold text-primary mb-2">
-                  <span className="text-lg">💡</span>
-                  <span>{labels.infoTitle}</span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {labels.infoText}
-                </p>
-                <p className="text-xs text-muted-foreground/90 mt-3">{labels.infoNote}</p>
-              </div>
-
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
@@ -423,6 +411,16 @@ const MortgageCalculator = ({ language = 'de' }) => {
               </button>
 
             </div>
+          </div>
+
+          <div className="mt-6 bg-secondary/30 border border-border/60 rounded-2xl p-5">
+            <div className="flex items-center gap-2 font-semibold text-primary mb-2">
+              <span>{labels.infoTitle}</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {labels.infoText}
+            </p>
+            <p className="text-xs text-muted-foreground/90 mt-3">{labels.infoNote}</p>
           </div>
         </div>
       </div>

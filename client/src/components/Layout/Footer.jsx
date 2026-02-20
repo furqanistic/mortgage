@@ -13,8 +13,18 @@ const Footer = ({ language = 'de' }) => {
     : ['Baufinanzierung', 'Anschlussfinanzierung', 'Kapitalanlage', 'Forward-Darlehen', 'Privatkredit']
 
   const company = isEnglish
-    ? ['Our Team', 'Our Story', 'Contact']
-    : ['Über uns', 'Partner werden', 'Kontakt']
+    ? [
+      { label: 'Our Team', href: '#' },
+      { label: 'Our Story', href: '#' },
+      { label: 'Contact', href: '#' },
+      { label: 'Glossary', to: '/glossary' },
+    ]
+    : [
+      { label: 'Über uns', href: '#' },
+      { label: 'Partner werden', href: '#' },
+      { label: 'Kontakt', href: '#' },
+      { label: 'Glossar', to: '/glossary' },
+    ]
 
   const contact = isEnglish
     ? ['+49 151 71618082', 'ravinder.singh@baufiking.de']
@@ -68,7 +78,17 @@ const Footer = ({ language = 'de' }) => {
             <h4 className="font-bold text-lg mb-6 text-white">{isEnglish ? 'About Us' : 'Unternehmen'}</h4>
             <ul className="space-y-4 text-white/60">
               {company.map((item) => (
-                <li key={item}><a href="#" className="hover:text-accent transition-colors">{item}</a></li>
+                <li key={item.label}>
+                  {item.to ? (
+                    <Link to={item.to} className="hover:text-accent transition-colors">
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a href={item.href} className="hover:text-accent transition-colors">
+                      {item.label}
+                    </a>
+                  )}
+                </li>
               ))}
             </ul>
           </div>

@@ -22,6 +22,7 @@ import HomePage from './pages/HomePage'
 import PartnersPage from './pages/Partners/PartnersPage'
 import PropertiesPage from './pages/Properties/PropertiesPage'
 import ToolsPage from './pages/Calculators/ToolsPage'
+import GlossaryPage from './pages/Glossary/GlossaryPage'
 import { selectIsAdmin, selectIsAuthenticated } from './redux/userSlice'
 
 /**
@@ -92,6 +93,7 @@ const App = () => {
         <Route path='/properties' element={<PropertiesPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/blog' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/tools' element={<ToolsPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/glossary' element={<GlossaryPage language={language} onLanguageChange={setLanguage} />} />
 
         {/* Auth route with redirect if already logged in */}
         <Route path='/auth' element={<RedirectIfAuthenticated language={language} onLanguageChange={setLanguage} />} />

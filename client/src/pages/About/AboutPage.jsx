@@ -17,10 +17,12 @@ import {
   Users,
   Zap,
 } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import ConsultationModal from '@/components/Home/ConsultationModal'
 
 const AboutPage = ({ language = 'de', onLanguageChange }) => {
   const containerRef = useRef(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 100])
 
@@ -149,30 +151,65 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
           </div>
         </section>
 
-        {/* About Our Team */}
+        {/* Our Story */}
         <section className="py-16 sm:py-24 px-6 lg:px-8 max-w-4xl mx-auto">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">
-              About Our Team
+              Our Story: Beyond the Interest Rate
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
-              We are a team dedicated to guiding clients through the complete home-buying journey—from the first dream to the moment you receive your keys.
+              Most people view buying property in Germany as a transaction. At Baufiking, we see it as a design challenge.
             </p>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
-              Our process is led by a certified mortgage consultant with nearly five years of experience, supported by a network of trusted partners including real estate agents, legal professionals, and service providers. With a foundation in engineering and an MBA-level understanding of finance and strategy, we combine technical expertise with practical, client-first advice.
+              The idea for Baufiking was born from a simple observation: the German mortgage market is efficient at providing numbers, but remarkably poor at providing vision. We watched first-time buyers and expats navigate 30-year commitments guided by nothing more than a spreadsheet and a temporary interest rate.
             </p>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
-              We believe the mortgage process should be clear, structured, and stress-free. That’s why we provide transparent guidance, step-by-step support, and the right connections at every stage of the journey.
+              We knew there was a better way.
             </p>
-            <a
-              href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
-            >
-              View Portfolio
-              <ChevronRight size={14} />
-            </a>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              We believe that a property decision shouldn’t just clear a bank’s checklist; it should be the foundation of your long-term wealth. You shouldn’t have to choose between a “dream home” and a “smart investment.” With the right structure, they are the same thing.
+            </p>
+
+            <h3 className="text-2xl sm:text-3xl font-heading font-black tracking-tight text-foreground pt-4">
+              The Baufiking Philosophy
+            </h3>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              We moved away from the “broker” model to become Financing Architects. Whether you are settling in Germany for the first time or expanding a professional portfolio, our approach is built on three pillars:
+            </p>
+            <ul className="space-y-3 text-base sm:text-lg text-muted-foreground leading-relaxed font-medium list-disc list-inside">
+              <li>
+                <span className="font-semibold text-foreground">Foresight:</span> We look 10, 20, and 30 years ahead to ensure your “now” doesn’t compromise your “later.”
+              </li>
+              <li>
+                <span className="font-semibold text-foreground">Structure:</span> We design financing architecture that optimizes tax benefits and repayment flexibility.
+              </li>
+              <li>
+                <span className="font-semibold text-foreground">Care:</span> We act as your advocate, coordinating the chaos of evaluations and approvals so you don’t have to.
+              </li>
+            </ul>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
+              From the first sparked “Dream” to the moment you turn the “Key,” we provide the clarity that a life-changing decision deserves.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-6 pt-2">
+              <a
+                href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
+              >
+                View Portfolio
+                <ChevronRight size={14} />
+              </a>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
+              >
+                Book Your Strategic Discovery Session
+                <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
         </section>
 
@@ -210,6 +247,11 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
 
       </main>
 
+      <ConsultationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        language={language}
+      />
       <Footer language={language} />
     </div>
   )

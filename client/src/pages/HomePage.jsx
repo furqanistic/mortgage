@@ -18,11 +18,11 @@ const HomePage = ({ language = 'de', onLanguageChange }) => {
       <main>
         <HeroSection language={language} />
         <Partners language={language} />
-        <ValueProps language={language} />
         <MortgageCalculator language={language} />
+        <SuccessStories language={language} />
+        <ValueProps language={language} />
         <TargetAudience language={language} />
         <RoadmapSection language={language} />
-        <SuccessStories language={language} />
         <FAQ language={language} />
         <CTASection language={language} />
       </main>

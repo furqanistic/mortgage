@@ -1,6 +1,8 @@
 // File: client/src/pages/Calculators/ToolsPage.jsx
 import { useState } from 'react'
-import AdvancedMortgageCalculator from '@/components/Calculators/AdvancedMortgageCalculator'
+import MortgageGermanyCalculator from '@/components/Calculators/MortgageGermanyCalculator'
+import PropertyInvestmentCalculator from '@/components/Calculators/PropertyInvestmentCalculator'
+import RentVsBuyCalculator from '@/components/Calculators/RentVsBuyCalculator'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 
@@ -10,11 +12,25 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
 
   const tools = [
     {
-      id: 'advanced-mortgage',
-      title: isEnglish ? 'Advanced Mortgage Calculator' : 'Erweiterter Hypothekenrechner',
+      id: 'mortgage-germany',
+      title: isEnglish ? 'Mortgage Calculator (Germany)' : 'Finanzierungsrechner (Deutschland)',
       description: isEnglish
-        ? 'Detailed amortization, remaining balance, and affordability insights.'
-        : 'Tilgungsverlauf, Restschuld und Leistbarkeit auf einen Blick.',
+        ? 'Total investment, loan amount, and amortization insights.'
+        : 'Gesamtinvestition, Darlehen und Tilgungsverlauf.',
+    },
+    {
+      id: 'rent-vs-buy',
+      title: isEnglish ? 'Rent vs Buy Decision Engine' : 'Mieten vs. Kaufen',
+      description: isEnglish
+        ? 'Compare wealth outcomes with inflation and investment assumptions.'
+        : 'Vergleichen Sie Vermögen mit Inflation & Renditeannahmen.',
+    },
+    {
+      id: 'investment-roi',
+      title: isEnglish ? 'Property Investment ROI' : 'Investment-Rendite Rechner',
+      description: isEnglish
+        ? 'Cashflow, taxes, and 10-year projections for rentals.'
+        : 'Cashflow, Steuern und 10-Jahres-Projektionen für Vermietung.',
     },
   ]
 
@@ -22,9 +38,9 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
     <div className="min-h-screen bg-background font-body text-foreground overflow-x-hidden selection:bg-primary/20">
       <Navbar language={language} onLanguageChange={onLanguageChange} />
 
-      <main className="pt-16">
-        <section className="py-12">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="pt-0">
+        <section className="py-2">
+          <div className="mx-auto w-full px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="max-w-2xl">
                 <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
@@ -35,8 +51,8 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                 </h1>
                 <p className="text-muted-foreground mt-2 max-w-2xl">
                   {isEnglish
-                    ? 'Choose a calculator to explore. More tools will be added here over time.'
-                    : 'Wählen Sie einen Rechner aus. Weitere Tools folgen in Kürze.'}
+                    ? 'Choose a calculator to explore. All tools follow the same Baufiking theme for clarity.'
+                    : 'Wählen Sie einen Rechner aus. Alle Tools folgen dem Baufiking-Design.'}
                 </p>
               </div>
               {activeTool && (
@@ -61,12 +77,8 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <div className="text-sm font-semibold text-primary">
-                          {tool.title}
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-2">
-                          {tool.description}
-                        </p>
+                        <div className="text-sm font-semibold text-primary">{tool.title}</div>
+                        <p className="text-sm text-muted-foreground mt-2">{tool.description}</p>
                       </div>
                       <div className="shrink-0 rounded-xl border border-border/60 bg-muted/40 p-2">
                         <svg
@@ -103,9 +115,21 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
               </div>
             )}
 
-            {activeTool === 'advanced-mortgage' && (
-              <div className="mt-10">
-                <AdvancedMortgageCalculator language={language} />
+            {activeTool === 'mortgage-germany' && (
+              <div className="mt-3">
+                <MortgageGermanyCalculator language={language} />
+              </div>
+            )}
+
+            {activeTool === 'rent-vs-buy' && (
+              <div className="mt-3">
+                <RentVsBuyCalculator language={language} />
+              </div>
+            )}
+
+            {activeTool === 'investment-roi' && (
+              <div className="mt-3">
+                <PropertyInvestmentCalculator language={language} />
               </div>
             )}
           </div>
