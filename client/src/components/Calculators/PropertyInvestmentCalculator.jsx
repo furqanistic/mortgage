@@ -421,7 +421,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     <section className="w-full rounded-[24px] border border-border/60 bg-white p-4 shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:p-5 lg:h-[calc(100vh-8rem)] lg:overflow-hidden">
       <div className="relative grid w-full gap-5 lg:h-full lg:grid-cols-[minmax(340px,420px)_minmax(0,1fr)] lg:items-start">
         {/* Left Section: Inputs - Fixed on screen */}
-        <div className="flex flex-col py-1 pe-2 lg:h-full lg:overflow-y-auto lg:pe-2">
+        <div className="flex flex-col py-1 pe-2 lg:h-full lg:overflow-y-scroll lg:pr-2 lg:[scrollbar-gutter:stable] lg:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/30 hover:[&::-webkit-scrollbar-thumb]:bg-primary/50 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-primary/5">
           <div>
             <div className="rounded-2xl border border-border/60 bg-secondary/10 p-4">
               <h3 className="text-sm font-semibold text-primary">{labels.inputs}</h3>
@@ -643,7 +643,8 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
         </div>
 
         {/* Right Section: Results - Scrollable */}
-        <div className="space-y-6 py-1 lg:h-full lg:overflow-y-auto lg:pe-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/10 hover:[&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-track]:bg-transparent">
+        <div className="flex flex-col py-1 lg:h-full lg:min-h-0">
+          <div className="flex-1 space-y-6 lg:overflow-y-scroll lg:pr-2 lg:[scrollbar-gutter:stable] lg:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/20 hover:[&::-webkit-scrollbar-thumb]:bg-primary/35 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-primary/5">
           <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm">
             <h3 className="text-sm font-semibold text-primary">{labels.keyResults}</h3>
             <div className="mt-4 grid gap-3">
@@ -825,21 +826,25 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 pt-4">
-            <button
-              type="button"
-              onClick={handleDownloadPdf}
-              className="rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
-            >
-              {isEnglish ? 'Download PDF' : 'PDF herunterladen'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition hover:bg-primary/90"
-            >
-              {labels.cta}
-            </button>
+          </div>
+
+          <div className="mt-4 border-t border-border/60 bg-white/95 pt-4 backdrop-blur">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={handleDownloadPdf}
+                className="rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
+              >
+                {isEnglish ? 'Download PDF' : 'PDF herunterladen'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition hover:bg-primary/90"
+              >
+                {labels.cta}
+              </button>
+            </div>
           </div>
         </div>
       </div>

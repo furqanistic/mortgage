@@ -535,7 +535,7 @@ const RentVsBuyCalculator = ({ language = 'de' }) => {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start relative w-full lg:min-h-0 lg:flex-1">
-        <div className="flex flex-col py-1 pe-3 -ms-1 max-lg:space-y-6 lg:h-full lg:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/20 hover:[&::-webkit-scrollbar-thumb]:bg-primary/40 [&::-webkit-scrollbar-track]:bg-transparent">
+        <div className="flex flex-col py-1 pe-3 -ms-1 max-lg:space-y-6 lg:h-full lg:overflow-y-scroll lg:pr-2 lg:[scrollbar-gutter:stable] lg:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/30 hover:[&::-webkit-scrollbar-thumb]:bg-primary/50 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-primary/5">
           <div className="rounded-2xl border border-border/60 bg-secondary/10 p-4">
               <h3 className="text-sm font-semibold text-primary">{labels.inputs}</h3>
               <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
@@ -731,7 +731,8 @@ const RentVsBuyCalculator = ({ language = 'de' }) => {
             </div>
         </div>
 
-        <div className="space-y-6 py-1 lg:h-full lg:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/20 hover:[&::-webkit-scrollbar-thumb]:bg-primary/40 [&::-webkit-scrollbar-track]:bg-transparent">
+        <div className="flex flex-col py-1 lg:h-full lg:min-h-0">
+          <div className="flex-1 space-y-6 lg:overflow-y-scroll lg:pr-2 lg:[scrollbar-gutter:stable] lg:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/30 hover:[&::-webkit-scrollbar-thumb]:bg-primary/50 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-primary/5">
 <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -902,7 +903,10 @@ const RentVsBuyCalculator = ({ language = 'de' }) => {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 pt-4">
+          </div>
+
+          <div className="mt-4 border-t border-border/60 bg-white/95 pt-4 backdrop-blur">
+            <div className="grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
                 onClick={handleDownloadPdf}
@@ -918,6 +922,7 @@ const RentVsBuyCalculator = ({ language = 'de' }) => {
                 {labels.cta}
               </button>
             </div>
+          </div>
         </div>
       </div>
 
