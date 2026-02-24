@@ -4,7 +4,7 @@ import PropertyInvestmentCalculator from '@/components/Calculators/PropertyInves
 import RentVsBuyCalculator from '@/components/Calculators/RentVsBuyCalculator'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
-import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 /* ── Clean monoline icons (24 × 24, 1.6 stroke) ─────────────────── */
 const IconMortgage = () => (
@@ -89,9 +89,21 @@ const tools = [
 
 /* ── Page component ─────────────────────────────────────────────── */
 const ToolsPage = ({ language = 'de', onLanguageChange }) => {
-  const [activeTool, setActiveTool] = useState(null)
+  const [searchParams, setSearchParams] = useSearchParams()
   const isEn = language === 'en'
+  const calculatorParam = searchParams.get('calculator')
+  const activeTool = tools.some((t) => t.id === calculatorParam) ? calculatorParam : null
   const activeToolData = tools.find((t) => t.id === activeTool)
+
+  const setActiveTool = (toolId) => {
+    const nextParams = new URLSearchParams(searchParams)
+    if (toolId) {
+      nextParams.set('calculator', toolId)
+    } else {
+      nextParams.delete('calculator')
+    }
+    setSearchParams(nextParams)
+  }
 
   return (
     <div className="min-h-screen bg-background font-body text-foreground overflow-x-hidden selection:bg-primary/20">

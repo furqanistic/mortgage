@@ -1,6 +1,6 @@
 // File: client/src/components/Home/MortgageCalculator.jsx
-import { useState } from 'react'
 import ConsultationModal from '@/components/Home/ConsultationModal'
+import { useState } from 'react'
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
@@ -11,12 +11,12 @@ const MortgageCalculator = ({ language = 'de' }) => {
   const [income, setIncome] = useState(5000)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [interestRate, setInterestRate] = useState(4.0)
-  const [repaymentRate, setRepaymentRate] = useState(1.5)
+  const [repaymentRate, setRepaymentRate] = useState(2.0)
   const [maxPaymentPercent, setMaxPaymentPercent] = useState(35)
 
   const [incomeInput, setIncomeInput] = useState('5000')
   const [interestInput, setInterestInput] = useState('4.0')
-  const [repaymentInput, setRepaymentInput] = useState('1.5')
+  const [repaymentInput, setRepaymentInput] = useState('2.0')
   const [maxPaymentInput, setMaxPaymentInput] = useState('35')
 
   const formatCurrency = (value) =>
@@ -140,22 +140,18 @@ const MortgageCalculator = ({ language = 'de' }) => {
                   {isEnglish ? 'Based on monthly income of' : 'Basierend auf einem Einkommen von'} {formatCurrency(income)}
                 </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+              <div className="flex flex-wrap justify-end gap-3 text-sm">
                 <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
                   <div className="text-[11px] text-slate-400">{labels.monthlyPayment}</div>
                   <div className="text-base font-extrabold text-slate-900">{formatCurrency(maxMonthlyPayment)}</div>
                 </div>
                 <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
                   <div className="text-[11px] text-slate-400">{labels.loanDuration}</div>
-                <div className="text-base font-extrabold text-slate-900 whitespace-nowrap">{formatDuration(loanDurationMonths)}</div>
+                  <div className="text-base font-extrabold text-slate-900 whitespace-nowrap">{formatDuration(loanDurationMonths)}</div>
                 </div>
                 <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
                   <div className="text-[11px] text-slate-400">{isEnglish ? 'Total Annual Rate' : 'Gesamtrate p.a.'}</div>
                   <div className="text-base font-extrabold text-slate-900">{totalRate.toFixed(1)}%</div>
-                </div>
-                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
-                  <div className="text-[11px] text-slate-400">{isEnglish ? 'Max Payment' : 'Max. Rate'}</div>
-                  <div className="text-base font-extrabold text-slate-900">{maxPaymentPercent}%</div>
                 </div>
               </div>
             </div>
@@ -174,7 +170,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-lg font-extrabold text-primary">{formatCurrency(income)}</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">€</span>
@@ -223,7 +218,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-lg font-extrabold text-primary">{interestRate.toFixed(1)}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -272,7 +266,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-lg font-extrabold text-primary">{repaymentRate.toFixed(1)}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -321,7 +314,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-lg font-extrabold text-primary">{maxPaymentPercent}%</span>
                 </div>
                 <div className="relative">
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
@@ -396,7 +388,21 @@ const MortgageCalculator = ({ language = 'de' }) => {
                     </div>
                   </div>
                   <div className="pt-4 border-t border-primary/30 flex items-center justify-between text-sm font-semibold">
-                    <span>{labels.totalPayment}</span>
+                    <div className="flex items-center gap-2">
+                      <span>{labels.totalPayment}</span>
+                      <div className="group relative inline-flex">
+                        <button className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary hover:bg-primary/20 transition-colors">
+                          i
+                        </button>
+                        <div className="pointer-events-none absolute bottom-full left-0 z-30 mb-2 w-72 rounded-xl bg-slate-900/95 p-4 text-xs font-medium leading-relaxed text-white opacity-0 shadow-2xl backdrop-blur-sm transition-all group-hover:opacity-100">
+                          <div className="font-bold mb-1 text-accent">{labels.infoTitle}</div>
+                          {labels.infoText}
+                          <div className="mt-2 pt-2 border-t border-white/10 text-[10px] text-white/60">
+                            {labels.infoNote}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <span className="text-primary">{formatCurrency(maxMonthlyPayment)}</span>
                   </div>
                 </div>
@@ -413,15 +419,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
             </div>
           </div>
 
-          <div className="mt-6 bg-secondary/30 border border-border/60 rounded-2xl p-5">
-            <div className="flex items-center gap-2 font-semibold text-primary mb-2">
-              <span>{labels.infoTitle}</span>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {labels.infoText}
-            </p>
-            <p className="text-xs text-muted-foreground/90 mt-3">{labels.infoNote}</p>
-          </div>
+
         </div>
       </div>
 

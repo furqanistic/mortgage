@@ -1,21 +1,22 @@
 // File: client/src/pages/Partners/PartnersPage.jsx
+import ConsultationModal from '@/components/Home/ConsultationModal'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
-    ArrowRight,
-    Award,
-    Briefcase,
-    Building,
-    CheckCircle,
-    ExternalLink,
-    MapPin,
-    Search,
-    Shield,
-    Star,
-    Users,
-    X,
-    Zap,
+  ArrowRight,
+  Award,
+  Briefcase,
+  Building,
+  CheckCircle,
+  ExternalLink,
+  MapPin,
+  Search,
+  Shield,
+  Star,
+  Users,
+  X,
+  Zap,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -24,6 +25,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [showSearch, setShowSearch] = useState(false)
   const [isInView, setIsInView] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const searchRef = useRef(null)
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 100])
@@ -383,7 +385,10 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                   ))}
                 </div>
 
-                <button className='group px-8 py-4 bg-accent text-primary font-black text-sm uppercase tracking-widest rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-accent/10'>
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className='group px-8 py-4 bg-accent text-primary font-black text-sm uppercase tracking-widest rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-accent/10'
+                >
                   Apply Now
                   <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
                 </button>
@@ -394,7 +399,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                   <h3 className='text-2xl font-black text-slate-50 px-2'>Network Performance</h3>
                   <div className='grid grid-cols-2 gap-4'>
                     <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
-                      <p className='text-3xl font-black text-accent'>€2.4B</p>
+                      <p className='text-3xl font-black text-accent'>€50M</p>
                       <p className='text-[10px] font-bold text-primary-foreground/50 uppercase tracing-widest'>Volume</p>
                     </div>
                     <div className='p-6 rounded-2xl bg-white/5 border border-white/10'>
@@ -414,6 +419,12 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
       </main>
 
       <Footer language={language} />
+
+      <ConsultationModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        language={language}
+      />
     </div>
   )
 }

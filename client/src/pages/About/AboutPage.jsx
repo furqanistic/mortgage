@@ -1,4 +1,5 @@
 // File: client/src/pages/About/AboutPage.jsx
+import ConsultationModal from '@/components/Home/ConsultationModal'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
 import { Button } from '@/components/ui/button'
@@ -18,7 +19,6 @@ import {
   Zap,
 } from 'lucide-react'
 import { useRef, useState } from 'react'
-import ConsultationModal from '@/components/Home/ConsultationModal'
 
 const AboutPage = ({ language = 'de', onLanguageChange }) => {
   const containerRef = useRef(null)
@@ -26,12 +26,7 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 100])
 
-  const stats = [
-    { value: '1,000+', label: 'Clients' },
-    { value: '€10m+', label: 'Properties' },
-    { value: '98%', label: 'Success' },
-    { value: '4.9/5', label: 'Rating' },
-  ]
+
 
   const values = [
     {
@@ -130,29 +125,73 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
           </div>
         </section>
 
-        {/* Dynamic Stats Section */}
-        <section className="py-12 sm:py-20 bg-secondary/30 border-b border-border/50">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-               {stats.map((stat, idx) => (
-                 <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
+        {/* Team Section - Redesigned & Moved Above Story */}
+        <section className="py-24 relative overflow-hidden bg-background">
+          {/* Decorative Background Element */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15rem] font-black text-primary/5 pointer-events-none select-none uppercase tracking-tighter hidden lg:block">
+            Team
+          </div>
+          
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-20">
+              <div className="space-y-4 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                  <Users size={12} className="text-accent fill-accent" />
+                  <span className="text-[10px] font-bold tracking-widest uppercase">The Minds Behind Baufiking</span>
+                </div>
+                <h2 className="text-4xl sm:text-6xl font-heading font-black tracking-tight text-foreground leading-[1.1]">
+                  First our <span className="text-primary italic">team</span>
+                </h2>
+              </div>
+              <p className="text-muted-foreground text-lg font-medium max-w-md lg:text-right pb-2">
+                Merging elite financial expertise with cutting-edge AI to redefine the German mortgage landscape.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
+              {[
+                { name: 'Ravinder Singh', title: 'Founder & Financing Architect', image: '/Ravinder.png', delay: 0 },
+                { name: 'Satpal Singh', title: 'Sales and Marketing', image: '/Satpal.png', delay: 0.15 },
+                { name: 'Clara', title: 'AI Assistant', image: '/clara.jpg', delay: 0.3 }
+              ].map((member, idx) => (
+                <motion.div 
+                  key={member.name}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="text-center space-y-2"
-                 >
-                   <p className="text-3xl sm:text-5xl font-heading font-black text-primary">{stat.value}</p>
-                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">{stat.label}</p>
-                 </motion.div>
-               ))}
+                  transition={{ delay: member.delay, duration: 0.8 }}
+                  className={`group relative ${idx === 1 ? 'md:mt-12' : ''} ${idx === 2 ? 'md:mt-24' : ''}`}
+                >
+                  <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden bg-muted shadow-2xl transition-transform duration-700 group-hover:-translate-y-4">
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100" 
+                    />
+                    
+                    {/* Glass Overlay on Hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    
+                    {/* Floating Info Card */}
+                    <div className="absolute bottom-6 left-6 right-6 p-6 rounded-[1.5rem] bg-white/10 backdrop-blur-xl border border-white/20 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                      <h3 className="text-xl font-heading font-bold text-white mb-1">{member.name}</h3>
+                      <p className="text-primary-foreground/80 text-xs font-bold uppercase tracking-widest">{member.title}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Static Info for Mobile/Non-hover */}
+                  <div className="mt-8 group-hover:opacity-0 transition-opacity duration-300">
+                    <h3 className="text-2xl font-heading font-black text-foreground">{member.name}</h3>
+                    <p className="text-primary font-bold text-sm uppercase tracking-widest mt-1">{member.title}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Our Story */}
-        <section className="py-16 sm:py-24 px-6 lg:px-8 max-w-4xl mx-auto">
+        <section className="py-20 sm:py-32 px-6 lg:px-8 max-w-4xl mx-auto border-t border-border/50">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">
               Our Story: Beyond the Interest Rate
@@ -213,7 +252,10 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
           </div>
         </section>
 
+
+
         {/* Values Section - Premium Cards */}
+
         <section className="py-20 sm:py-32 px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center space-y-4 mb-20">
             <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">Core <span className="text-primary">Principles</span></h2>
