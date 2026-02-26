@@ -1,5 +1,5 @@
-import Footer from '@/components/Layout/Footer'
 import Navbar from '@/components/Home/Navbar'
+import Footer from '@/components/Layout/Footer'
 import { Calendar, ChevronLeft, Clock, Lock } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -266,14 +266,14 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
                     }}
                     onClick={() => {
                       if (post.isLive) {
-                        navigate(`/blog/${post.slug}`)
+                        navigate(`/blogs/${post.slug}`)
                       }
                     }}
                     onKeyDown={(event) => {
                       if (!post.isLive) return
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault()
-                        navigate(`/blog/${post.slug}`)
+                        navigate(`/blogs/${post.slug}`)
                       }
                     }}
                     role={post.isLive ? 'button' : undefined}
@@ -343,7 +343,7 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
           <>
             <section className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-10 xl:px-12 pt-10 pb-8">
               <Link
-                to="/blog"
+                to="/blogs"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:opacity-75 transition-opacity"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -489,7 +489,7 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
               </p>
               <button
                 type="button"
-                onClick={() => navigate('/blog')}
+                onClick={() => navigate('/blogs')}
                 className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-colors"
               >
                 {isEnglish ? 'Go to blog list' : 'Zur Blogliste'}
