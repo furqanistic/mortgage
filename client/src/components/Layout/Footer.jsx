@@ -1,6 +1,6 @@
 // File: client/src/components/Layout/Footer.jsx
-import { Link } from 'react-router-dom'
 import { Facebook, Instagram } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Footer = ({ language = 'de' }) => {
   const isEnglish = language === 'en'
@@ -17,7 +17,7 @@ const Footer = ({ language = 'de' }) => {
       { label: 'Home', to: '/' },
       { label: 'Partners', to: '/partners' },
       { label: 'Tools', to: '/tools' },
-      { label: 'Blogs', to: '/blog' },
+      { label: 'Blogs', to: '/blogs' },
       { label: 'Our Team', to: '/about' },
       { label: 'Contact', to: '/contact' },
     ]

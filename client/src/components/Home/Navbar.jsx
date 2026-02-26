@@ -71,7 +71,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
         { label: 'Home', path: '/' },
         { label: 'Partners', path: '/partners' },
         { label: 'Tools', path: '/tools' },
-        { label: 'Blogs', path: '/blog' },
+        { label: 'Blogs', path: '/blogs' },
         { label: 'Our Team', path: '/about' },
         { label: 'Contact', path: '/contact' },
       ]
@@ -79,7 +79,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
         { label: 'Startseite', path: '/' },
         { label: 'Partner', path: '/partners' },
         { label: 'Tools', path: '/tools' },
-        { label: 'Blog', path: '/blog' },
+        { label: 'Blog', path: '/blogs' },
         { label: 'Über uns', path: '/about' },
         { label: 'Kontakt', path: '/contact' },
       ]

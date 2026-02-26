@@ -1,13 +1,13 @@
 // File: client/src/App.jsx
-import { Toaster } from 'react-hot-toast'
 import { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import {
-    Navigate,
-    Outlet,
-    Route,
-    Routes,
-    useLocation,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
 } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
 import AboutPage from './pages/About/AboutPage'
@@ -17,12 +17,12 @@ import BlogEdit from './pages/Admin/BlogEdit'
 import UsersPage from './pages/Admin/UsersPage'
 import Auth from './pages/Auth/Auth'
 import BlogPage from './pages/Blog/BlogPage'
+import ToolsPage from './pages/Calculators/ToolsPage'
 import ContactPage from './pages/Contact/ContactPage'
+import GlossaryPage from './pages/Glossary/GlossaryPage'
 import HomePage from './pages/HomePage'
 import PartnersPage from './pages/Partners/PartnersPage'
 import PropertiesPage from './pages/Properties/PropertiesPage'
-import ToolsPage from './pages/Calculators/ToolsPage'
-import GlossaryPage from './pages/Glossary/GlossaryPage'
 import { selectIsAdmin, selectIsAuthenticated } from './redux/userSlice'
 
 /**
@@ -91,8 +91,8 @@ const App = () => {
         <Route path='/contact' element={<ContactPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/partners' element={<PartnersPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/properties' element={<PropertiesPage language={language} onLanguageChange={setLanguage} />} />
-        <Route path='/blog' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
-        <Route path='/blog/:slug' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/blogs' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/blogs/:slug' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/tools' element={<ToolsPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/glossary' element={<GlossaryPage language={language} onLanguageChange={setLanguage} />} />
 
