@@ -1,6 +1,6 @@
 // File: client/src/components/Layout/Footer.jsx
 import { Link } from 'react-router-dom'
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Facebook, Instagram } from 'lucide-react'
 
 const Footer = ({ language = 'de' }) => {
   const isEnglish = language === 'en'
@@ -14,16 +14,20 @@ const Footer = ({ language = 'de' }) => {
 
   const company = isEnglish
     ? [
-      { label: 'Our Team', href: '#' },
-      { label: 'Our Story', href: '#' },
-      { label: 'Contact', href: '#' },
-      { label: 'Glossary', to: '/glossary' },
+      { label: 'Home', to: '/' },
+      { label: 'Partners', to: '/partners' },
+      { label: 'Tools', to: '/tools' },
+      { label: 'Blogs', to: '/blog' },
+      { label: 'Our Team', to: '/about' },
+      { label: 'Contact', to: '/contact' },
     ]
     : [
-      { label: 'Über uns', href: '#' },
-      { label: 'Partner werden', href: '#' },
-      { label: 'Kontakt', href: '#' },
-      { label: 'Glossar', to: '/glossary' },
+      { label: 'Startseite', to: '/' },
+      { label: 'Partner', to: '/partners' },
+      { label: 'Tools', to: '/tools' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'Über uns', to: '/about' },
+      { label: 'Kontakt', to: '/contact' },
     ]
 
   const contact = isEnglish
@@ -48,17 +52,23 @@ const Footer = ({ language = 'de' }) => {
               {aboutText}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+              <a
+                href="https://www.facebook.com/baufiking"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baufiking Facebook"
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
+              <a
+                href="https://www.instagram.com/baufiking/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Baufiking Instagram"
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60"
+              >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-white transition-all text-white/60">
-                <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -79,15 +89,9 @@ const Footer = ({ language = 'de' }) => {
             <ul className="space-y-4 text-white/60">
               {company.map((item) => (
                 <li key={item.label}>
-                  {item.to ? (
-                    <Link to={item.to} className="hover:text-accent transition-colors">
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <a href={item.href} className="hover:text-accent transition-colors">
-                      {item.label}
-                    </a>
-                  )}
+                  <Link to={item.to} className="hover:text-accent transition-colors">
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -688,14 +688,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
 
           <div className="mt-6 -mx-6 sm:-mx-10 px-6 sm:px-10 lg:grid lg:grid-cols-[400px_1fr] lg:gap-10">
             <div className="space-y-4 pb-6 lg:pb-0">
-              <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
-                <h3 className="font-heading text-lg text-primary font-bold">{labels.inputs}</h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  {isEnglish
-                    ? 'All assumptions are grouped into expandable sections with context hints, similar to your ROI reference layout.'
-                    : 'Alle Annahmen sind in aufklappbare Bereiche mit Erklaerungen gruppiert, analog zum ROI-Referenzlayout.'}
-                </p>
-              </div>
+             
 
               {inputSections.map((section) => (
                 <div key={section.key} className="rounded-2xl border border-border/60 bg-white shadow-sm">
@@ -785,15 +778,6 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
                     : roiTone === 'neutral'
                       ? (isEnglish ? 'Cashflow is near neutral. Value creation relies mostly on loan paydown and appreciation.' : 'Der Cashflow ist nahezu neutral. Wertaufbau kommt vor allem durch Tilgung und Wertsteigerung.')
                       : (isEnglish ? 'Cashflow is negative. Long-term upside depends strongly on growth and tax effects.' : 'Der Cashflow ist negativ. Langfristiges Potenzial haengt stark von Wachstum und Steuerwirkung ab.')}
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-sky-200 bg-sky-50 p-5">
-                <p className="text-sm text-slate-700">
-                  <span className="font-semibold">{isEnglish ? 'How this model works:' : 'So funktioniert das Modell:'}</span>{' '}
-                  {isEnglish
-                    ? 'It combines cashflow after tax, principal paydown, projected property value, and selling costs to compare your 10-year property result against an alternative investment return.'
-                    : 'Es kombiniert Cashflow nach Steuern, Tilgung, erwarteten Immobilienwert und Verkaufskosten, um Ihr 10-Jahres-Ergebnis mit einer alternativen Anlage zu vergleichen.'}
                 </p>
               </div>
 

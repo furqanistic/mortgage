@@ -4,6 +4,7 @@ import PropertyInvestmentCalculator from '@/components/Calculators/PropertyInves
 import RentVsBuyCalculator from '@/components/Calculators/RentVsBuyCalculator'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
+import MortgageCalculator from '@/components/Home/MortgageCalculator'
 import { useSearchParams } from 'react-router-dom'
 
 /* ── Clean monoline icons (24 × 24, 1.6 stroke) ─────────────────── */
@@ -53,6 +54,17 @@ const IconChevronLeft = () => (
 /* ── Tool definitions ────────────────────────────────────────────── */
 const tools = [
   {
+    id: 'affordability',
+    titleEn: 'Affordability Calculator',
+    titleDe: 'Budgetrechner',
+    tagEn: 'Home Page Tool',
+    tagDe: 'Homepage Tool',
+    descEn: 'Same calculator as homepage: income-based max financing estimate.',
+    descDe: 'Gleicher Rechner wie auf der Startseite: Einkommensbasierte Finanzierungs-Schätzung.',
+    Icon: IconMortgage,
+    badge: 'New',
+  },
+  {
     id: 'mortgage-germany',
     titleEn: 'Mortgage Calculator',
     titleDe: 'Finanzierungsrechner',
@@ -91,12 +103,24 @@ const tools = [
 const ToolsPage = ({ language = 'de', onLanguageChange }) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const isEn = language === 'en'
+  const tabParam = searchParams.get('tab')
+  const activeTab = tabParam === 'resources' ? 'resources' : 'calculators'
   const calculatorParam = searchParams.get('calculator')
   const activeTool = tools.some((t) => t.id === calculatorParam) ? calculatorParam : null
   const activeToolData = tools.find((t) => t.id === activeTool)
 
+  const setActiveTab = (tab) => {
+    const nextParams = new URLSearchParams(searchParams)
+    nextParams.set('tab', tab)
+    if (tab !== 'calculators') {
+      nextParams.delete('calculator')
+    }
+    setSearchParams(nextParams)
+  }
+
   const setActiveTool = (toolId) => {
     const nextParams = new URLSearchParams(searchParams)
+    nextParams.set('tab', 'calculators')
     if (toolId) {
       nextParams.set('calculator', toolId)
     } else {
@@ -110,8 +134,42 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
       <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main>
+        <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16 pt-8">
+          <div className="flex justify-center">
+            <div
+              className="inline-flex rounded-2xl border p-1.5 shadow-[0_10px_30px_rgba(26,77,46,0.12)]"
+              style={{ borderColor: 'rgba(26,77,46,0.2)', background: 'linear-gradient(180deg,#ffffff 0%,#f8fbf9 100%)' }}
+            >
+            <button
+              type="button"
+              onClick={() => setActiveTab('calculators')}
+              aria-pressed={activeTab === 'calculators'}
+              className={`min-w-[150px] rounded-xl px-6 py-3 text-sm font-bold transition-all ${
+                activeTab === 'calculators'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-primary hover:bg-primary/10'
+              }`}
+            >
+              {isEn ? 'Calculators' : 'Rechner'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('resources')}
+              aria-pressed={activeTab === 'resources'}
+              className={`min-w-[150px] rounded-xl px-6 py-3 text-sm font-bold transition-all ${
+                activeTab === 'resources'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-primary hover:bg-primary/10'
+              }`}
+            >
+              {isEn ? 'Resources' : 'Ressourcen'}
+            </button>
+            </div>
+          </div>
+        </section>
+
         {/* ── Selector ───────────────────────────────────────────── */}
-        {!activeTool && (
+        {activeTab === 'calculators' && !activeTool && (
           <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16 pt-10 pb-14">
 
             {/* compact header */}
@@ -127,8 +185,8 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
               </div>
               <p className="text-sm text-muted-foreground max-w-xs sm:text-right leading-relaxed">
                 {isEn
-                  ? 'Three calculators for the German property market.'
-                  : 'Drei Rechner für den deutschen Immobilienmarkt.'}
+                  ? 'Four calculators for the German property market.'
+                  : 'Vier Rechner für den deutschen Immobilienmarkt.'}
               </p>
             </div>
 
@@ -139,7 +197,7 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                   key={id}
                   type="button"
                   onClick={() => setActiveTool(id)}
-                  className="group relative text-left rounded-2xl bg-white overflow-hidden transition-all duration-300"
+                  className="group relative h-full text-left rounded-2xl bg-white overflow-hidden transition-all duration-300"
                   style={{
                     border: '1.5px solid rgba(26,77,46,0.10)',
                     boxShadow: '0 1px 4px rgba(26,77,46,0.05)',
@@ -158,7 +216,7 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                   {/* top accent */}
                   <div className="h-[3px]" style={{ background: 'linear-gradient(90deg,#1a4d2e,#c19a6b)' }} />
 
-                  <div className="p-5">
+                  <div className="flex h-full flex-col p-5">
                     {/* icon row */}
                     <div className="flex items-center justify-between mb-4">
                       <div
@@ -173,6 +231,7 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                           {badge}
                         </span>
                       )}
+                      {!badge && <span className="inline-block h-5" aria-hidden="true" />}
                     </div>
 
                     {/* text */}
@@ -188,7 +247,7 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
                     </p>
 
                     {/* footer */}
-                    <div className="flex items-center justify-between pt-3.5"
+                    <div className="mt-auto flex items-center justify-between pt-3.5"
                       style={{ borderTop: '1px solid rgba(26,77,46,0.07)' }}>
                       <span className="flex items-center gap-1.5 text-xs font-semibold text-primary
                         group-hover:gap-2.5 transition-all duration-200">
@@ -213,8 +272,29 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
           </section>
         )}
 
+        {activeTab === 'resources' && (
+          <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16 pt-10 pb-14">
+            <div
+              className="rounded-2xl border bg-white p-8 text-center"
+              style={{ borderColor: 'rgba(26,77,46,0.12)' }}
+            >
+              <p className="text-[11px] uppercase tracking-[0.2em] font-semibold mb-2" style={{ color: '#c19a6b' }}>
+                {isEn ? 'Resources' : 'Ressourcen'}
+              </p>
+              <h2 className="text-2xl font-heading font-bold text-primary mb-2">
+                {isEn ? 'Coming soon' : 'Demnaechst verfuegbar'}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {isEn
+                  ? 'We are preparing guides, checklists, and market explainers for you.'
+                  : 'Wir bereiten Guides, Checklisten und Markt-Erklaerungen fuer Sie vor.'}
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* ── Active calculator ───────────────────────────────────── */}
-        {activeTool && (
+        {activeTab === 'calculators' && activeTool && (
           <div className="mx-auto w-full px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16">
             <div className="flex items-center gap-2.5 py-4 mt-2 mb-1"
               style={{ borderBottom: '1px solid rgba(26,77,46,0.08)' }}>
@@ -232,6 +312,7 @@ const ToolsPage = ({ language = 'de', onLanguageChange }) => {
               </span>
             </div>
 
+            {activeTool === 'affordability' && <div className="mt-3"><MortgageCalculator language={language} /></div>}
             {activeTool === 'mortgage-germany' && <div className="mt-3"><MortgageGermanyCalculator language={language} /></div>}
             {activeTool === 'rent-vs-buy' && <div className="mt-3"><RentVsBuyCalculator language={language} /></div>}
             {activeTool === 'investment-roi' && <div className="mt-3"><PropertyInvestmentCalculator language={language} /></div>}

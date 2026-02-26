@@ -73,7 +73,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
       repayment: isEnglish ? 'Repayment Rate (Annual)' : 'Tilgungssatz (jährlich)',
       maxPayment: isEnglish ? 'Maximum Payment (% of Income)' : 'Max. Rate (% vom Einkommen)',
     },
-    resultsTitle: isEnglish ? 'Your Maximum Amount' : 'Ihre maximale Finanzierung',
+    resultsTitle: isEnglish ? 'Your Maximum Loan Amount' : 'Ihre maximale Finanzierung',
     maxLoan: isEnglish ? 'Maximum Financing Amount' : 'Maximale Finanzierungssumme',
     monthlyPayment: isEnglish ? 'Monthly Instalment' : 'Monatliche Rate',
     loanDuration: isEnglish ? 'Loan Duration' : 'Darlehensdauer',
@@ -149,10 +149,7 @@ const MortgageCalculator = ({ language = 'de' }) => {
                   <div className="text-[11px] text-slate-400">{labels.loanDuration}</div>
                   <div className="text-base font-extrabold text-slate-900 whitespace-nowrap">{formatDuration(loanDurationMonths)}</div>
                 </div>
-                <div className="rounded-xl border border-border/60 bg-secondary/20 px-4 py-3">
-                  <div className="text-[11px] text-slate-400">{isEnglish ? 'Total Annual Rate' : 'Gesamtrate p.a.'}</div>
-                  <div className="text-base font-extrabold text-slate-900">{totalRate.toFixed(1)}%</div>
-                </div>
+             
               </div>
             </div>
           </div>

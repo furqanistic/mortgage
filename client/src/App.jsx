@@ -92,6 +92,7 @@ const App = () => {
         <Route path='/partners' element={<PartnersPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/properties' element={<PropertiesPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/blog' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
+        <Route path='/blog/:slug' element={<BlogPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/tools' element={<ToolsPage language={language} onLanguageChange={setLanguage} />} />
         <Route path='/glossary' element={<GlossaryPage language={language} onLanguageChange={setLanguage} />} />
 
@@ -106,8 +107,8 @@ const App = () => {
           <Route path='/admin/blog-edit' element={<BlogEdit />} />
         </Route>
 
-        {/* Catch-all route for any undefined routes - redirect to auth page */}
-        <Route path='*' element={<Navigate to='/auth' replace />} />
+        {/* Catch-all route for any undefined routes - redirect to homepage */}
+        <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </>
   )

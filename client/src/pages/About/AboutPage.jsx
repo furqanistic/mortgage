@@ -2,31 +2,17 @@
 import ConsultationModal from '@/components/Home/ConsultationModal'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
-import { Button } from '@/components/ui/button'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
-  ArrowRight,
-  Award,
   Building,
-  CheckCircle,
   ChevronRight,
-  History,
-  Lightbulb,
-  MessageCircle,
-  Star,
   Target,
   Users,
-  Zap,
 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 const AboutPage = ({ language = 'de', onLanguageChange }) => {
-  const containerRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 500], [0, 100])
-
-
 
   const values = [
     {
@@ -45,6 +31,11 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
       description: 'From the first search to the final set of keys, we are with you every step.',
     },
   ]
+  const teamMembers = [
+    { name: 'Ravinder Singh', title: 'Founder & Financing Architect', image: '/Ravinder.png' },
+    { name: 'Satpal Singh', title: 'Sales and Marketing', image: 'https://cdn-icons-png.flaticon.com/512/180/180644.png' },
+    { name: 'Clara', title: 'AI Assistant', image: 'https://img.freepik.com/premium-photo/friendly-looking-ai-agent-as-logo-white-background-style-raw-job-id-46affbb8a10a4e9196375b977bd1_343960-69668.jpg' },
+  ]
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -61,137 +52,8 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
       <Navbar language={language} onLanguageChange={onLanguageChange} />
 
       <main className="flex-grow">
-        {/* Compact & High-Impact Hero */}
-        <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-28 overflow-hidden border-b border-border/50">
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
-            <motion.div style={{ y: y1 }} className="absolute -top-[10%] -right-[5%] w-[400px] h-[400px] bg-accent/10 rounded-full blur-[80px]" />
-            <motion.div style={{ y: y1 }} className="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[60px]" />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
-              <motion.div 
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-6 sm:space-y-8"
-              >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                  <Zap size={12} className="text-accent fill-accent" />
-                  <span className="text-[10px] font-bold tracking-widest uppercase">The Baufiking Mission</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight text-foreground">
-                  Transforming <br />
-                  <span className="text-primary underline decoration-accent/30 underline-offset-8">Property</span> Ownership
-                </h1>
-
-                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium">
-                  We combine digital intelligence with German market expertise to make home buying accessible, transparent, and completely stress-free.
-                </p>
-
-                <div className="flex flex-wrap gap-4">
-                  <Button asChild className="h-12 px-8 rounded-full bg-primary text-primary-foreground font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
-                    <a 
-                      href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37" 
-                      target="_blank" 
-                      rel="noreferrer"
-                    >
-                      View Portfolio
-                      <ArrowRight size={16} className="ml-2" />
-                    </a>
-                  </Button>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="relative group"
-              >
-                <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-[2rem] overflow-hidden border border-border bg-muted shadow-2xl">
-                  <img
-                    src="/Ravinder.png"
-                    alt="Ravinder Singh"
-                    className="w-full h-full object-cover"
-                  />
-
-                </div>
-                
-                {/* Floating Badge removed per request */}
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section - Redesigned & Moved Above Story */}
-        <section className="py-24 relative overflow-hidden bg-background">
-          {/* Decorative Background Element */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15rem] font-black text-primary/5 pointer-events-none select-none uppercase tracking-tighter hidden lg:block">
-            Team
-          </div>
-          
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-20">
-              <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                  <Users size={12} className="text-accent fill-accent" />
-                  <span className="text-[10px] font-bold tracking-widest uppercase">The Minds Behind Baufiking</span>
-                </div>
-                <h2 className="text-4xl sm:text-6xl font-heading font-black tracking-tight text-foreground leading-[1.1]">
-                  First our <span className="text-primary italic">team</span>
-                </h2>
-              </div>
-              <p className="text-muted-foreground text-lg font-medium max-w-md lg:text-right pb-2">
-                Merging elite financial expertise with cutting-edge AI to redefine the German mortgage landscape.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
-              {[
-                { name: 'Ravinder Singh', title: 'Founder & Financing Architect', image: '/Ravinder.png', delay: 0 },
-                { name: 'Satpal Singh', title: 'Sales and Marketing', image: '/Satpal.png', delay: 0.15 },
-                { name: 'Clara', title: 'AI Assistant', image: '/clara.jpg', delay: 0.3 }
-              ].map((member, idx) => (
-                <motion.div 
-                  key={member.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: member.delay, duration: 0.8 }}
-                  className={`group relative ${idx === 1 ? 'md:mt-12' : ''} ${idx === 2 ? 'md:mt-24' : ''}`}
-                >
-                  <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden bg-muted shadow-2xl transition-transform duration-700 group-hover:-translate-y-4">
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100" 
-                    />
-                    
-                    {/* Glass Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    
-                    {/* Floating Info Card */}
-                    <div className="absolute bottom-6 left-6 right-6 p-6 rounded-[1.5rem] bg-white/10 backdrop-blur-xl border border-white/20 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                      <h3 className="text-xl font-heading font-bold text-white mb-1">{member.name}</h3>
-                      <p className="text-primary-foreground/80 text-xs font-bold uppercase tracking-widest">{member.title}</p>
-                    </div>
-                  </div>
-                  
-                  {/* Static Info for Mobile/Non-hover */}
-                  <div className="mt-8 group-hover:opacity-0 transition-opacity duration-300">
-                    <h3 className="text-2xl font-heading font-black text-foreground">{member.name}</h3>
-                    <p className="text-primary font-bold text-sm uppercase tracking-widest mt-1">{member.title}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Our Story */}
-        <section className="py-20 sm:py-32 px-6 lg:px-8 max-w-4xl mx-auto border-t border-border/50">
+        <section className="py-20 sm:py-24 px-6 lg:px-8 max-w-4xl mx-auto border-b border-border/50">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">
               Our Story: Beyond the Interest Rate
@@ -235,7 +97,7 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
                 href="https://www.vermittlerregister.info/recherche?a=suche&registernummer=D-W-134-W29F-37"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors"
               >
                 View Portfolio
                 <ChevronRight size={14} />
@@ -248,6 +110,43 @@ const AboutPage = ({ language = 'de', onLanguageChange }) => {
                 Book Your Strategic Discovery Session
                 <ChevronRight size={14} />
               </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section - Minimal */}
+        <section className="py-16 sm:py-20 bg-background border-b border-border/50">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4">
+                <Users size={12} className="text-accent fill-accent" />
+                <span className="text-[10px] font-bold tracking-widest uppercase">Our Team</span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-heading font-black tracking-tight text-foreground">
+                Meet the people behind Baufiking
+              </h2>
+              <p className="mt-3 text-base text-muted-foreground">
+                A focused team blending financing expertise, market strategy, and AI-driven support.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {teamMembers.map((member, index) => (
+                <motion.article
+                  key={member.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.55 }}
+                  className="rounded-2xl bg-card p-6 border border-border shadow-sm"
+                >
+                  <div className="aspect-square rounded-xl overflow-hidden bg-muted mb-5">
+                    <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="text-xl font-heading font-bold text-foreground">{member.name}</h3>
+                  <p className="text-primary text-sm font-semibold mt-1">{member.title}</p>
+                </motion.article>
+              ))}
             </div>
           </div>
         </section>
