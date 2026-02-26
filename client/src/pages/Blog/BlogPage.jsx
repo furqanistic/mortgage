@@ -381,11 +381,7 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
               </div>
 
               <article className="rounded-2xl bg-white p-6 sm:p-10 lg:p-12" style={{ border: '1.5px solid rgba(26,77,46,0.10)' }}>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                  {isEnglish
-                    ? 'Based on your provided report: "Germany Heating Law Reform 2026 Strategic Implications for Property Owners & Investors."'
-                    : 'Basierend auf Ihrem bereitgestellten Bericht: "Germany Heating Law Reform 2026 Strategic Implications for Property Owners & Investors."'}
-                </p>
+              
 
                 <div className="rounded-xl bg-primary/5 p-5 sm:p-6 mb-8" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
                   {heatingLawArticle.lead.map((paragraph, index) => (
