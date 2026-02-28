@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const Navbar = ({ language = 'de', onLanguageChange }) => {
+  const logoSrc = `${import.meta.env.BASE_URL}new-logo.svg`
   const [isScrolled, setIsScrolled] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
@@ -139,7 +140,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
           {/* Logo */}
           <Link to="/" className="relative group flex items-center">
             <img
-              src="//new-logo.svg"
+              src={logoSrc}
               alt="Baufiking logo"
               className="h-9 sm:h-10 w-auto object-contain"
             />
@@ -256,7 +257,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                   <div className="mb-8">
                     <div className="flex items-center gap-3">
                       <img
-                        src="//new-logo.svg"
+                        src={logoSrc}
                         alt="Baufiking logo"
                         className="h-9 w-auto object-contain"
                       />

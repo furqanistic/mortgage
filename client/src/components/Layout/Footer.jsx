@@ -3,6 +3,7 @@ import { Facebook, Instagram } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Footer = ({ language = 'de' }) => {
+  const logoSrc = `${import.meta.env.BASE_URL}new-logo.svg`
   const isEnglish = language === 'en'
   const aboutText = isEnglish
     ? 'Independent guidance for German home financing. We compare over 100 banks to secure the best conditions.'
@@ -42,7 +43,7 @@ const Footer = ({ language = 'de' }) => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
               <img
-                src="//new-logo.svg"
+                src={logoSrc}
                 alt="Baufiking logo"
                 className="h-10 w-auto object-contain"
               />
