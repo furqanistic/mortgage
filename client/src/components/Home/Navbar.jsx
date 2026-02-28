@@ -137,16 +137,12 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
           <div className="flex justify-between items-center">
 
           {/* Logo */}
-          <Link to="/" className="relative group flex items-center gap-2 sm:gap-3">
+          <Link to="/" className="relative group flex items-center">
             <img
-              src="/logo.jpeg"
+              src="/logo.svg"
               alt="Baufiking logo"
-              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover shadow-sm ring-1 ring-border/40"
+              className="h-9 sm:h-10 w-auto object-contain"
             />
-            <span className="font-logo text-lg sm:text-2xl md:text-3xl font-bold text-primary dark:text-white max-w-[140px] sm:max-w-none truncate">
-              Baufiking
-            </span>
-            <span className="absolute -bottom-1 left-0 w-3/5 h-[3px] bg-gradient-to-r from-accent to-transparent transition-all duration-300 group-hover:w-full" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -260,13 +256,10 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                   <div className="mb-8">
                     <div className="flex items-center gap-3">
                       <img
-                        src="/logo.jpeg"
+                        src="/logo.svg"
                         alt="Baufiking logo"
-                        className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-border/40"
+                        className="h-9 w-auto object-contain"
                       />
-                      <span className="font-logo text-2xl font-bold text-primary dark:text-white">
-                        Baufiking
-                      </span>
                     </div>
                   </div>
 

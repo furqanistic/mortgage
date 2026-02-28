@@ -15,22 +15,22 @@ import {
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
 const stateOptions = [
-  { label: 'Baden-Württemberg (5.0%)', value: 5.0 },
-  { label: 'Bayern / Bavaria (3.5%)', value: 3.5 },
-  { label: 'Berlin (6.0%)', value: 6.0 },
-  { label: 'Brandenburg (6.5%)', value: 6.5 },
-  { label: 'Bremen (5.0%)', value: 5.0 },
-  { label: 'Hamburg (5.5%)', value: 5.5 },
-  { label: 'Hessen / Hesse (6.0%)', value: 6.0 },
-  { label: 'Mecklenburg-Vorpommern (6.0%)', value: 6.0 },
-  { label: 'Niedersachsen / Lower Saxony (5.0%)', value: 5.0 },
-  { label: 'Nordrhein-Westfalen / North Rhine-Westphalia (6.5%)', value: 6.5 },
-  { label: 'Rheinland-Pfalz / Rhineland-Palatinate (5.0%)', value: 5.0 },
-  { label: 'Saarland (6.5%)', value: 6.5 },
-  { label: 'Sachsen / Saxony (5.5%)', value: 5.5 },
-  { label: 'Sachsen-Anhalt / Saxony-Anhalt (5.0%)', value: 5.0 },
-  { label: 'Schleswig-Holstein (6.5%)', value: 6.5 },
-  { label: 'Thüringen / Thuringia (6.5%)', value: 6.5 },
+  { label: 'Baden-Württemberg (5.0%)', value: 'baden-wuerttemberg', taxRate: 5.0 },
+  { label: 'Bayern / Bavaria (3.5%)', value: 'bayern', taxRate: 3.5 },
+  { label: 'Berlin (6.0%)', value: 'berlin', taxRate: 6.0 },
+  { label: 'Brandenburg (6.5%)', value: 'brandenburg', taxRate: 6.5 },
+  { label: 'Bremen (5.0%)', value: 'bremen', taxRate: 5.0 },
+  { label: 'Hamburg (5.5%)', value: 'hamburg', taxRate: 5.5 },
+  { label: 'Hessen / Hesse (6.0%)', value: 'hessen', taxRate: 6.0 },
+  { label: 'Mecklenburg-Vorpommern (6.0%)', value: 'mecklenburg-vorpommern', taxRate: 6.0 },
+  { label: 'Niedersachsen / Lower Saxony (5.0%)', value: 'niedersachsen', taxRate: 5.0 },
+  { label: 'Nordrhein-Westfalen / North Rhine-Westphalia (6.5%)', value: 'nordrhein-westfalen', taxRate: 6.5 },
+  { label: 'Rheinland-Pfalz / Rhineland-Palatinate (5.0%)', value: 'rheinland-pfalz', taxRate: 5.0 },
+  { label: 'Saarland (6.5%)', value: 'saarland', taxRate: 6.5 },
+  { label: 'Sachsen / Saxony (5.5%)', value: 'sachsen', taxRate: 5.5 },
+  { label: 'Sachsen-Anhalt / Saxony-Anhalt (5.0%)', value: 'sachsen-anhalt', taxRate: 5.0 },
+  { label: 'Schleswig-Holstein (6.5%)', value: 'schleswig-holstein', taxRate: 6.5 },
+  { label: 'Thüringen / Thuringia (6.5%)', value: 'thueringen', taxRate: 6.5 },
 ]
 
 const MortgageGermanyCalculator = ({ language = 'de' }) => {
@@ -39,7 +39,7 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [purchasePrice, setPurchasePrice] = useState(400000)
-  const [transferTax, setTransferTax] = useState(6.0)
+  const [selectedState, setSelectedState] = useState('hessen')
   const [notaryCosts, setNotaryCosts] = useState(2.0)
   const [hasAgent, setHasAgent] = useState(false)
   const [agentCommission, setAgentCommission] = useState(3.57)
@@ -47,6 +47,7 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
   const [interestRate, setInterestRate] = useState(3.5)
   const [repaymentRate, setRepaymentRate] = useState(2.0)
   const [fixedPeriod, setFixedPeriod] = useState(15)
+  const transferTax = stateOptions.find((opt) => opt.value === selectedState)?.taxRate ?? 6.0
 
   const labels = {
     title: isEnglish ? 'Mortgage Calculator (Germany)' : 'Finanzierungsrechner (Deutschland)',
@@ -432,8 +433,8 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
               <div className="space-y-2">
                 <div className="text-sm font-semibold text-slate-700">{labels.federalState}</div>
                 <select
-                  value={transferTax}
-                  onChange={(e) => setTransferTax(Number(e.target.value))}
+                  value={selectedState}
+                  onChange={(e) => setSelectedState(e.target.value)}
                   className="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 text-base font-semibold focus:outline-none focus:border-accent"
                 >
                   {stateOptions.map((opt) => (

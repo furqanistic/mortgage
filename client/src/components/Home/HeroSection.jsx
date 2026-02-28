@@ -62,7 +62,7 @@ const HeroSection = ({ language = 'de' }) => {
       }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#faf8f5] to-white dark:from-slate-950 dark:to-slate-900 pt-32 pb-20 lg:pt-48 lg:pb-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#faf8f5] to-white dark:from-slate-950 dark:to-slate-900 pt-14 pb-20 lg:pt-24 lg:pb-32">
       {/* Background Decorative Element */}
       <div className="absolute top-[-50%] right-[-10%] w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl animate-float opacity-60 pointer-events-none" />
 

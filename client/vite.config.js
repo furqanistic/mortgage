@@ -11,12 +11,22 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    force: true,
     exclude: [
+      'workbox-background-sync',
+      'workbox-broadcast-update',
       'workbox-cacheable-response',
+      'workbox-core',
       'workbox-expiration',
+      'workbox-google-analytics',
+      'workbox-navigation-preload',
       'workbox-precaching',
+      'workbox-range-requests',
+      'workbox-recipes',
       'workbox-routing',
+      'workbox-streams',
       'workbox-strategies',
+      'workbox-window',
     ],
   },
 })
