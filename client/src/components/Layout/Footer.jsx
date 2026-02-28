@@ -42,7 +42,7 @@ const Footer = ({ language = 'de' }) => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
               <img
-                src="/logo.svg"
+                src="//new-logo.svg"
                 alt="Baufiking logo"
                 className="h-10 w-auto object-contain"
               />

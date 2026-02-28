@@ -3,29 +3,29 @@ import ConsultationModal from '@/components/Home/ConsultationModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import {
-  logout,
-  selectCurrentUser,
-  selectIsAdmin,
-  selectIsAuthenticated,
+    logout,
+    selectCurrentUser,
+    selectIsAdmin,
+    selectIsAuthenticated,
 } from '@/redux/userSlice'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  Globe,
-  LogOut,
-  Mail,
-  Menu,
-  Phone,
-  User
+    Globe,
+    LogOut,
+    Mail,
+    Menu,
+    Phone,
+    User
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -139,7 +139,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
           {/* Logo */}
           <Link to="/" className="relative group flex items-center">
             <img
-              src="/logo.svg"
+              src="//new-logo.svg"
               alt="Baufiking logo"
               className="h-9 sm:h-10 w-auto object-contain"
             />
@@ -256,7 +256,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                   <div className="mb-8">
                     <div className="flex items-center gap-3">
                       <img
-                        src="/logo.svg"
+                        src="//new-logo.svg"
                         alt="Baufiking logo"
                         className="h-9 w-auto object-contain"
                       />
