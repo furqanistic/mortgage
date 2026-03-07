@@ -167,11 +167,11 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
           const canvas = document.createElement('canvas')
           canvas.width = img.naturalWidth; canvas.height = img.naturalHeight
           canvas.getContext('2d').drawImage(img, 0, 0)
-          resolve({ src: canvas.toDataURL('image/jpeg'), aspect: img.naturalWidth / img.naturalHeight })
+          resolve({ src: canvas.toDataURL('image/png'), aspect: img.naturalWidth / img.naturalHeight })
         } catch { resolve(null) }
       }
       img.onerror = () => resolve(null)
-      img.src = '/logo.jpeg'
+      img.src = '/logo-dark.png'
     })
 
     const logo = await loadLogo()
@@ -180,36 +180,43 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
     const brandWebsite = 'baufiking.de'
     const brandEmail = 'ravinder.singh@baufiking.de'
     const brandPhone = '+49 151 71618082'
-    const today = new Date().toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
     const fileDate = new Date().toISOString().slice(0, 10)
+    const headerHeight = 30
+    const contentStartY = 38
 
     let y = 0
 
     const drawHeader = () => {
-      doc.setFillColor(26, 77, 46)
-      doc.rect(0, 0, pw, 35, 'F')
+      doc.setFillColor(20, 64, 40)
+      doc.rect(0, 0, pw, headerHeight, 'F')
+      doc.setFillColor(30, 92, 56)
+      doc.rect(0, 0, pw, 4, 'F')
       doc.setFillColor(193, 154, 107)
-      doc.rect(0, 35, pw, 1, 'F')
+      doc.rect(0, headerHeight - 1, pw, 1, 'F')
       
       if (logo) {
-        const lh = 22
-        doc.addImage(logo.src, 'JPEG', ml, 6, lh * logo.aspect, lh)
+        const maxLogoWidth = 42
+        const maxLogoHeight = 11
+        const logoWidth = Math.min(maxLogoWidth, maxLogoHeight * logo.aspect)
+        const logoHeight = logoWidth / logo.aspect
+        const logoY = (headerHeight - logoHeight) / 2
+        doc.addImage(logo.src, 'PNG', ml, logoY, logoWidth, logoHeight)
       }
       
       doc.setFont('helvetica', 'bold')
-      doc.setFontSize(18)
+      doc.setFontSize(16)
       doc.setTextColor(255, 255, 255)
-      doc.text(isEnglish ? 'Mortgage Financing Analysis' : 'Baufinanzierungs-Bericht', pw - mr, 15, { align: 'right' })
-      
-      doc.setFont('helvetica', 'normal')
+      doc.text(isEnglish ? 'Mortgage Financing Analysis' : 'Baufinanzierungs-Bericht', pw - mr, 13, { align: 'right' })
+
+      doc.setFont('helvetica', 'bold')
       doc.setFontSize(9)
-      doc.setTextColor(180, 210, 180)
-      doc.text(isEnglish ? `Generated on ${today}` : `Erstellt am ${today}`, pw - mr, 22, { align: 'right' })
-      
-      doc.setFontSize(10)
-      doc.setTextColor(193, 154, 107)
-      doc.text(brandWebsite, pw - mr, 29, { align: 'right' })
-      y = 45
+      const websiteBadgeWidth = doc.getTextWidth(brandWebsite) + 7
+      const websiteBadgeX = pw - mr - websiteBadgeWidth
+      doc.setFillColor(193, 154, 107)
+      doc.roundedRect(websiteBadgeX, 17, websiteBadgeWidth, 7, 2, 2, 'F')
+      doc.setTextColor(26, 77, 46)
+      doc.text(brandWebsite, pw - mr - 4, 21.8, { align: 'right' })
+      y = contentStartY
     }
 
     const drawFooter = () => {
@@ -241,7 +248,7 @@ const MortgageGermanyCalculator = ({ language = 'de' }) => {
       if (y + h > ph - 25) {
         doc.addPage()
         drawHeader()
-        y = 45
+        y = contentStartY
       }
     }
 

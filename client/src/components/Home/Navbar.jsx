@@ -35,6 +35,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
   const logoSrc = `${import.meta.env.BASE_URL}new-logo.svg`
   const [isScrolled, setIsScrolled] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalTitle, setModalTitle] = useState('')
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
@@ -86,6 +87,8 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
       ]
 
   const ctaLabel = isEnglish ? 'Free Consultation' : 'Kostenlose Beratung'
+  const personalLoanLabel = isEnglish ? 'Apply for Personal Loan' : 'Privatkredit beantragen'
+  const personalLoanModalTitle = isEnglish ? 'Apply for Personal Loan' : 'Privatkredit beantragen'
   const logoutLabel = isEnglish ? 'Sign out' : 'Abmelden'
   const signedInLabel = isEnglish ? 'Signed in as' : 'Angemeldet als'
 
@@ -99,6 +102,16 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
   const handlePhoneClick = (event) => {
     event.preventDefault()
     setIsContactModalOpen(true)
+  }
+
+  const openConsultationModal = () => {
+    setModalTitle('')
+    setIsModalOpen(true)
+  }
+
+  const openPersonalLoanModal = () => {
+    setModalTitle(personalLoanModalTitle)
+    setIsModalOpen(true)
   }
 
   return (
@@ -214,12 +227,21 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                className="bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
-                onClick={() => setIsModalOpen(true)}
-              >
-                {ctaLabel}
-              </Button>
+              <div className="ml-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={openPersonalLoanModal}
+                  className="inline-flex h-11 items-center rounded-md border border-primary/30 bg-white px-4 text-sm font-semibold text-primary transition hover:bg-primary/5"
+                >
+                  {personalLoanLabel}
+                </button>
+                <Button
+                  className="h-11 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                  onClick={openConsultationModal}
+                >
+                  {ctaLabel}
+                </Button>
+              </div>
             )}
           </nav>
 
@@ -288,12 +310,21 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                         </div>
                       </div>
                     ) : (
-                      <Button
-                        className="w-full bg-primary text-white font-bold py-6"
-                        onClick={() => setIsModalOpen(true)}
-                      >
-                        {ctaLabel}
-                      </Button>
+                      <div className="grid gap-3">
+                        <button
+                          type="button"
+                          onClick={openPersonalLoanModal}
+                          className="w-full rounded-xl border-2 border-primary/20 bg-white px-4 py-3 text-center text-sm font-semibold text-primary transition hover:bg-primary/5"
+                        >
+                          {personalLoanLabel}
+                        </button>
+                        <Button
+                          className="w-full bg-primary text-white font-bold py-6"
+                          onClick={openConsultationModal}
+                        >
+                          {ctaLabel}
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -350,8 +381,12 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
       )}
       <ConsultationModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false)
+          setModalTitle('')
+        }}
         language={language}
+        titleOverride={modalTitle}
       />
     </>
   )

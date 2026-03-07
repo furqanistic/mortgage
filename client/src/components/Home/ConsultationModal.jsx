@@ -19,7 +19,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Mail, Phone, X } from 'lucide-react'
 import React, { useState } from 'react'
 
-const ConsultationModal = ({ isOpen, onClose, language = 'de' }) => {
+const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -115,7 +115,7 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de' }) => {
         <div className="p-8 sm:p-10 relative">
           <DialogHeader className="mb-8 pr-6">
             <DialogTitle className="text-3xl sm:text-4xl font-heading font-black text-primary dark:text-white leading-tight">
-              Book <span className="text-accent">Free</span> Consultation
+              {titleOverride || copy.title}
             </DialogTitle>
           </DialogHeader>
 

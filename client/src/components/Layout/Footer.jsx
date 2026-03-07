@@ -1,17 +1,33 @@
 // File: client/src/components/Layout/Footer.jsx
 import { Facebook, Instagram } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ConsultationModal from '@/components/Home/ConsultationModal'
 
 const Footer = ({ language = 'de' }) => {
-  const logoSrc = `${import.meta.env.BASE_URL}new-logo.svg`
+  const logoSrc = `${import.meta.env.BASE_URL}logo-dark.png`
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const isEnglish = language === 'en'
   const aboutText = isEnglish
     ? 'Independent guidance for German home financing. We compare over 100 banks to secure the best conditions.'
     : 'Ihr unabhängiger Partner für Immobilienfinanzierung. Wir vergleichen über 500 Banken, um Ihnen die besten Konditionen zu sichern.'
 
   const services = isEnglish
-    ? ['Home Loan Financing', 'Real Estate', 'Investments', 'Property Support']
-    : ['Baufinanzierung', 'Anschlussfinanzierung', 'Kapitalanlage', 'Forward-Darlehen', 'Privatkredit']
+    ? [
+      { key: 'home-loan', label: 'Home Loan Financing' },
+      { key: 'real-estate', label: 'Real Estate' },
+      { key: 'investments', label: 'Investments' },
+      { key: 'property-support', label: 'Property Support' },
+      { key: 'private-loans', label: 'Private Loans' },
+    ]
+    : [
+      { key: 'home-loan', label: 'Baufinanzierung' },
+      { key: 'refinancing', label: 'Anschlussfinanzierung' },
+      { key: 'investment', label: 'Kapitalanlage' },
+      { key: 'forward-loan', label: 'Forward-Darlehen' },
+      { key: 'private-loans', label: 'Privatkredit' },
+    ]
+  const personalLoanModalTitle = isEnglish ? 'Apply for Personal Loan' : 'Privatkredit beantragen'
 
   const company = isEnglish
     ? [
@@ -78,7 +94,19 @@ const Footer = ({ language = 'de' }) => {
             <h4 className="font-bold text-lg mb-6 text-white">{isEnglish ? 'Services' : 'Dienstleistungen'}</h4>
             <ul className="space-y-4 text-white/60">
               {services.map((item) => (
-                <li key={item}><a href="#" className="hover:text-accent transition-colors">{item}</a></li>
+                <li key={item.key}>
+                  {item.key === 'private-loans' ? (
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(true)}
+                      className="hover:text-accent transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  ) : (
+                    <a href="#" className="hover:text-accent transition-colors">{item.label}</a>
+                  )}
+                </li>
               ))}
             </ul>
           </div>
@@ -127,6 +155,12 @@ const Footer = ({ language = 'de' }) => {
           </div>
         </div>
       </div>
+      <ConsultationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        language={language}
+        titleOverride={personalLoanModalTitle}
+      />
     </footer>
   )
 }

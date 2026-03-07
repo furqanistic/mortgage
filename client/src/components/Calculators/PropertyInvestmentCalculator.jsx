@@ -82,26 +82,48 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     const monthlyRate = interestRate / 100 / 12
     const monthlyPayment = loanAmount * ((interestRate + repaymentRate) / 100) / 12
 
-    const buildingValue = purchasePrice * (buildingRatio / 100)
+    // Match spreadsheet examples: depreciation is calculated on full acquisition value.
+    const buildingValue = totalInvestment * (buildingRatio / 100)
     const annualDepreciation = buildingValue * (depreciationRate / 100)
+
+    const amortizeOneYear = (startingBalance) => {
+      let balance = Math.max(0, startingBalance)
+      let interest = 0
+      let principal = 0
+
+      for (let month = 1; month <= 12; month += 1) {
+        if (balance <= 0 || monthlyPayment <= 0) break
+        const monthlyInterest = balance * monthlyRate
+        const rawPrincipal = monthlyPayment - monthlyInterest
+        const monthlyPrincipal = Math.min(balance, Math.max(0, rawPrincipal))
+        interest += monthlyInterest
+        principal += monthlyPrincipal
+        balance -= monthlyPrincipal
+      }
+
+      return {
+        endBalance: Math.max(0, balance),
+        yearlyInterest: interest,
+        yearlyPrincipal: principal,
+        yearlyDebtService: interest + principal,
+      }
+    }
 
     let loanBalance = loanAmount
     let interestYear1 = 0
     let principalYear1 = 0
 
-    for (let month = 1; month <= 12; month += 1) {
-      const monthlyInterest = loanBalance * monthlyRate
-      const monthlyPrincipal = monthlyPayment - monthlyInterest
-      interestYear1 += monthlyInterest
-      principalYear1 += monthlyPrincipal
-      loanBalance -= monthlyPrincipal
-    }
+    const year1Amortization = amortizeOneYear(loanBalance)
+    interestYear1 = year1Amortization.yearlyInterest
+    principalYear1 = year1Amortization.yearlyPrincipal
+    loanBalance = year1Amortization.endBalance
 
     const annualRentIncome = monthlyRent * 12
     const annualCosts = (nonTransferableCosts + maintenanceCosts) * 12
-    const annualFinancing = monthlyPayment * 12
+    const annualFinancing = year1Amortization.yearlyDebtService
 
-    const deductibleExpenses = interestYear1 + annualCosts + annualDepreciation
+    // Match provided solved sheet: tax deduction uses yearly financing payment, not interest-only.
+    const deductibleExpenses = annualFinancing + annualCosts + annualDepreciation
     const taxableRentalIncome = annualRentIncome - deductibleExpenses
     const taxLiability = taxableRentalIncome * (taxRate / 100)
     const annualTaxSavings = Math.max(0, -taxLiability)
@@ -130,26 +152,20 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
       const yearlyRent = currentRent * 12
       const yearlyCosts = currentCosts * 12
 
-      let yearlyInterest = 0
-      let yearlyPrincipal = 0
-
-      for (let month = 1; month <= 12; month += 1) {
-        const monthlyInterest = loanBalance * monthlyRate
-        const monthlyPrincipal = monthlyPayment - monthlyInterest
-        yearlyInterest += monthlyInterest
-        yearlyPrincipal += monthlyPrincipal
-        loanBalance -= monthlyPrincipal
-      }
+      const yearlyAmortization = amortizeOneYear(loanBalance)
+      const yearlyPrincipal = yearlyAmortization.yearlyPrincipal
+      const yearlyDebtService = yearlyAmortization.yearlyDebtService
+      loanBalance = yearlyAmortization.endBalance
 
       totalPrincipalPaid += yearlyPrincipal
 
-      const yearlyDeductible = yearlyInterest + yearlyCosts + annualDepreciation
+      const yearlyDeductible = yearlyDebtService + yearlyCosts + annualDepreciation
       const yearlyTaxableIncome = yearlyRent - yearlyDeductible
       const yearlyTaxLiability = yearlyTaxableIncome * (taxRate / 100)
       const yearlyTaxSavings = Math.max(0, -yearlyTaxLiability)
       const yearlyTax = Math.max(0, yearlyTaxLiability)
 
-      const yearlyGrossCashflow = yearlyRent - yearlyCosts - monthlyPayment * 12
+      const yearlyGrossCashflow = yearlyRent - yearlyCosts - yearlyDebtService
       const yearlyNetCashflow = yearlyGrossCashflow - yearlyTax + yearlyTaxSavings
       cumulativeCashflowAfterTax += yearlyNetCashflow
       cashflows.push(yearlyNetCashflow)
@@ -205,22 +221,18 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     comparisonData.push({ year: 0, property: equity, alternative: equity })
 
     for (let year = 1; year <= years; year += 1) {
-      let yearlyInterest = 0
-      for (let month = 1; month <= 12; month += 1) {
-        const monthlyInterest = compLoanBalance * monthlyRate
-        const monthlyPrincipal = monthlyPayment - monthlyInterest
-        yearlyInterest += monthlyInterest
-        compLoanBalance -= monthlyPrincipal
-      }
+      const comparisonYear = amortizeOneYear(compLoanBalance)
+      const yearlyDebtService = comparisonYear.yearlyDebtService
+      compLoanBalance = comparisonYear.endBalance
 
       const yearlyRent = compRent * 12
       const yearlyCosts = compCosts * 12
-      const yearlyDeductible = yearlyInterest + yearlyCosts + annualDepreciation
+      const yearlyDeductible = yearlyDebtService + yearlyCosts + annualDepreciation
       const yearlyTaxable = yearlyRent - yearlyDeductible
       const yearlyTax = Math.max(0, yearlyTaxable * (taxRate / 100))
       const yearlyTaxSavings = Math.max(0, -yearlyTaxable * (taxRate / 100))
 
-      const yearlyGross = yearlyRent - yearlyCosts - monthlyPayment * 12
+      const yearlyGross = yearlyRent - yearlyCosts - yearlyDebtService
       const yearlyNet = yearlyGross - yearlyTax + yearlyTaxSavings
       compCashflow += yearlyNet
 
@@ -404,11 +416,11 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
           const canvas = document.createElement('canvas')
           canvas.width = img.naturalWidth; canvas.height = img.naturalHeight
           canvas.getContext('2d').drawImage(img, 0, 0)
-          resolve({ src: canvas.toDataURL('image/jpeg'), aspect: img.naturalWidth / img.naturalHeight })
+          resolve({ src: canvas.toDataURL('image/png'), aspect: img.naturalWidth / img.naturalHeight })
         } catch { resolve(null) }
       }
       img.onerror = () => resolve(null)
-      img.src = '/logo.jpeg'
+      img.src = '/logo-dark.png'
     })
 
     const logo = await loadLogo()
@@ -417,36 +429,43 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     const brandWebsite = 'baufiking.de'
     const brandEmail = 'ravinder.singh@baufiking.de'
     const brandPhone = '+49 151 71618082'
-    const today = new Date().toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
     const fileDate = new Date().toISOString().slice(0, 10)
+    const headerHeight = 30
+    const contentStartY = 38
 
     let y = 0
 
     const drawHeader = () => {
-      doc.setFillColor(26, 77, 46)
-      doc.rect(0, 0, pw, 35, 'F')
+      doc.setFillColor(20, 64, 40)
+      doc.rect(0, 0, pw, headerHeight, 'F')
+      doc.setFillColor(30, 92, 56)
+      doc.rect(0, 0, pw, 4, 'F')
       doc.setFillColor(193, 154, 107)
-      doc.rect(0, 35, pw, 1, 'F')
+      doc.rect(0, headerHeight - 1, pw, 1, 'F')
       
       if (logo) {
-        const lh = 22
-        doc.addImage(logo.src, 'JPEG', ml, 6, lh * logo.aspect, lh)
+        const maxLogoWidth = 42
+        const maxLogoHeight = 11
+        const logoWidth = Math.min(maxLogoWidth, maxLogoHeight * logo.aspect)
+        const logoHeight = logoWidth / logo.aspect
+        const logoY = (headerHeight - logoHeight) / 2
+        doc.addImage(logo.src, 'PNG', ml, logoY, logoWidth, logoHeight)
       }
       
       doc.setFont('helvetica', 'bold')
-      doc.setFontSize(18)
+      doc.setFontSize(16)
       doc.setTextColor(255, 255, 255)
-      doc.text(isEnglish ? 'Property Investment Analysis' : 'Immobilien-Investment Analyse', pw - mr, 15, { align: 'right' })
-      
-      doc.setFont('helvetica', 'normal')
+      doc.text(isEnglish ? 'Property Investment Analysis' : 'Immobilien-Investment Analyse', pw - mr, 13, { align: 'right' })
+
+      doc.setFont('helvetica', 'bold')
       doc.setFontSize(9)
-      doc.setTextColor(180, 210, 180)
-      doc.text(isEnglish ? `Generated on ${today}` : `Erstellt am ${today}`, pw - mr, 22, { align: 'right' })
-      
-      doc.setFontSize(10)
-      doc.setTextColor(193, 154, 107)
-      doc.text(brandWebsite, pw - mr, 29, { align: 'right' })
-      y = 45
+      const websiteBadgeWidth = doc.getTextWidth(brandWebsite) + 7
+      const websiteBadgeX = pw - mr - websiteBadgeWidth
+      doc.setFillColor(193, 154, 107)
+      doc.roundedRect(websiteBadgeX, 17, websiteBadgeWidth, 7, 2, 2, 'F')
+      doc.setTextColor(26, 77, 46)
+      doc.text(brandWebsite, pw - mr - 4, 21.8, { align: 'right' })
+      y = contentStartY
     }
 
     const drawFooter = () => {
@@ -478,7 +497,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
       if (y + h > ph - 25) {
         doc.addPage()
         drawHeader()
-        y = 45
+        y = contentStartY
       }
     }
 

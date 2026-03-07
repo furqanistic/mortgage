@@ -1,153 +1,157 @@
-// File: client/src/components/Home/HeroSection.jsx
-import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { ArrowRight, Home, Landmark, Star } from 'lucide-react'
-import { useState } from 'react'
-import ConsultationModal from './ConsultationModal'
+import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const HeroSection = ({ language = 'de' }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  }
+  const navigate = useNavigate()
+  const [monthlyIncome, setMonthlyIncome] = useState(3500)
+  const [downPayment, setDownPayment] = useState(50000)
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-  }
+  const isEnglish = language === 'en'
+  const locale = isEnglish ? 'en-US' : 'de-DE'
 
-  const copy = language === 'en'
+  const estimatedLoanAmount = useMemo(() => {
+    const interestRate = 4
+    const repaymentRate = 2
+    const maxPaymentPercent = 35
+    const totalRate = interestRate + repaymentRate
+    const maxMonthlyPayment = (monthlyIncome * maxPaymentPercent) / 100
+    const annualPayment = maxMonthlyPayment * 12
+    const maxLoan = totalRate > 0 ? annualPayment / (totalRate / 100) : 0
+    return Math.max(0, Math.round(maxLoan))
+  }, [monthlyIncome])
+
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0,
+    }).format(value)
+
+  const copy = isEnglish
     ? {
-        title: {
-          lead: 'Your Path to',
-          highlight: 'Homeownership',
-          tail: 'Starts Here',
-        },
-        subheadline:
-          'Independent Advice • Best Rates • Personal Support – We guide you step by step on your journey to your dream home.',
-        ctaPrimary: 'Book Free Consultation',
-        ctaSecondary: 'Calculate Financing',
+        title: 'Your Dream Home is Within Reach',
+        calculatorTitle: 'Affordability Calculator',
+        income: 'Monthly Income (€)',
+        downPayment: 'Down Payment (€)',
+        incomePlaceholder: 'e.g., 3,500',
+        downPaymentPlaceholder: 'e.g., 50,000',
+        estimateLabel: 'Estimated Loan Amount',
+        ctaPrimary: 'Open Full Calculator',
+        imageAlt: 'Happy family in front of their new home',
         trust: [
           { value: '500+', label: 'Happy Clients' },
           { value: '4.9/5', label: 'Client Rating' },
           { value: '100+', label: 'Bank Partners' },
         ],
-        placeholderTitle: 'Happy Family with House Keys',
-        placeholderSubtitle: '(Image Placeholder)',
       }
     : {
-        title: {
-          lead: 'Ihr Weg zum',
-          highlight: 'Eigenheim',
-          tail: 'beginnt hier',
-        },
-        subheadline:
-          'Unabhängige Beratung • Beste Konditionen • Persönliche Betreuung – Wir begleiten Sie Schritt für Schritt auf Ihrer Reise zum Traumhaus.',
-        ctaPrimary: 'Kostenlose Beratung vereinbaren',
-        ctaSecondary: 'Finanzierung berechnen',
+        title: 'Ihr Traumhaus ist in Reichweite',
+        calculatorTitle: 'Erschwinglichkeitsrechner',
+        income: 'Monatliches Einkommen (€)',
+        downPayment: 'Eigenkapital (€)',
+        incomePlaceholder: 'z. B. 3.500',
+        downPaymentPlaceholder: 'z. B. 50.000',
+        estimateLabel: 'Geschätzte Darlehenssumme',
+        ctaPrimary: 'Vollständigen Rechner öffnen',
+        imageAlt: 'Glückliche Familie vor ihrem neuen Zuhause',
         trust: [
           { value: '500+', label: 'Zufriedene Kunden' },
           { value: '4.9/5', label: 'Kundenbewertung' },
           { value: '100+', label: 'Banken Partner' },
         ],
-        placeholderTitle: 'Glückliche Familie mit Hausschlüsseln',
-        placeholderSubtitle: '(Image Placeholder)',
       }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#faf8f5] to-white dark:from-slate-950 dark:to-slate-900 pt-14 pb-20 lg:pt-24 lg:pb-32">
-      {/* Background Decorative Element */}
-      <div className="absolute top-[-50%] right-[-10%] w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl animate-float opacity-60 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-          {/* Left Column: Text Content */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-left relative z-30"
-          >
-            <motion.h1
-              variants={itemVariants}
-              className="font-heading text-4xl sm:text-5xl lg:text-7xl font-bold text-primary dark:text-white leading-[1.1] mb-6"
-            >
-              {copy.title.lead} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/80">
-                {copy.title.highlight}
-              </span>{' '}
-              {copy.title.tail}
-            </motion.h1>
-
+    <section className="bg-[#f8f8f5] pt-8 pb-14 md:pt-12 md:pb-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-[26px] border border-[#e6e8e2] bg-white px-4 py-8 shadow-[0_10px_40px_rgba(17,24,39,0.06)] sm:px-8 lg:px-10 lg:py-12">
+          <div className="grid items-center gap-8 lg:grid-cols-[1fr_0.95fr] lg:gap-10">
             <motion.div
-              variants={itemVariants}
-              className="text-lg lg:text-xl text-muted-foreground mb-10 leading-relaxed max-w-xl"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
             >
-              {copy.subheadline}
+              <h1 className="font-heading text-4xl font-bold leading-[1.1] text-primary sm:text-5xl lg:text-7xl">
+                {copy.title}
+              </h1>
+
+              <div className="mt-6 rounded-3xl border border-[#dde2da] bg-white p-5 shadow-[0_12px_24px_rgba(15,47,36,0.08)] sm:p-6">
+                <h3 className="text-2xl font-semibold text-[#1f2937]">{copy.calculatorTitle}</h3>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-sm font-medium text-[#2b3340]">{copy.income}</span>
+                    <input
+                      type="number"
+                      min={0}
+                      step={100}
+                      value={monthlyIncome}
+                      onChange={(e) => setMonthlyIncome(Number(e.target.value || 0))}
+                      placeholder={copy.incomePlaceholder}
+                      className="h-12 w-full rounded-xl border border-[#c9d1c7] bg-white px-4 text-base text-[#1f2937] outline-none transition focus:border-[#0c6a40] focus:ring-2 focus:ring-[#0c6a40]/20"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm font-medium text-[#2b3340]">{copy.downPayment}</span>
+                    <input
+                      type="number"
+                      min={0}
+                      step={1000}
+                      value={downPayment}
+                      onChange={(e) => setDownPayment(Number(e.target.value || 0))}
+                      placeholder={copy.downPaymentPlaceholder}
+                      className="h-12 w-full rounded-xl border border-[#c9d1c7] bg-white px-4 text-base text-[#1f2937] outline-none transition focus:border-[#0c6a40] focus:ring-2 focus:ring-[#0c6a40]/20"
+                    />
+                  </label>
+                </div>
+
+                <p className="mt-4 text-center text-lg text-[#2f3744]">
+                  {copy.estimateLabel}:{' '}
+                  <span className="font-bold text-[#101827]">{formatCurrency(estimatedLoanAmount)}</span>
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/tools?tab=calculators&calculator=affordability')}
+                  className="mt-4 h-12 w-full rounded-xl bg-gradient-to-r from-[#0f8a4a] to-[#0b6f3e] text-base font-semibold text-white shadow-[0_10px_20px_rgba(15,138,74,0.28)] transition hover:brightness-105"
+                >
+                  {copy.ctaPrimary}
+                </button>
+
+                <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+                  {copy.trust.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-xl border border-[#dde2da] bg-[#f8fbf7] px-2 py-3 text-center sm:px-3"
+                    >
+                      <div className="text-base font-bold text-[#0f2f24] sm:text-lg">{item.value}</div>
+                      <div className="text-[11px] text-[#64748b] sm:text-xs">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
 
             <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-3 mb-12"
+              initial={{ opacity: 0, x: 26 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.12 }}
+              className="relative"
             >
-              <Button
-                size="lg"
-                onClick={() => setIsModalOpen(true)}
-                className="w-full sm:flex-1 min-w-0 bg-primary hover:bg-primary/90 text-white font-semibold h-11 sm:h-13 px-3 sm:px-6 text-sm sm:text-sm md:text-base leading-tight text-center shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
-              >
-                {copy.ctaPrimary}
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full sm:flex-1 min-w-0 border-primary text-primary hover:bg-primary hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-primary font-semibold h-11 sm:h-13 px-3 sm:px-6 text-sm sm:text-sm md:text-base leading-tight text-center transition-all"
-              >
-                {copy.ctaSecondary}
-              </Button>
-            </motion.div>
-
-          </motion.div>
-
-          {/* Right Column: Visual */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="relative z-10"
-          >
-            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 border border-white/20 dark:border-white/10 aspect-[4/5] lg:aspect-square group">
-              {/* Background overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/20 z-10 pointer-events-none" />
-
-              {/* Hero Image */}
-              <div className="w-full h-full bg-secondary dark:bg-slate-800 relative overflow-hidden">
+              <div className="overflow-hidden rounded-[30px] border border-[#dfe4db] bg-[#eef2eb] shadow-[0_12px_28px_rgba(17,24,39,0.12)]">
                 <img
                   src="/family-in-berlin.png"
-                  alt={copy.placeholderTitle}
-                  className="h-full w-full object-cover"
+                  alt={copy.imageAlt}
+                  className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[460px]"
                 />
               </div>
-
-            </div>
-          </motion.div>
-
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      <ConsultationModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        language={language}
-      />
     </section>
   )
 }

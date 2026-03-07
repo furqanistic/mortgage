@@ -200,7 +200,7 @@ const AdvancedMortgageCalculator = ({ language = 'de' }) => {
       doc.text('Baufiking', pageWidth - marginX, 44, { align: 'right' })
 
       try {
-        const logoData = await loadImageAsDataUrl('/logo.jpeg')
+        const logoData = await loadImageAsDataUrl('/logo-dark.png')
         doc.addImage(logoData, 'JPEG', marginX, 20, 36, 36)
       } catch (error) {
         // Ignore logo load errors
