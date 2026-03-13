@@ -17,10 +17,9 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Mail, Phone } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Mail, Phone, RotateCcw } from 'lucide-react'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID =
@@ -40,13 +39,41 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formError, setFormError] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [submittedAt, setSubmittedAt] = useState('')
+
+  const resetForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      euCitizen: '',
+      residencyStatus: '',
+      preferredLanguage: '',
+      email: '',
+      phone: '',
+      message: '',
+    })
+    setIsSubmitting(false)
+    setFormError('')
+    setShowConfirmation(false)
+    setSubmittedAt('')
+  }
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm()
+    }
+  }, [isOpen])
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (formError) setFormError('')
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSelectChange = (name, value) => {
+    if (formError) setFormError('')
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -57,19 +84,20 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setFormError('')
 
     if (!formData.euCitizen || !formData.preferredLanguage) {
-      toast.error('Please select citizenship status and preferred language.')
+      setFormError('Please select citizenship status and preferred language.')
       return
     }
 
     if (formData.euCitizen === 'non-eu' && !formData.residencyStatus) {
-      toast.error('Please select your residency status.')
+      setFormError('Please select your residency status.')
       return
     }
 
     if (!validateGermanPhone(formData.phone)) {
-      toast.error('Please enter a valid German phone number (e.g. +49...)')
+      setFormError('Please enter a valid German phone number (e.g. +49...)')
       return
     }
 
@@ -82,7 +110,7 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
 
     if (missingEmailConfig.length) {
       console.warn('Missing EmailJS config:', missingEmailConfig)
-      toast.error(`Email service is not configured: ${missingEmailConfig.join(', ')}`)
+      setFormError(`Email service is not configured: ${missingEmailConfig.join(', ')}`)
       return
     }
 
@@ -129,11 +157,12 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
         templateParams,
         EMAILJS_PUBLIC_KEY
       )
-      toast.success('Consultation request sent successfully.')
-      onClose()
+      setSubmittedAt(currentSubmissionTime)
+      setShowConfirmation(true)
     } catch (error) {
       console.error('EmailJS error:', error)
-      toast.error('Failed to send request. Please check EmailJS service/template setup.')
+      const reason = error?.text || error?.message || 'Unknown error'
+      setFormError(`Failed to send request. ${reason}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -144,6 +173,12 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
   const copy = language === 'en' 
     ? {
         title: 'Book Free Consultation',
+        successTitle: 'Request Received',
+        successText:
+          'Thank you. Our team will review your details and reach out within 24 hours.',
+        submittedAtLabel: 'Submitted at',
+        submitAnother: 'Submit Another Request',
+        close: 'Back Home',
         firstName: 'First Name',
         lastName: 'Last Name',
         euCitizen: 'EU Citizen Status',
@@ -173,6 +208,12 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
       }
     : {
         title: 'Kostenlose Beratung vereinbaren',
+        successTitle: 'Anfrage Erfolgreich Gesendet',
+        successText:
+          'Vielen Dank. Unser Team prüft Ihre Angaben und meldet sich innerhalb von 24 Stunden bei Ihnen.',
+        submittedAtLabel: 'Gesendet um',
+        submitAnother: 'Neue Anfrage senden',
+        close: 'Zurück zur Startseite',
         firstName: 'Vorname',
         lastName: 'Nachname',
         euCitizen: 'EU-Staatsangehörigkeit',
@@ -211,123 +252,184 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
             </DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <Input
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder={copy.firstName}
-                  className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
-                  required
-                />
-              </div>
-              <div className="space-y-1">
-                <Input
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder={copy.lastName}
-                  className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
-                  required
-                />
-              </div>
-            </div>
+          <AnimatePresence mode="wait">
+            {!showConfirmation ? (
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                className="space-y-4"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.25 }}
+              >
+                {formError && (
+                  <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:border-red-500/40 dark:bg-red-950/40 dark:text-red-200">
+                    {formError}
+                  </div>
+                )}
 
-            <Select onValueChange={(val) => handleSelectChange('euCitizen', val)} value={formData.euCitizen}>
-              <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
-                <SelectValue placeholder={copy.euCitizen} />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover">
-                {copy.euOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Input
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      placeholder={copy.firstName}
+                      className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Input
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder={copy.lastName}
+                      className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <AnimatePresence>
-              {isNonEUCitizen && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
+                <Select onValueChange={(val) => handleSelectChange('euCitizen', val)} value={formData.euCitizen}>
+                  <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
+                    <SelectValue placeholder={copy.euCitizen} />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-border bg-popover">
+                    {copy.euOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <AnimatePresence>
+                  {isNonEUCitizen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Select onValueChange={(val) => handleSelectChange('residencyStatus', val)} value={formData.residencyStatus}>
+                        <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
+                          <SelectValue placeholder={copy.residencyStatus} />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-2xl border-border bg-popover">
+                          {copy.residencyOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <Select onValueChange={(val) => handleSelectChange('preferredLanguage', val)} value={formData.preferredLanguage}>
+                  <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
+                    <SelectValue placeholder={copy.preferredLanguage} />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-border bg-popover">
+                    {copy.languageOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <div className="relative">
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={copy.email}
+                    className="h-12 pl-12 pr-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
+                    required
+                  />
+                </div>
+
+                <div className="relative">
+                  <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
+                  <Input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder={copy.phone}
+                    className="h-12 pl-12 pr-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
+                    required
+                  />
+                </div>
+
+                <Textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder={copy.message}
+                  className="min-h-[100px] p-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium resize-none"
+                />
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
                 >
-                  <Select onValueChange={(val) => handleSelectChange('residencyStatus', val)} value={formData.residencyStatus}>
-                    <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
-                      <SelectValue placeholder={copy.residencyStatus} />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl border-border bg-popover">
-                      {copy.residencyOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {isSubmitting ? 'Sending...' : copy.submit}
+                  <ArrowRight className="size-5" />
+                </Button>
+              </motion.form>
+            ) : (
+              <motion.div
+                key="success"
+                className="text-center"
+                initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -12 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="rounded-[2rem] border border-blue-200/70 bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 shadow-xl shadow-blue-500/10 dark:border-blue-500/30 dark:from-blue-950/40 dark:via-slate-950 dark:to-indigo-950/40">
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/30">
+                    <CheckCircle2 className="h-8 w-8" />
+                  </div>
+                  <h4 className="text-2xl font-heading font-black text-primary dark:text-white">
+                    {copy.successTitle}
+                  </h4>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {copy.successText}
+                  </p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
+                    {copy.submittedAtLabel}: {submittedAt}
+                  </p>
+                </div>
 
-            <Select onValueChange={(val) => handleSelectChange('preferredLanguage', val)} value={formData.preferredLanguage}>
-              <SelectTrigger className="h-12 px-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium text-muted-foreground">
-                <SelectValue placeholder={copy.preferredLanguage} />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover">
-                {copy.languageOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value} className="focus:bg-primary focus:text-white rounded-xl mx-1 my-0.5">
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <div className="relative">
-              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
-              <Input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder={copy.email}
-                className="h-12 pl-12 pr-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
-                required
-              />
-            </div>
-
-            <div className="relative">
-              <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
-              <Input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder={copy.phone}
-                className="h-12 pl-12 pr-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium"
-                required
-              />
-            </div>
-
-            <Textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder={copy.message}
-              className="min-h-[100px] p-5 rounded-2xl bg-secondary dark:bg-slate-900 border-none outline-none focus:ring-1 focus:ring-primary transition-all text-sm font-medium resize-none"
-            />
-
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
-            >
-              {isSubmitting ? 'Sending...' : copy.submit}
-              <ArrowRight className="size-5" />
-            </Button>
-          </form>
+                <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={resetForm}
+                    className="h-12 rounded-2xl font-semibold"
+                  >
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    {copy.submitAnother}
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={onClose}
+                    className="h-12 rounded-2xl bg-primary text-white font-semibold"
+                  >
+                    {copy.close}
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </DialogContent>
     </Dialog>
