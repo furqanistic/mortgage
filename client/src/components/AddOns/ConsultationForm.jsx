@@ -36,6 +36,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
     message: ''
   })
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [submittedAt, setSubmittedAt] = useState('')
   const [phoneError, setPhoneError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -53,6 +54,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
         message: ''
       })
       setShowConfirmation(false)
+      setSubmittedAt('')
       setPhoneError('')
       setIsSubmitting(false)
     }
@@ -114,6 +116,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
 
     setIsSubmitting(true)
 
+    const currentSubmissionTime = new Date().toLocaleString()
+
     const templateParams = {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
       first_name: formData.firstName,
@@ -125,7 +129,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
       phone: formData.phone,
       message: formData.message || 'No message provided',
       full_name: `${formData.firstName} ${formData.lastName}`,
-      submitted_at: new Date().toLocaleString()
+      submitted_at: currentSubmissionTime
     }
 
     try {
@@ -135,6 +139,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
         templateParams,
         EMAILJS_PUBLIC_KEY
       )
+      setSubmittedAt(currentSubmissionTime)
       setShowConfirmation(true)
       toast.success('Consultation request sent successfully.')
     } catch (error) {
@@ -158,6 +163,23 @@ const ConsultationForm = ({ isOpen, onClose }) => {
         { value: 'student', label: 'Student Visa' },
         { value: 'other', label: 'Other' }
       ]
+
+  const handleSubmitAnother = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      nationality: '',
+      residency: '',
+      language: '',
+      email: '',
+      phone: '',
+      message: ''
+    })
+    setPhoneError('')
+    setIsSubmitting(false)
+    setSubmittedAt('')
+    setShowConfirmation(false)
+  }
 
   return (
     <AnimatePresence>
@@ -325,9 +347,24 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   Success!
                 </h3>
                 <p className='text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed'>
-                  Our experts will review your details and contact you within 24 hours.
+                  Your consultation request was submitted successfully. Our experts
+                  will review your details and contact you within 24 hours.
                 </p>
+                {submittedAt && (
+                  <p className='text-xs text-muted-foreground/80 mb-4'>
+                    Submitted at: {submittedAt}
+                  </p>
+                )}
                 <Button
+                  type='button'
+                  onClick={handleSubmitAnother}
+                  variant='outline'
+                  className='w-full h-12 rounded-xl font-bold text-base mb-3'
+                >
+                  Submit Another Request
+                </Button>
+                <Button
+                  type='button'
                   onClick={onClose}
                   className='w-full h-12 rounded-xl bg-foreground text-background font-bold text-base'
                 >
