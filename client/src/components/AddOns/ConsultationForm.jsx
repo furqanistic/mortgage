@@ -19,7 +19,9 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_TEMPLATE_ID =
+  import.meta.env.VITE_EMAILJS_CONSULTATION_TEMPLATE_ID ||
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 const ConsultationForm = ({ isOpen, onClose }) => {
@@ -95,14 +97,25 @@ const ConsultationForm = ({ isOpen, onClose }) => {
       return
     }
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      toast.error('Email service is not configured. Please try again later.')
+    const missingEmailConfig = [
+      !EMAILJS_SERVICE_ID && 'VITE_EMAILJS_SERVICE_ID',
+      !EMAILJS_TEMPLATE_ID &&
+        'VITE_EMAILJS_TEMPLATE_ID (or VITE_EMAILJS_CONSULTATION_TEMPLATE_ID)',
+      !EMAILJS_PUBLIC_KEY && 'VITE_EMAILJS_PUBLIC_KEY'
+    ].filter(Boolean)
+
+    if (missingEmailConfig.length) {
+      console.warn('Missing EmailJS config:', missingEmailConfig)
+      toast.error(
+        `Email service is not configured: ${missingEmailConfig.join(', ')}`
+      )
       return
     }
 
     setIsSubmitting(true)
 
     const templateParams = {
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
       first_name: formData.firstName,
       last_name: formData.lastName,
       nationality: formData.nationality,
