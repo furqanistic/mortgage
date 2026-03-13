@@ -1,4 +1,5 @@
 // File: client/src/components/Home/ConsultationModal.jsx
+import emailjs from '@emailjs/browser'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,8 +17,16 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Mail, Phone, X } from 'lucide-react'
-import React, { useState } from 'react'
+import { ArrowRight, Mail, Phone } from 'lucide-react'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID =
+  import.meta.env.VITE_EMAILJS_CONSULTATION_TEMPLATE_ID ||
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) => {
   const [formData, setFormData] = useState({
@@ -30,6 +39,7 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
     phone: '',
     message: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -40,11 +50,93 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const validateGermanPhone = (number) => {
+    const germanPhoneRegex = /^(\+49|0)[1-9][0-9]{5,14}$/
+    return germanPhoneRegex.test(number.replace(/\s/g, ''))
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Consultation Form Submitted:', formData)
-    // Here you would typically send the data to your backend
-    onClose()
+
+    if (!formData.euCitizen || !formData.preferredLanguage) {
+      toast.error('Please select citizenship status and preferred language.')
+      return
+    }
+
+    if (formData.euCitizen === 'non-eu' && !formData.residencyStatus) {
+      toast.error('Please select your residency status.')
+      return
+    }
+
+    if (!validateGermanPhone(formData.phone)) {
+      toast.error('Please enter a valid German phone number (e.g. +49...)')
+      return
+    }
+
+    const missingEmailConfig = [
+      !EMAILJS_SERVICE_ID && 'VITE_EMAILJS_SERVICE_ID',
+      !EMAILJS_TEMPLATE_ID &&
+        'VITE_EMAILJS_TEMPLATE_ID (or VITE_EMAILJS_CONSULTATION_TEMPLATE_ID)',
+      !EMAILJS_PUBLIC_KEY && 'VITE_EMAILJS_PUBLIC_KEY',
+    ].filter(Boolean)
+
+    if (missingEmailConfig.length) {
+      console.warn('Missing EmailJS config:', missingEmailConfig)
+      toast.error(`Email service is not configured: ${missingEmailConfig.join(', ')}`)
+      return
+    }
+
+    const currentSubmissionTime = new Date().toLocaleString()
+    const nationalityLabel =
+      formData.euCitizen === 'eu'
+        ? 'EU Citizen'
+        : formData.euCitizen === 'non-eu'
+          ? 'Non-EU Citizen'
+          : formData.euCitizen
+    const languageLabelMap = {
+      german: 'Deutsch (German)',
+      english: 'English',
+      urdu: 'Urdu (اردو)',
+      punjabi: 'Punjabi (ਪੰਜਾਬੀ)',
+      hindi: 'Hindi (हिन्दी)',
+    }
+    const residencyLabelMap = {
+      'blue-card': language === 'en' ? 'Blue Card' : 'Blaue Karte',
+      visa: language === 'en' ? 'Visa Residency' : 'Visum-Aufenthalt',
+      permanent: language === 'en' ? 'Permanent Residency' : 'Unbefristeter Aufenthalt',
+      limited: language === 'en' ? 'Limited Residency' : 'Befristeter Aufenthalt',
+    }
+    const templateParams = {
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      nationality: nationalityLabel,
+      residency: residencyLabelMap[formData.residencyStatus] || formData.residencyStatus || 'N/A',
+      language: languageLabelMap[formData.preferredLanguage] || formData.preferredLanguage,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message || 'No message provided',
+      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+      submitted_at: currentSubmissionTime,
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      )
+      toast.success('Consultation request sent successfully.')
+      onClose()
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      toast.error('Failed to send request. Please check EmailJS service/template setup.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const isNonEUCitizen = formData.euCitizen === 'non-eu'
@@ -229,9 +321,10 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
 
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
             >
-              {copy.submit}
+              {isSubmitting ? 'Sending...' : copy.submit}
               <ArrowRight className="size-5" />
             </Button>
           </form>
@@ -242,3 +335,10 @@ const ConsultationModal = ({ isOpen, onClose, language = 'de', titleOverride }) 
 }
 
 export default ConsultationModal
+
+ConsultationModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  language: PropTypes.string,
+  titleOverride: PropTypes.string,
+}
