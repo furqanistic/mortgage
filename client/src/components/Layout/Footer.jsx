@@ -146,7 +146,9 @@ const Footer = ({ language = 'de' }) => {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
           <div>
-            &copy; {new Date().getFullYear()} Baufiking {isEnglish ? 'All rights reserved.' : 'GmbH. Alle Rechte vorbehalten.'}
+            {isEnglish
+              ? '© Copyright 2022 - 2026 | Baufiking.de | Ravinder Singh | All rights reserved'
+              : '© Copyright 2022 - 2026 | Baufiking.de | Ravinder Singh | Alle Rechte vorbehalten'}
           </div>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white transition-colors">{isEnglish ? 'Legal Notice' : 'Impressum'}</a>

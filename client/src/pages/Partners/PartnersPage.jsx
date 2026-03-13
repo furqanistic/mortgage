@@ -2,6 +2,8 @@
 import ConsultationModal from '@/components/Home/ConsultationModal'
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
+import { defaultPartners } from '@/data/contentDefaults'
+import { getPartners } from '@/services/contentApi'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
@@ -26,6 +28,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
   const [showSearch, setShowSearch] = useState(false)
   const [isInView, setIsInView] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const searchRef = useRef(null)
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 100])
@@ -39,121 +42,14 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
     { id: 'inspection', label: 'Inspect', icon: <CheckCircle size={16} /> },
   ]
 
-  // Mock data for partners
-  const allPartners = [
-    {
-      id: 1,
-      name: 'Deutsche Bank',
-      category: 'finance',
-      description: "Germany's leading bank offering competitive mortgage solutions with exclusive Baufiking rates.",
-      logo: 'DB',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Deutsche_Bank_logo_without_wordmark.svg/1024px-Deutsche_Bank_logo_without_wordmark.svg.png',
-      rating: 4.8,
-      reviews: 426,
-      featured: true,
-      location: 'Nationwide',
-    },
-    {
-      id: 2,
-      name: 'Commerzbank',
-      category: 'finance',
-      description: 'Established financial institution with diverse mortgage products tailored for first-time buyers.',
-      logo: 'CB',
-      logoUrl: 'https://companieslogo.com/img/orig/CBK.F-2e335f15.png?t=1720244491',
-      rating: 4.7,
-      reviews: 385,
-      featured: true,
-      location: 'Nationwide',
-    },
-    {
-      id: 3,
-      name: 'Sparkasse',
-      category: 'finance',
-      description: 'Local banking network with deep understanding of regional property markets across Germany.',
-      logo: 'SP',
-      logoUrl: 'https://images.seeklogo.com/logo-png/13/1/sparkasse-logo-png_seeklogo-130014.png',
-      rating: 4.9,
-      reviews: 512,
-      featured: true,
-      location: 'Nationwide',
-    },
-    {
-      id: 4,
-      name: 'DKB',
-      category: 'finance',
-      description: 'Digital banking leader offering competitive mortgage rates with a streamlined online application process.',
-      logo: 'DKB',
-      logoUrl: 'https://play-lh.googleusercontent.com/Ks2wR3vsbHjM-qVLGOWrTAvpCSQbExc0_RJvt0JXHesqJGIhHR6d5iSwVrkifs49oA',
-      rating: 4.6,
-      reviews: 318,
-      featured: false,
-      location: 'Nationwide',
-    },
-    {
-      id: 5,
-      name: 'Volksbank',
-      category: 'finance',
-      description: 'Cooperative banking group with personalized mortgage solutions and local market expertise.',
-      logo: 'VB',
-      logoUrl: 'https://images.seeklogo.com/logo-png/15/2/volksbank-logo-png_seeklogo-150519.png',
-      rating: 4.7,
-      reviews: 429,
-      featured: false,
-      location: 'Nationwide',
-    },
-    {
-      id: 6,
-      name: 'ING',
-      category: 'finance',
-      description: 'Digital-first bank offering straightforward mortgage products with competitive interest rates.',
-      logo: 'ING',
-      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLTTTxWusLsdnDetJgPtmKHSEkpBwZYXKz8w&s',
-      rating: 4.7,
-      reviews: 375,
-      featured: false,
-      location: 'Nationwide',
-    },
-    {
-      id: 7,
-      name: 'PSD Bank',
-      category: 'finance',
-      description: 'Regional banking group with tailored mortgage solutions for various property types.',
-      logo: 'PSD',
-      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ8eJXfc82ez7frzvrV3beSSN7PKiCEHq1Kg&s',
-      rating: 4.5,
-      reviews: 215,
-      featured: false,
-      location: 'Regional',
-    },
-    {
-      id: 8,
-      name: 'Bausparkasse Schwäbisch Hall',
-      category: 'finance',
-      description: "Germany's largest building society specializing in home savings contracts and financing.",
-      logo: 'BSH',
-      logoUrl: 'https://play-lh.googleusercontent.com/a_8TkLz33oblA2NFoOdF72xqZE5qxzSY-jf-yJ6NJC3XchFABhKAA8GzKpSsW6wsf5s',
-      rating: 4.8,
-      reviews: 356,
-      featured: false,
-      location: 'Nationwide',
-    },
-    {
-      id: 9,
-      name: 'ImmoScout24',
-      category: 'brokers',
-      description: "Germany's largest real estate marketplace connecting buyers with property listings.",
-      logo: 'IS',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/ImmoScout24_Logo_2020.svg/2560px-ImmoScout24_Logo_2020.svg.png',
-      rating: 4.7,
-      reviews: 892,
-      featured: false,
-      location: 'Nationwide',
-    },
-  ]
+  const [allPartners, setAllPartners] = useState(defaultPartners)
 
   const filteredPartners = allPartners.filter((partner) => {
     const matchesCategory = activeCategory === 'all' || partner.category === activeCategory
-    const matchesSearch = !searchTerm || partner.name.toLowerCase().includes(searchTerm.toLowerCase()) || partner.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearch =
+      !searchTerm ||
+      (partner.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (partner.description || '').toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
@@ -167,6 +63,21 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const loadPartners = async () => {
+      try {
+        const response = await getPartners()
+        setAllPartners(response.length ? response : defaultPartners)
+      } catch (error) {
+        setAllPartners(defaultPartners)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadPartners()
   }, [])
 
   const containerVariants = {
@@ -265,10 +176,23 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
             className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8'
           >
             <AnimatePresence mode='popLayout'>
-              {filteredPartners.length > 0 ? (
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className='animate-pulse rounded-2xl border border-border bg-card p-6 sm:p-8'
+                  >
+                    <div className='h-12 w-12 rounded-lg bg-secondary/60' />
+                    <div className='mt-5 h-6 w-2/3 rounded bg-secondary/60' />
+                    <div className='mt-3 h-4 w-full rounded bg-secondary/50' />
+                    <div className='mt-2 h-4 w-5/6 rounded bg-secondary/50' />
+                    <div className='mt-5 h-8 w-full rounded bg-secondary/40' />
+                  </div>
+                ))
+              ) : filteredPartners.length > 0 ? (
                 filteredPartners.map((partner) => (
                   <motion.div
-                    key={partner.id}
+                    key={partner._id || partner.id}
                     layout
                     variants={cardVariants}
                     whileHover={{ y: -5 }}
@@ -321,7 +245,7 @@ const PartnersPage = ({ language = 'de', onLanguageChange }) => {
                          <div className='flex items-center -space-x-2'>
                             {[1,2,3].map(i => (
                               <div key={i} className='w-7 h-7 rounded-full border-2 border-card bg-secondary overflow-hidden'>
-                                <img src={`https://i.pravatar.cc/100?u=${partner.id + i}`} alt="user" />
+                                <img src={`https://i.pravatar.cc/100?u=${partner._id || partner.id || partner.name}-${i}`} alt="user" />
                               </div>
                             ))}
                             <div className='w-7 h-7 rounded-full border-2 border-card bg-primary flex items-center justify-center text-[8px] font-bold text-white'>

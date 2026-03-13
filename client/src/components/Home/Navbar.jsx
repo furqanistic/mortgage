@@ -160,12 +160,14 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:ml-10 lg:flex items-center gap-8">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.path}
-                className="relative text-sm font-medium text-foreground/80 hover:text-primary dark:hover:text-white transition-colors group py-2"
+                className={`relative whitespace-nowrap text-sm font-medium text-foreground/80 hover:text-primary dark:hover:text-white transition-colors group py-2 ${
+                  item.path === '/' ? 'hidden xl:inline-flex' : 'inline-flex'
+                }`}
               >
                 {item.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
@@ -231,7 +233,7 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                 <button
                   type="button"
                   onClick={openPersonalLoanModal}
-                  className="inline-flex h-11 items-center rounded-md border border-primary/30 bg-white px-4 text-sm font-semibold text-primary transition hover:bg-primary/5"
+                  className="inline-flex h-11 items-center whitespace-nowrap rounded-md border border-primary/30 bg-white px-4 text-sm font-semibold text-primary transition hover:bg-primary/5"
                 >
                   {personalLoanLabel}
                 </button>
@@ -306,6 +308,14 @@ const Navbar = ({ language = 'de', onLanguageChange }) => {
                         </Avatar>
                         <div className="flex-1">
                           <p className="font-bold">{currentUser?.name}</p>
+                          {isAdmin && (
+                            <button
+                              onClick={() => navigate('/admin')}
+                              className="text-xs text-primary hover:underline"
+                            >
+                              Dashboard
+                            </button>
+                          )}
                           <button onClick={handleLogout} className="text-xs text-destructive hover:underline">{logoutLabel}</button>
                         </div>
                       </div>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const HeroSection = ({ language = 'de' }) => {
   const navigate = useNavigate()
   const [monthlyIncome, setMonthlyIncome] = useState(3500)
-  const [downPayment, setDownPayment] = useState(50000)
+  const [maxPaymentPercent, setMaxPaymentPercent] = useState(35)
 
   const isEnglish = language === 'en'
   const locale = isEnglish ? 'en-US' : 'de-DE'
@@ -13,13 +13,12 @@ const HeroSection = ({ language = 'de' }) => {
   const estimatedLoanAmount = useMemo(() => {
     const interestRate = 4
     const repaymentRate = 2
-    const maxPaymentPercent = 35
     const totalRate = interestRate + repaymentRate
     const maxMonthlyPayment = (monthlyIncome * maxPaymentPercent) / 100
     const annualPayment = maxMonthlyPayment * 12
     const maxLoan = totalRate > 0 ? annualPayment / (totalRate / 100) : 0
     return Math.max(0, Math.round(maxLoan))
-  }, [monthlyIncome])
+  }, [monthlyIncome, maxPaymentPercent])
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat(locale, {
@@ -33,11 +32,11 @@ const HeroSection = ({ language = 'de' }) => {
         title: 'Your Dream Home is Within Reach',
         calculatorTitle: 'Affordability Calculator',
         income: 'Monthly Income (€)',
-        downPayment: 'Down Payment (€)',
+        maxPayment: 'Maximum Payment (% of Income)',
         incomePlaceholder: 'e.g., 3,500',
-        downPaymentPlaceholder: 'e.g., 50,000',
+        maxPaymentPlaceholder: 'e.g., 35',
         estimateLabel: 'Estimated Loan Amount',
-        ctaPrimary: 'Open Full Calculator',
+        ctaPrimary: 'Open Calculator',
         imageAlt: 'Happy family in front of their new home',
         trust: [
           { value: '500+', label: 'Happy Clients' },
@@ -49,11 +48,11 @@ const HeroSection = ({ language = 'de' }) => {
         title: 'Ihr Traumhaus ist in Reichweite',
         calculatorTitle: 'Erschwinglichkeitsrechner',
         income: 'Monatliches Einkommen (€)',
-        downPayment: 'Eigenkapital (€)',
+        maxPayment: 'Max. Rate (% vom Einkommen)',
         incomePlaceholder: 'z. B. 3.500',
-        downPaymentPlaceholder: 'z. B. 50.000',
+        maxPaymentPlaceholder: 'z. B. 35',
         estimateLabel: 'Geschätzte Darlehenssumme',
-        ctaPrimary: 'Vollständigen Rechner öffnen',
+        ctaPrimary: 'Rechner öffnen',
         imageAlt: 'Glückliche Familie vor ihrem neuen Zuhause',
         trust: [
           { value: '500+', label: 'Zufriedene Kunden' },
@@ -94,14 +93,15 @@ const HeroSection = ({ language = 'de' }) => {
                   </label>
 
                   <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-[#2b3340]">{copy.downPayment}</span>
+                    <span className="mb-2 block text-sm font-medium text-[#2b3340]">{copy.maxPayment}</span>
                     <input
                       type="number"
                       min={0}
-                      step={1000}
-                      value={downPayment}
-                      onChange={(e) => setDownPayment(Number(e.target.value || 0))}
-                      placeholder={copy.downPaymentPlaceholder}
+                      max={100}
+                      step={1}
+                      value={maxPaymentPercent}
+                      onChange={(e) => setMaxPaymentPercent(Number(e.target.value || 0))}
+                      placeholder={copy.maxPaymentPlaceholder}
                       className="h-12 w-full rounded-xl border border-[#c9d1c7] bg-white px-4 text-base text-[#1f2937] outline-none transition focus:border-[#0c6a40] focus:ring-2 focus:ring-[#0c6a40]/20"
                     />
                   </label>

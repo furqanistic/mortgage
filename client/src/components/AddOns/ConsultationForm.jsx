@@ -1,7 +1,10 @@
 // File: client/src/components/AddOns/ConsultationForm.jsx
+import emailjs from '@emailjs/browser'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, CheckCircle, Globe, Mail, Shield, Smartphone, X } from 'lucide-react'
+import { ArrowRight, CheckCircle, Mail, Smartphone, X } from 'lucide-react'
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 // shadcn UI components
 import { Button } from '@/components/ui/button'
@@ -14,6 +17,10 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 const ConsultationForm = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -28,6 +35,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
   })
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [phoneError, setPhoneError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Reset form when closed
   useEffect(() => {
@@ -44,6 +52,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
       })
       setShowConfirmation(false)
       setPhoneError('')
+      setIsSubmitting(false)
     }
   }, [isOpen])
 
@@ -59,7 +68,7 @@ const ConsultationForm = ({ isOpen, onClose }) => {
   const handleInputChange = (e) => {
     const { id, value } = e.target
     setFormData(prev => ({ ...prev, [id]: value }))
-    
+
     if (id === 'phone') {
       if (value && !validateGermanPhone(value)) {
         setPhoneError('Please enter a valid German number (e.g. +49...)')
@@ -70,25 +79,60 @@ const ConsultationForm = ({ isOpen, onClose }) => {
   }
 
   const handleSelectChange = (name, value) => {
-    setFormData(prev => ({ 
-      ...prev, 
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
       // Reset residency if nationality changes
       ...(name === 'nationality' ? { residency: '' } : {})
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (!validateGermanPhone(formData.phone)) {
       setPhoneError('A valid German phone number is required.')
       return
     }
-    // Form submission logic would go here
-    setShowConfirmation(true)
+
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      toast.error('Email service is not configured. Please try again later.')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    const templateParams = {
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      nationality: formData.nationality,
+      residency: formData.residency || 'N/A',
+      language: formData.language,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message || 'No message provided',
+      full_name: `${formData.firstName} ${formData.lastName}`,
+      submitted_at: new Date().toLocaleString()
+    }
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      )
+      setShowConfirmation(true)
+      toast.success('Consultation request sent successfully.')
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      toast.error('Failed to send request. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  const residencyOptions = formData.nationality === 'eu' 
+  const residencyOptions = formData.nationality === 'eu'
     ? [
         { value: 'blue-card', label: 'Blue Card' },
         { value: 'visa', label: 'Visa Residency' },
@@ -153,8 +197,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className='space-y-3.5'>
-                  <Select 
-                    required 
+                  <Select
+                    required
                     onValueChange={(v) => handleSelectChange('nationality', v)}
                     value={formData.nationality}
                   >
@@ -173,8 +217,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                       animate={{ opacity: 1, y: 0 }}
                       className="w-full"
                     >
-                      <Select 
-                        required 
+                      <Select
+                        required
                         onValueChange={(v) => handleSelectChange('residency', v)}
                         value={formData.residency}
                       >
@@ -191,8 +235,8 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                   )}
                 </div>
 
-                <Select 
-                  required 
+                <Select
+                  required
                   onValueChange={(v) => handleSelectChange('language', v)}
                   value={formData.language}
                 >
@@ -248,14 +292,15 @@ const ConsultationForm = ({ isOpen, onClose }) => {
                 <Button
                   type='submit'
                   size="lg"
-                  className='w-full text-base font-bold shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all rounded-xl h-13 bg-blue-600 hover:bg-blue-700 text-white'
+                  disabled={isSubmitting}
+                  className='w-full text-base font-bold shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all rounded-xl h-13 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-70 disabled:cursor-not-allowed'
                 >
-                  Schedule Now
-                  <ArrowRight className='ml-2 h-4 w-4' />
+                  {isSubmitting ? 'Sending...' : 'Schedule Now'}
+                  {!isSubmitting && <ArrowRight className='ml-2 h-4 w-4' />}
                 </Button>
               </form>
             ) : (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className='flex flex-col items-center justify-center py-10 text-center'
@@ -282,6 +327,11 @@ const ConsultationForm = ({ isOpen, onClose }) => {
       </div>
     </AnimatePresence>
   )
+}
+
+ConsultationForm.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
 }
 
 export default ConsultationForm

@@ -1,41 +1,27 @@
 // File: client/src/components/Home/Partners.jsx
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { defaultPartners } from '@/data/contentDefaults'
+import { getPartners } from '@/services/contentApi'
 
 const Partners = ({ language = 'de' }) => {
-    const partners = [
-        {
-            name: "Deutsche Bank",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Deutsche_Bank_logo_without_wordmark.svg/1024px-Deutsche_Bank_logo_without_wordmark.svg.png"
-        },
-        {
-            name: "Commerzbank",
-            logo: "https://companieslogo.com/img/orig/CBK.F-2e335f15.png?t=1720244491"
-        },
-        {
-            name: "Sparkasse",
-            logo: "https://images.seeklogo.com/logo-png/13/1/sparkasse-logo-png_seeklogo-130014.png"
-        },
-        {
-            name: "DKB",
-            logo: "https://play-lh.googleusercontent.com/Ks2wR3vsbHjM-qVLGOWrTAvpCSQbExc0_RJvt0JXHesqJGIhHR6d5iSwVrkifs49oA"
-        },
-        {
-            name: "Volksbank",
-            logo: "https://images.seeklogo.com/logo-png/15/2/volksbank-logo-png_seeklogo-150519.png"
-        },
-        {
-            name: "ING",
-            logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLTTTxWusLsdnDetJgPtmKHSEkpBwZYXKz8w&s"
-        },
-        {
-            name: "PSD Bank",
-            logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ8eJXfc82ez7frzvrV3beSSN7PKiCEHq1Kg&s"
-        },
-        {
-            name: "Bausparkasse Schwäbisch Hall",
-            logo: "https://play-lh.googleusercontent.com/a_8TkLz33oblA2NFoOdF72xqZE5qxzSY-jf-yJ6NJC3XchFABhKAA8GzKpSsW6wsf5s"
+    const [partners, setPartners] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const loadPartners = async () => {
+            try {
+                const response = await getPartners()
+                setPartners(response.length ? response : defaultPartners)
+            } catch (error) {
+                setPartners(defaultPartners)
+            } finally {
+                setIsLoading(false)
+            }
         }
-    ]
+
+        loadPartners()
+    }, [])
 
     return (
         <section className="py-16 bg-white dark:bg-slate-950 border-y border-border/50">
@@ -49,26 +35,37 @@ const Partners = ({ language = 'de' }) => {
                     </p>
                 </div>
                 <div className="relative overflow-hidden">
-                    <motion.div
-                        className="flex gap-6 w-max"
-                        animate={{ x: ['0%', '-50%'] }}
-                        transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
-                    >
-                        {[...partners, ...partners].map((partner, index) => (
-                            <div
-                                key={`${partner.name}-${index}`}
-                                className="h-16 min-w-[200px] bg-secondary/40 dark:bg-white/5 border border-border/60 rounded-2xl flex items-center gap-3 text-muted-foreground font-semibold hover:border-accent/60 hover:text-accent hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 cursor-pointer text-sm md:text-base px-4"
-                            >
-                                <img
-                                    src={partner.logo}
-                                    alt={`${partner.name} logo`}
-                                    className="h-7 w-7 object-contain"
-                                    loading="lazy"
+                    {isLoading ? (
+                        <div className="flex gap-6 overflow-hidden">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="h-16 min-w-[200px] animate-pulse rounded-2xl border border-border/60 bg-secondary/40"
                                 />
-                                <span className="whitespace-nowrap">{partner.name}</span>
-                            </div>
-                        ))}
-                    </motion.div>
+                            ))}
+                        </div>
+                    ) : (
+                        <motion.div
+                            className="flex gap-6 w-max"
+                            animate={{ x: ['0%', '-50%'] }}
+                            transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
+                        >
+                            {[...partners, ...partners].map((partner, index) => (
+                                <div
+                                    key={`${partner.name}-${index}`}
+                                    className="h-16 min-w-[200px] bg-secondary/40 dark:bg-white/5 border border-border/60 rounded-2xl flex items-center gap-3 text-muted-foreground font-semibold hover:border-accent/60 hover:text-accent hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 cursor-pointer text-sm md:text-base px-4"
+                                >
+                                    <img
+                                        src={partner.logoUrl}
+                                        alt={`${partner.name} logo`}
+                                        className="h-7 w-7 object-contain"
+                                        loading="lazy"
+                                    />
+                                    <span className="whitespace-nowrap">{partner.name}</span>
+                                </div>
+                            ))}
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </section>

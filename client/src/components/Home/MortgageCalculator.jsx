@@ -207,6 +207,54 @@ const MortgageCalculator = ({ language = 'de' }) => {
               <div className="space-y-2">
                 <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
                   <div className="flex items-center gap-2">
+                    <span className="lg:whitespace-nowrap">{labels.inputs.maxPayment}</span>
+                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
+                      ?
+                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                        {isEnglish ? 'Maximum percentage of income for housing payment' : 'Maximaler Anteil des Einkommens für die Rate'}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
+                  <input
+                    type="number"
+                    min={20}
+                    max={50}
+                    step={1}
+                    value={maxPaymentInput}
+                    onChange={(e) => setMaxPaymentInput(e.target.value)}
+                    onBlur={() => {
+                      const next = clamp(Number(maxPaymentInput || 0), 20, 50)
+                      setMaxPaymentPercent(next)
+                      setMaxPaymentInput(String(next))
+                    }}
+                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                  />
+                </div>
+                <input
+                  type="range"
+                  min={20}
+                  max={50}
+                  step={1}
+                  value={maxPaymentPercent}
+                  onChange={(e) => {
+                    const next = Number(e.target.value)
+                    setMaxPaymentPercent(next)
+                    setMaxPaymentInput(String(next))
+                  }}
+                  className="w-full accent-primary"
+                />
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span>20%</span>
+                  <span>50%</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
+                  <div className="flex items-center gap-2">
                     <span className="lg:whitespace-nowrap">{labels.inputs.interest}</span>
                     <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
                       ?
@@ -297,54 +345,6 @@ const MortgageCalculator = ({ language = 'de' }) => {
                 <div className="flex items-center justify-between text-xs text-slate-500">
                   <span>0.5%</span>
                   <span>5.0%</span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex min-h-[24px] items-center justify-between pr-2 text-sm font-semibold text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <span className="lg:whitespace-nowrap">{labels.inputs.maxPayment}</span>
-                    <span className="group relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white shadow-sm ring-1 ring-primary/40">
-                      ?
-                      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-medium text-white opacity-0 shadow-lg transition group-hover:opacity-100">
-                        {isEnglish ? 'Maximum percentage of income for housing payment' : 'Maximaler Anteil des Einkommens für die Rate'}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div className="relative">
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">%</span>
-                  <input
-                    type="number"
-                    min={20}
-                    max={50}
-                    step={1}
-                    value={maxPaymentInput}
-                    onChange={(e) => setMaxPaymentInput(e.target.value)}
-                    onBlur={() => {
-                      const next = clamp(Number(maxPaymentInput || 0), 20, 50)
-                      setMaxPaymentPercent(next)
-                      setMaxPaymentInput(String(next))
-                    }}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 pr-10 py-2.5 text-base font-semibold focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
-                  />
-                </div>
-                <input
-                  type="range"
-                  min={20}
-                  max={50}
-                  step={1}
-                  value={maxPaymentPercent}
-                  onChange={(e) => {
-                    const next = Number(e.target.value)
-                    setMaxPaymentPercent(next)
-                    setMaxPaymentInput(String(next))
-                  }}
-                  className="w-full accent-primary"
-                />
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span>20%</span>
-                  <span>50%</span>
                 </div>
               </div>
             </div>

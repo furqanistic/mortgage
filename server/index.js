@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
 import authRoute from './routes/auth.js'
+import contentRoute from './routes/content.js'
 
 const app = express()
 const corsOptions = {
@@ -19,6 +20,7 @@ app.use(express.json())
 
 mongoose.set('strictQuery', true)
 app.use('/api/auth', authRoute)
+app.use('/api/content', contentRoute)
 
 const connect = () => {
   mongoose

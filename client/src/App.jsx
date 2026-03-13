@@ -12,9 +12,8 @@ import {
 import ScrollToTop from './components/ScrollToTop'
 import AboutPage from './pages/About/AboutPage'
 import AdminPage from './pages/Admin/AdminPage'
-import Appointments from './pages/Admin/Appointments'
-import BlogEdit from './pages/Admin/BlogEdit'
-import UsersPage from './pages/Admin/UsersPage'
+import PartnersAdminPage from './pages/Admin/PartnersAdminPage'
+import TestimonialsAdminPage from './pages/Admin/TestimonialsAdminPage'
 import Auth from './pages/Auth/Auth'
 import BlogPage from './pages/Blog/BlogPage'
 import ToolsPage from './pages/Calculators/ToolsPage'
@@ -34,9 +33,13 @@ import { selectIsAdmin, selectIsAuthenticated } from './redux/userSlice'
 const ProtectedAdminRoute = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const isAdmin = useSelector(selectIsAdmin)
-  // Redirect to login if not authenticated or not admin
-  if (!isAuthenticated || !isAdmin) {
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
     return <Navigate to='/auth' replace />
+  }
+  // Authenticated but not admin should not loop between /auth and /admin
+  if (!isAdmin) {
+    return <Navigate to='/' replace />
   }
 
   // Render outlet for nested routes
@@ -53,7 +56,6 @@ const RedirectIfAuthenticated = ({ language, onLanguageChange }) => {
 
   // If user is logged in, redirect away from auth page
   if (isAuthenticated) {
-    // Redirect admins to admin dashboard, regular users to homepage
     const redirectPath = isAdmin ? '/admin' : '/'
     return <Navigate to={redirectPath} replace />
   }
@@ -102,9 +104,8 @@ const App = () => {
         {/* Protected admin routes */}
         <Route element={<ProtectedAdminRoute />}>
           <Route path='/admin' element={<AdminPage />} />
-          <Route path='/admin/appointments' element={<Appointments />} />
-          <Route path='/admin/users-data' element={<UsersPage />} />
-          <Route path='/admin/blog-edit' element={<BlogEdit />} />
+          <Route path='/admin/partners' element={<PartnersAdminPage />} />
+          <Route path='/admin/testimonials' element={<TestimonialsAdminPage />} />
         </Route>
 
         {/* Catch-all route for any undefined routes - redirect to homepage */}
