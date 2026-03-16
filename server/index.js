@@ -5,6 +5,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import authRoute from './routes/auth.js'
 import contentRoute from './routes/content.js'
+import contactRoute from './routes/contact.js'
 
 const app = express()
 const corsOptions = {
@@ -21,6 +22,7 @@ app.use(express.json())
 mongoose.set('strictQuery', true)
 app.use('/api/auth', authRoute)
 app.use('/api/content', contentRoute)
+app.use('/api/contact', contactRoute)
 
 const connect = () => {
   mongoose
