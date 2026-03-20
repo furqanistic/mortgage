@@ -1,11 +1,12 @@
 import { cn } from '@/lib/utils'
-import { Building2, Home, MessageSquareQuote } from 'lucide-react'
+import { BookOpenText, Building2, Home, MessageSquareQuote } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
 const Layout = ({ children }) => {
   const location = useLocation()
 
   const navItems = [
+    { name: 'Blogs', href: '/admin/blogs', icon: BookOpenText },
     { name: 'Partners', href: '/admin/partners', icon: Building2 },
     { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquareQuote },
   ]

@@ -12,6 +12,7 @@ import {
 import ScrollToTop from './components/ScrollToTop'
 import AboutPage from './pages/About/AboutPage'
 import AdminPage from './pages/Admin/AdminPage'
+import BlogsAdminPage from './pages/Admin/BlogsAdminPage'
 import PartnersAdminPage from './pages/Admin/PartnersAdminPage'
 import TestimonialsAdminPage from './pages/Admin/TestimonialsAdminPage'
 import Auth from './pages/Auth/Auth'
@@ -104,6 +105,7 @@ const App = () => {
         {/* Protected admin routes */}
         <Route element={<ProtectedAdminRoute />}>
           <Route path='/admin' element={<AdminPage />} />
+          <Route path='/admin/blogs' element={<BlogsAdminPage />} />
           <Route path='/admin/partners' element={<PartnersAdminPage />} />
           <Route path='/admin/testimonials' element={<TestimonialsAdminPage />} />
         </Route>

@@ -19,6 +19,20 @@ export const getTestimonials = async (admin = false) => {
   return data?.data?.testimonials || []
 }
 
+export const getBlogs = async (admin = false) => {
+  const { data } = await axiosInstance.get('/content/blogs', {
+    params: admin ? { admin: true } : undefined,
+  })
+  return data?.data?.blogs || []
+}
+
+export const getBlogBySlug = async (slug, admin = false) => {
+  const { data } = await axiosInstance.get(`/content/blogs/${slug}`, {
+    params: admin ? { admin: true } : undefined,
+  })
+  return data?.data?.blog
+}
+
 export const createPartner = async (payload) => {
   const { data } = await axiosInstance.post('/content/admin/partners', payload, {
     headers: authHeader(),
@@ -55,6 +69,26 @@ export const updateTestimonial = async (id, payload) => {
 
 export const deleteTestimonial = async (id) => {
   await axiosInstance.delete(`/content/admin/testimonials/${id}`, {
+    headers: authHeader(),
+  })
+}
+
+export const createBlog = async (payload) => {
+  const { data } = await axiosInstance.post('/content/admin/blogs', payload, {
+    headers: authHeader(),
+  })
+  return data?.data?.blog
+}
+
+export const updateBlog = async (id, payload) => {
+  const { data } = await axiosInstance.put(`/content/admin/blogs/${id}`, payload, {
+    headers: authHeader(),
+  })
+  return data?.data?.blog
+}
+
+export const deleteBlog = async (id) => {
+  await axiosInstance.delete(`/content/admin/blogs/${id}`, {
     headers: authHeader(),
   })
 }

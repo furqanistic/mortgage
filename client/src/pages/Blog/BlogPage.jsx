@@ -1,7 +1,8 @@
 import Navbar from '@/components/Home/Navbar'
 import Footer from '@/components/Layout/Footer'
+import { getBlogs } from '@/services/contentApi'
 import { Calendar, ChevronLeft, Clock, Lightbulb, Lock } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 const toSectionId = (heading) =>
@@ -11,7 +12,7 @@ const toSectionId = (heading) =>
     .trim()
     .replace(/\s+/g, '-')
 
-const blogPosts = [
+export const legacyBlogPosts = [
   {
     id: 1,
     slug: 'germany-heating-law-reform-2026',
@@ -641,7 +642,7 @@ const propertyNegotiationGermanyArticle = {
   ],
 }
 
-const articleContentBySlug = {
+export const legacyArticleContentBySlug = {
   'germany-heating-law-reform-2026': heatingLawArticle,
   'negotiate-estate-agent-fee-germany': maklerFeeArticle,
   'five-things-before-making-offer-germany': fiveStepsNegotiationArticle,
@@ -650,14 +651,181 @@ const articleContentBySlug = {
   'how-to-negotiate-property-prices-germany': propertyNegotiationGermanyArticle,
 }
 
+const escapeHtml = (value = '') =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+
+export const renderLegacyArticleToHtml = (article) => {
+  if (!article) return '<p></p>'
+
+  const leadHtml = (article.lead || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')
+  const sectionHtml = (article.sections || [])
+    .map((section) => {
+      const paragraphs = (section.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')
+      const bullets = section.bullets?.length
+        ? `<ul>${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+        : ''
+      const paragraphsAfterBullets = (section.paragraphsAfterBullets || [])
+        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .join('')
+      const cards = section.cards?.length
+        ? `<div>${section.cards
+            .map((card) => `<h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.text)}</p>`)
+            .join('')}</div>`
+        : ''
+      const tableRows = section.tableRows?.length
+        ? `<table><tbody>${section.tableRows
+            .map((row) => `<tr><th>${escapeHtml(row.label)}</th><td>${escapeHtml(row.value)}</td></tr>`)
+            .join('')}</tbody></table>`
+        : ''
+      const quote = section.quote ? `<blockquote>${escapeHtml(section.quote)}</blockquote>` : ''
+      const paragraphsAfterQuote = (section.paragraphsAfterQuote || [])
+        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .join('')
+      const tip = section.tip ? `<blockquote><strong>Baufiking Tip:</strong> ${escapeHtml(section.tip)}</blockquote>` : ''
+
+      return `<section><h2>${escapeHtml(section.heading || '')}</h2>${paragraphs}${bullets}${paragraphsAfterBullets}${cards}${tableRows}${quote}${paragraphsAfterQuote}${tip}</section>`
+    })
+    .join('')
+
+  return `<div>${leadHtml}${sectionHtml}</div>`
+}
+
+export const getLegacyImportPayloads = () =>
+  legacyBlogPosts.map((post, index) => ({
+    title: post.title,
+    slug: post.slug,
+    excerpt: post.excerpt,
+    category: post.category,
+    coverImage: post.image,
+    readTime: post.readTime,
+    contentHtml: renderLegacyArticleToHtml(legacyArticleContentBySlug[post.slug]),
+    structuredContent: JSON.parse(JSON.stringify(legacyArticleContentBySlug[post.slug] || { lead: [], sections: [] })),
+    isLive: Boolean(post.isLive),
+    datePublished: post.datePublished || null,
+    dateModified: post.dateModified || post.datePublished || null,
+    displayOrder: index + 1,
+    authorName: 'Ravinder Singh',
+  }))
+
+const formatBlogDate = (value) => {
+  if (!value) return ''
+  const dateValue = value instanceof Date ? value : new Date(value)
+  if (Number.isNaN(dateValue.getTime())) return ''
+  return dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+const normalizeCmsBlogPost = (post) => ({
+  id: post._id,
+  _id: post._id,
+  slug: post.slug,
+  title: post.title,
+  excerpt: post.excerpt || '',
+  category: post.category || '',
+  date: formatBlogDate(post.datePublished || post.createdAt) || 'Draft',
+  readTime: post.readTime || '',
+  image: post.coverImage || '/blog/berlin_altbau.png',
+  isLive: Boolean(post.isLive),
+  datePublished: post.datePublished,
+  dateModified: post.dateModified || post.updatedAt || post.createdAt,
+  contentHtml: post.contentHtml || '',
+  structuredContent: post.structuredContent || null,
+  authorName: post.authorName || '',
+  source: 'cms',
+})
+
+const buildHtmlWithHeadingIds = (html = '') => {
+  if (!html || typeof window === 'undefined') {
+    return { html: html || '', headings: [], introText: '' }
+  }
+
+  const parser = new window.DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+  const seen = new Map()
+  const headings = []
+  const introText = (doc.querySelector('p')?.textContent || '').trim()
+
+  doc.querySelectorAll('h2, h3').forEach((heading) => {
+    const text = heading.textContent?.trim() || ''
+    if (!text) return
+
+    const baseId = toSectionId(text) || `section-${headings.length + 1}`
+    const count = seen.get(baseId) || 0
+    seen.set(baseId, count + 1)
+    const finalId = count === 0 ? baseId : `${baseId}-${count + 1}`
+    heading.id = finalId
+
+    let focus = ''
+    let cursor = heading.nextElementSibling
+    while (cursor && !focus) {
+      if (cursor.tagName?.toLowerCase() === 'p') {
+        focus = (cursor.textContent || '').trim()
+      }
+      if (/^h[1-6]$/i.test(cursor.tagName || '')) break
+      cursor = cursor.nextElementSibling
+    }
+
+    headings.push({
+      id: finalId,
+      text,
+      focus: focus ? `${focus.slice(0, 105)}${focus.length > 105 ? '...' : ''}` : '—',
+    })
+  })
+
+  doc.querySelectorAll('script, iframe').forEach((node) => node.remove())
+
+  return { html: doc.body.innerHTML, headings, introText }
+}
+
 const BlogPage = ({ language = 'de', onLanguageChange }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { slug } = useParams()
   const isEnglish = language === 'en'
+  const [cmsBlogs, setCmsBlogs] = useState([])
 
-  const activePost = useMemo(() => blogPosts.find((post) => post.slug === slug), [slug])
-  const activeArticle = useMemo(() => (slug ? articleContentBySlug[slug] : null), [slug])
+  useEffect(() => {
+    const loadBlogs = async () => {
+      try {
+        const blogs = await getBlogs()
+        setCmsBlogs((blogs || []).map(normalizeCmsBlogPost))
+      } catch (error) {
+        setCmsBlogs([])
+      }
+    }
+    loadBlogs()
+  }, [])
+
+  const mergedBlogPosts = useMemo(() => {
+    const cmsBySlug = new Map(cmsBlogs.map((post) => [post.slug, post]))
+    const legacyOnly = legacyBlogPosts
+      .filter((post) => !cmsBySlug.has(post.slug))
+      .map((post) => ({ ...post, source: 'legacy' }))
+
+    return [...cmsBlogs, ...legacyOnly]
+  }, [cmsBlogs])
+
+  const activePost = useMemo(() => mergedBlogPosts.find((post) => post.slug === slug), [mergedBlogPosts, slug])
+  const activeArticle = useMemo(() => (slug ? legacyArticleContentBySlug[slug] : null), [slug])
+  const isCmsPost = activePost?.source === 'cms'
+  const cmsStructuredArticle = useMemo(() => {
+    if (!isCmsPost) return null
+    const candidate = activePost?.structuredContent
+    if (!candidate || !Array.isArray(candidate.sections) || candidate.sections.length === 0) return null
+    return candidate
+  }, [isCmsPost, activePost])
+  const articleForSections = useMemo(
+    () => (isCmsPost ? cmsStructuredArticle : activeArticle),
+    [isCmsPost, cmsStructuredArticle, activeArticle]
+  )
+  const cmsPreparedContent = useMemo(
+    () => (isCmsPost ? buildHtmlWithHeadingIds(activePost?.contentHtml || '') : { html: '', headings: [], introText: '' }),
+    [isCmsPost, activePost]
+  )
 
   const listCopy = {
     badge: isEnglish ? 'Baufiking Insights' : 'Baufiking Einblicke',
@@ -772,9 +940,9 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
 
             <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16 py-12 sm:py-16">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {blogPosts.map((post) => (
+                {mergedBlogPosts.map((post) => (
                   <article
-                    key={post.id}
+                    key={post.id || post._id || post.slug}
                     className={`group relative h-full rounded-2xl bg-white overflow-hidden ${post.isLive ? 'cursor-pointer' : ''}`}
                     style={{
                       border: '1.5px solid rgba(26,77,46,0.10)',
@@ -862,7 +1030,7 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
           </>
         )}
 
-        {slug && activePost?.isLive && activeArticle && (
+        {slug && activePost?.isLive && (isCmsPost || activeArticle || articleForSections) && (
           <>
             <section className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-10 xl:px-12 pt-10 pb-8">
               <Link
@@ -904,57 +1072,70 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
               </div>
 
               <article className="rounded-2xl bg-white p-6 sm:p-10 lg:p-12" style={{ border: '1.5px solid rgba(26,77,46,0.10)' }}>
-              
+                {articleForSections ? (
+                  <>
+                    <div className="rounded-xl bg-primary/5 p-5 sm:p-6 mb-8" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
+                      {(articleForSections.lead && articleForSections.lead.length > 0)
+                        ? articleForSections.lead.map((paragraph, index) => (
+                            <p key={`lead-${index}`} className="text-sm sm:text-base text-foreground/90 leading-relaxed mb-3 last:mb-0">
+                              {paragraph}
+                            </p>
+                          ))
+                        : (
+                            <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
+                              {activePost.excerpt || 'Strategic, practical guidance from Baufiking.'}
+                            </p>
+                          )}
+                    </div>
 
-                <div className="rounded-xl bg-primary/5 p-5 sm:p-6 mb-8" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
-                  {activeArticle.lead.map((paragraph, index) => (
-                    <p key={`lead-${index}`} className="text-sm sm:text-base text-foreground/90 leading-relaxed mb-3 last:mb-0">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+                    <section className="mb-10">
+                      <h2 className="text-lg sm:text-xl font-heading font-bold text-primary mb-1">
+                        {isEnglish ? 'Table of Contents' : 'Inhaltsverzeichnis'}
+                      </h2>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        {isEnglish ? 'Click any section to jump directly.' : 'Klicken Sie auf einen Abschnitt, um direkt zu springen.'}
+                      </p>
+                      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
+                        <table className="w-full text-left text-sm">
+                          <thead className="bg-primary/5">
+                            <tr>
+                              <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Section' : 'Abschnitt'}</th>
+                              <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Focus' : 'Fokus'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {articleForSections.sections.map((section, index) => {
+                              const headingText = section.heading || `Section ${index + 1}`
+                              const sectionId = toSectionId(headingText) || `section-${index + 1}`
+                              return (
+                              <tr key={`toc-row-${sectionId}`} className="border-t border-primary/10 hover:bg-primary/5 transition-colors">
+                                <td className="px-4 py-2.5">
+                                  <a
+                                    href={`#${sectionId}`}
+                                    className="group inline-flex w-full items-center justify-between rounded-md px-2 py-1.5 font-semibold text-primary hover:bg-primary/10 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                                  >
+                                    <span className="group-hover:text-primary/90">{index + 1}. {headingText}</span>
+                                  </a>
+                                </td>
+                                <td className="px-4 py-2.5 text-muted-foreground">
+                                  {(section.paragraphs && section.paragraphs[0]) || '—'}
+                                </td>
+                              </tr>
+                              )
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
 
-                <section className="mb-10">
-                  <h2 className="text-lg sm:text-xl font-heading font-bold text-primary mb-1">
-                    {isEnglish ? 'Table of Contents' : 'Inhaltsverzeichnis'}
-                  </h2>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    {isEnglish ? 'Click any section to jump directly.' : 'Klicken Sie auf einen Abschnitt, um direkt zu springen.'}
-                  </p>
-                  <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
-                    <table className="w-full text-left text-sm">
-                      <thead className="bg-primary/5">
-                        <tr>
-                          <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Section' : 'Abschnitt'}</th>
-                          <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Focus' : 'Fokus'}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {activeArticle.sections.map((section, index) => (
-                          <tr key={`toc-row-${section.heading}`} className="border-t border-primary/10 hover:bg-primary/5 transition-colors">
-                            <td className="px-4 py-2.5">
-                              <a
-                                href={`#${toSectionId(section.heading)}`}
-                                className="group inline-flex w-full items-center justify-between rounded-md px-2 py-1.5 font-semibold text-primary hover:bg-primary/10 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-                              >
-                                <span className="group-hover:text-primary/90">{index + 1}. {section.heading}</span>
-                              </a>
-                            </td>
-                            <td className="px-4 py-2.5 text-muted-foreground">
-                              {(section.paragraphs && section.paragraphs[0]) || '—'}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-
-                <div className="space-y-10">
-                  {activeArticle.sections.map((section) => (
-                    <section key={section.heading} id={toSectionId(section.heading)} className="scroll-mt-24">
+                    <div className="space-y-10">
+                      {articleForSections.sections.map((section, index) => {
+                        const headingText = section.heading || `Section ${index + 1}`
+                        const sectionId = toSectionId(headingText) || `section-${index + 1}`
+                        return (
+                    <section key={sectionId} id={sectionId} className="scroll-mt-24">
                       <h2 className="text-xl sm:text-2xl font-heading font-bold text-primary mb-3">
-                        {section.heading}
+                        {headingText}
                       </h2>
                       <div className="space-y-3 text-sm sm:text-base text-foreground/90 leading-relaxed">
                         {section.paragraphs?.map((paragraph, index) => (
@@ -1064,8 +1245,59 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
                         </div>
                       )}
                     </section>
-                  ))}
-                </div>
+                  )})}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="rounded-xl bg-primary/5 p-5 sm:p-6 mb-8" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
+                      <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
+                        {activePost.excerpt || cmsPreparedContent.introText || 'Strategic, practical guidance from Baufiking.'}
+                      </p>
+                    </div>
+
+                    {cmsPreparedContent.headings.length > 0 && (
+                      <section className="mb-10">
+                        <h2 className="text-lg sm:text-xl font-heading font-bold text-primary mb-1">
+                          {isEnglish ? 'Table of Contents' : 'Inhaltsverzeichnis'}
+                        </h2>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          {isEnglish ? 'Click any section to jump directly.' : 'Klicken Sie auf einen Abschnitt, um direkt zu springen.'}
+                        </p>
+                        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
+                          <table className="w-full text-left text-sm">
+                            <thead className="bg-primary/5">
+                              <tr>
+                                <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Section' : 'Abschnitt'}</th>
+                                <th className="px-4 py-2.5 font-semibold text-primary">{isEnglish ? 'Focus' : 'Fokus'}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {cmsPreparedContent.headings.map((heading, index) => (
+                                <tr key={`toc-row-${heading.id}`} className="border-t border-primary/10 hover:bg-primary/5 transition-colors">
+                                  <td className="px-4 py-2.5">
+                                    <a
+                                      href={`#${heading.id}`}
+                                      className="group inline-flex w-full items-center justify-between rounded-md px-2 py-1.5 font-semibold text-primary hover:bg-primary/10 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                                    >
+                                      <span className="group-hover:text-primary/90">{index + 1}. {heading.text}</span>
+                                    </a>
+                                  </td>
+                                  <td className="px-4 py-2.5 text-muted-foreground">{heading.focus}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </section>
+                    )}
+
+                    <div
+                      className="blog-rich-content text-foreground/90"
+                      dangerouslySetInnerHTML={{ __html: cmsPreparedContent.html }}
+                    />
+                  </>
+                )}
               </article>
             </section>
           </>
