@@ -1,9 +1,11 @@
+import { cn } from '@/lib/utils'
+import { renderLegacyArticleToHtml } from '@/pages/Blog/BlogPage'
+import { createBlog, deleteBlog, getBlogs, updateBlog } from '@/services/contentApi'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Calendar, ChevronRight, Clock, Eye, Filter, Layers, MoreVertical, PencilLine, Plus, Search, Settings, Trash2, User, X, ExternalLink } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Eye, PencilLine, Plus, Trash2, X } from 'lucide-react'
 import Layout from './Layout'
-import { createBlog, deleteBlog, getBlogs, updateBlog } from '@/services/contentApi'
-import { renderLegacyArticleToHtml } from '@/pages/Blog/BlogPage'
 
 const createEmptySection = () => ({
   heading: '',
@@ -31,7 +33,7 @@ const createEmptyBlogForm = () => ({
 })
 
 const inputClass =
-  'h-11 w-full rounded-xl border border-[#d7ddd2] bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-[#0f8a4a] focus:ring-2 focus:ring-[#0f8a4a]/20'
+  'h-10 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary focus:ring-4 focus:ring-primary/5 shadow-sm hover:border-slate-400'
 
 const normalizeSlug = (value = '') =>
   value
@@ -40,6 +42,7 @@ const normalizeSlug = (value = '') =>
     .trim()
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
+    .replace(/-+$/, '')
 
 const formatDate = (iso) => {
   if (!iso) return 'Draft'
@@ -95,16 +98,21 @@ const BlogsAdminPage = () => {
   const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(createEmptyBlogForm())
   const [activePreview, setActivePreview] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const sortedBlogs = useMemo(
-    () => [...blogs].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)),
-    [blogs]
-  )
   const stats = useMemo(() => {
     const published = blogs.filter((item) => item.isLive).length
     const drafts = blogs.length - published
     return { total: blogs.length, published, drafts }
   }, [blogs])
+
+  const filteredBlogs = useMemo(() => {
+    let result = blogs.filter((blog) => 
+      blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      blog.category?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    return result.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
+  }, [blogs, searchTerm])
 
   useEffect(() => {
     const load = async () => {
@@ -268,15 +276,15 @@ const BlogsAdminPage = () => {
       if (editingId) {
         const updated = await updateBlog(editingId, payload)
         setBlogs((prev) => prev.map((item) => (item._id === editingId ? updated : item)))
-        toast.success('Blog updated')
+        toast.success('Blog updated successfully')
       } else {
         const created = await createBlog(payload)
         setBlogs((prev) => [...prev, created])
-        toast.success('Blog created')
+        toast.success('New blog post created')
       }
       setIsModalOpen(false)
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Could not save blog')
+      toast.error(error.response?.data?.message || 'Action failed')
     } finally {
       setIsSaving(false)
     }
@@ -284,394 +292,469 @@ const BlogsAdminPage = () => {
 
   return (
     <Layout>
-      <div className='relative overflow-hidden rounded-3xl border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbf7_100%)] p-6 shadow-sm sm:p-8'>
-        <div className='pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#0f8a4a]/10 blur-3xl' />
-        <div className='pointer-events-none absolute -left-12 bottom-0 h-44 w-44 rounded-full bg-[#c19a6b]/10 blur-3xl' />
-
-        <div className='relative mb-6 flex flex-wrap items-end justify-between gap-4'>
+      <div className='flex flex-col gap-6'>
+        {/* Header Section */}
+        <section className='flex flex-col lg:flex-row lg:items-center justify-between gap-4'>
           <div>
-            <p className='text-[11px] font-semibold uppercase tracking-[0.24em] text-[#0f8a4a]'>Editorial Studio</p>
-            <h1 className='mt-1 font-heading text-[clamp(1.6rem,3vw,2.3rem)] font-bold text-slate-900'>Blogs</h1>
-            <p className='mt-1 text-sm text-slate-600'>Structured writer flow that keeps every article consistent with your live blog design.</p>
+            <h1 className='text-2xl font-bold tracking-tight text-slate-900 font-heading sm:text-3xl'>Editorial Studio</h1>
+            <p className='mt-1 text-sm text-slate-500 max-w-2xl'>Draft and manage your platform's publications.</p>
           </div>
-          <div className='flex items-center gap-2'>
-            <div className='hidden rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-xs font-medium text-slate-700 sm:block'>
-              {stats.total} total · {stats.published} live · {stats.drafts} drafts
-            </div>
-            <button
-              type='button'
-              onClick={openCreate}
-              className='inline-flex h-10 items-center justify-center rounded-xl bg-[#0f8a4a] px-4 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0d7a44] hover:shadow'
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={openCreate}
+            className='inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-bold text-white shadow-md transition-all hover:brightness-110 active:scale-95'
+          >
+            <Plus size={18} />
+            New Blog Post
+          </motion.button>
+        </section>
+
+        {/* Stats Row */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+          {[
+            { label: 'Total Posts', value: stats.total, icon: Layers, color: 'primary' },
+            { label: 'Published', value: stats.published, icon: Eye, color: 'accent' },
+            { label: 'Drafts', value: stats.drafts, icon: PencilLine, color: 'slate' },
+          ].map((stat, i) => (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              key={stat.label}
+              className='group relative rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-300 shadow-sm hover:shadow-md'
             >
-              <Plus className='mr-2 h-4 w-4' />
-              New Blog
-            </button>
-          </div>
+              <div className='flex items-center justify-between'>
+                <div className='space-y-0.5'>
+                  <p className='text-[10px] font-bold uppercase tracking-widest text-slate-400'>{stat.label}</p>
+                  <p className='text-2xl font-black text-slate-900'>{stat.value}</p>
+                </div>
+                <div className={cn(
+                  'flex h-10 w-10 items-center justify-center rounded-xl transition-transform duration-500 group-hover:scale-110',
+                  stat.color === 'primary' ? 'bg-primary/10 text-primary' : 
+                  stat.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-slate-100 text-slate-500'
+                )}>
+                  <stat.icon size={20} />
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        <div className='relative overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm'>
-          <table className='w-full min-w-[920px]'>
-            <thead className='border-b border-slate-200 bg-[#f6f8f5] text-left text-xs font-semibold uppercase tracking-wider text-slate-500'>
-              <tr>
-                <th className='px-4 py-3'>Title</th>
-                <th className='px-4 py-3'>Category</th>
-                <th className='px-4 py-3'>Status</th>
-                <th className='px-4 py-3'>Published</th>
-                <th className='px-4 py-3'>Slug</th>
-                <th className='px-4 py-3 text-right'>Actions</th>
-              </tr>
-            </thead>
-            <tbody className='divide-y divide-[#edf1ea] bg-white'>
-              {isLoading
-                ? Array.from({ length: 6 }).map((_, index) => (
-                    <tr key={index}>
-                      <td className='px-4 py-3' colSpan={6}>
-                        <div className='h-10 w-full animate-pulse rounded-lg bg-[#f2f5ef]' />
+        {/* Main Content Card */}
+        <section className='relative rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6'>
+          {/* Controls */}
+          <div className='mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4'>
+            <div className='relative w-full md:w-80'>
+              <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' size={16} />
+              <input 
+                type='text' 
+                placeholder='Search articles...' 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className='h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm text-slate-900 outline-none transition-all focus:border-primary/30 focus:bg-white'
+              />
+            </div>
+            <div className='flex items-center gap-2'>
+              <button className='flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 shadow-sm hover:bg-slate-50'>
+                <Filter size={14} />
+                Filter
+              </button>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className='overflow-x-auto -mx-5 sm:mx-0'>
+            <table className='w-full border-separate border-spacing-y-2 px-5 sm:px-0'>
+              <thead>
+                <tr className='text-left text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400'>
+                  <th className='px-4 pb-2'>Content</th>
+                  <th className='px-4 pb-2 text-center'>Category</th>
+                  <th className='px-4 pb-2 text-center'>Status</th>
+                  <th className='px-4 pb-2 text-center'>Date</th>
+                  <th className='px-4 pb-2 text-right'>Actions</th>
+                </tr>
+              </thead>
+              <tbody className='space-y-2'>
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i}>
+                      <td colSpan={5} className='px-4 py-3'>
+                        <div className='h-12 w-full animate-pulse rounded-2xl bg-slate-100' />
                       </td>
                     </tr>
                   ))
-                : sortedBlogs.map((blog) => (
-                    <tr key={blog._id} className='border-b border-slate-100 last:border-none hover:bg-[#f8fbf7] transition-colors'>
-                      <td className='px-4 py-4'>
-                        <div className='font-medium text-slate-900 transition-colors'>{blog.title}</div>
-                        <div className='max-w-[360px] truncate text-[13px] text-slate-500'>{blog.excerpt || 'No excerpt'}</div>
-                      </td>
-                      <td className='px-4 py-4 text-sm text-slate-600'>{blog.category || '-'}</td>
-                      <td className='px-4 py-4'>
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium border ${blog.isLive ? 'border-[#bcf0d4] bg-[#eefaf4] text-[#0d7a44]' : 'border-slate-200 bg-slate-50 text-slate-600'}`}>
-                          {blog.isLive ? 'Published' : 'Draft'}
-                        </span>
-                      </td>
-                      <td className='px-4 py-4 text-sm text-slate-600'>{formatDate(blog.datePublished)}</td>
-                      <td className='px-4 py-4 text-sm text-slate-600'>{blog.slug}</td>
-                      <td className='sticky right-0 bg-white/95 px-4 py-4 text-right backdrop-blur-sm'>
-                        <div className='flex flex-wrap items-center justify-end gap-2'>
-                          <button
-                            type='button'
-                            onClick={() => setActivePreview(blog)}
-                            className='inline-flex h-8 items-center justify-center rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900'
-                          >
-                            <Eye className='mr-1.5 h-3.5 w-3.5 text-slate-400' />
-                            Preview
-                          </button>
-                          <button
-                            type='button'
-                            onClick={() => openEdit(blog)}
-                            className='inline-flex h-8 items-center justify-center rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900'
-                          >
-                            <PencilLine className='mr-1.5 h-3.5 w-3.5 text-slate-400' />
-                            Edit
-                          </button>
-                          <button
-                            type='button'
-                            onClick={async () => {
-                              if (!window.confirm('Delete this blog post?')) return
-                              try {
-                                await deleteBlog(blog._id)
-                                setBlogs((prev) => prev.filter((row) => row._id !== blog._id))
-                                toast.success('Blog deleted')
-                              } catch (error) {
-                                toast.error('Could not delete blog')
-                              }
-                            }}
-                            className='inline-flex h-8 items-center justify-center rounded-lg border border-red-200 bg-white px-2.5 text-xs font-medium text-red-600 shadow-sm transition-all hover:bg-red-50'
-                          >
-                            <Trash2 className='mr-1.5 h-3.5 w-3.5 text-red-500' />
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-            </tbody>
-          </table>
-        </div>
+                ) : filteredBlogs.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className='px-4 py-12 text-center'>
+                      <div className='flex flex-col items-center gap-2 opacity-30'>
+                        <Layers size={40} />
+                        <p className='text-sm font-bold text-slate-500'>No results found</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : filteredBlogs.map((blog) => (
+                  <tr key={blog._id} className='group'>
+                    <td className='rounded-l-2xl bg-white p-4 transition-colors group-hover:bg-slate-50 border-y border-l border-slate-200'>
+                      <div className='flex flex-col'>
+                        <span className='text-sm font-bold text-slate-900 group-hover:text-primary transition-colors'>{blog.title}</span>
+                        <span className='mt-0.5 text-[11px] text-slate-400 line-clamp-1 max-w-sm'>{blog.excerpt}</span>
+                      </div>
+                    </td>
+                    <td className='bg-white p-4 text-center transition-colors group-hover:bg-slate-50 border-y border-slate-200'>
+                      <span className='inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600'>
+                        {blog.category || 'General'}
+                      </span>
+                    </td>
+                    <td className='bg-white p-4 text-center transition-colors group-hover:bg-slate-50 border-y border-slate-200'>
+                      <div className={cn(
+                        'inline-flex items-center gap-1 rounded-full px-3 py-1 text-[9px] font-black uppercase tracking-widest',
+                        blog.isLive 
+                          ? 'bg-primary/10 text-primary border border-primary/20' 
+                          : 'bg-slate-100 text-slate-400 border border-slate-200'
+                      )}>
+                        <div className={cn('h-1 w-1 rounded-full', blog.isLive ? 'bg-primary' : 'bg-slate-400')} />
+                        {blog.isLive ? 'Live' : 'Draft'}
+                      </div>
+                    </td>
+                    <td className='bg-white p-4 text-center transition-colors group-hover:bg-slate-50 border-y border-slate-200'>
+                      <span className='text-[10px] font-bold text-slate-500'>
+                        {formatDate(blog.datePublished)}
+                      </span>
+                    </td>
+                    <td className='rounded-r-2xl bg-white p-4 text-right transition-colors group-hover:bg-slate-50 border-y border-r border-slate-200'>
+                      <div className='flex items-center justify-end gap-1'>
+                        <motion.button onClick={() => setActivePreview(blog)} className='flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-primary hover:text-white transition-all'>
+                          <Eye size={16} />
+                        </motion.button>
+                        <motion.button onClick={() => openEdit(blog)} className='flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-primary hover:text-white transition-all'>
+                          <PencilLine size={16} />
+                        </motion.button>
+                        <motion.button
+                          onClick={async () => {
+                            if (!window.confirm('Delete this article?')) return
+                            try {
+                              await deleteBlog(blog._id)
+                              setBlogs((prev) => prev.filter((row) => row._id !== blog._id))
+                              toast.success('Deleted')
+                            } catch (error) {
+                              toast.error('Failed')
+                            }
+                          }}
+                          className='flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-red-500 hover:text-white transition-all'
+                        >
+                          <Trash2 size={16} />
+                        </motion.button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
-      {isModalOpen && (
-        <div className='fixed inset-0 z-50 overflow-y-auto bg-slate-900/55 p-4 backdrop-blur-sm'>
-          <div className='mx-auto w-full max-w-7xl rounded-3xl border border-slate-200 bg-white p-5 shadow-2xl sm:p-7'>
-            <div className='mb-6 flex items-center justify-between'>
-              <h2 className='font-heading text-2xl font-bold text-slate-900'>{editingId ? 'Edit Blog' : 'New Blog'}</h2>
-              <button type='button' onClick={() => setIsModalOpen(false)} className='rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600'>
-                <X className='h-5 w-5' />
-              </button>
-            </div>
+      {/* Editor Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-slate-900/60 p-4 backdrop-blur-sm sm:p-6'
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 10 }}
+              className='relative w-full max-w-7xl rounded-[2rem] border border-slate-300 bg-white p-6 shadow-2xl sm:p-8'
+            >
+              <div className='absolute right-6 top-6'>
+                <button
+                  type='button'
+                  onClick={() => setIsModalOpen(false)}
+                  className='flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-500 border border-slate-200 hover:bg-red-50 hover:text-red-500'
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
-            <form onSubmit={onSubmit} className='grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)]'>
-              <aside className='h-fit rounded-2xl border border-[#d7ddd2] bg-[#f8fbf7] p-4 lg:sticky lg:top-5'>
-                <h3 className='font-heading text-lg font-bold text-slate-900'>Post Setup</h3>
-                <p className='mt-1 text-xs text-slate-600'>Set metadata first, then compose sections on the right.</p>
+              <div className='mb-8'>
+                <h2 className='text-3xl font-bold text-slate-900 font-heading'>{editingId ? 'Edit Article' : 'New Publication'}</h2>
+              </div>
 
-                <div className='mt-4 space-y-3'>
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Blog Title</label>
-                    <input name='title' value={form.title} onChange={onChange} placeholder='Example: How to buy property in Berlin' className={inputClass} required />
-                  </div>
+              <form onSubmit={onSubmit} className='grid gap-8 lg:grid-cols-[320px_1fr]'>
+                <aside className='space-y-6'>
+                  <div className='rounded-2xl bg-slate-50 p-6 border border-slate-200'>
+                    <h3 className='admin-label flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-primary font-heading'>
+                      <Settings size={14} />
+                      Configuration
+                    </h3>
+                    <div className='mt-6 space-y-4'>
+                      {[
+                        { label: 'Article Title', name: 'title', placeholder: 'Title...', icon: PencilLine },
+                        { label: 'Slug / URL', name: 'slug', placeholder: 'slug...', icon: ExternalLink },
+                        { label: 'Category', name: 'category', placeholder: 'Category...', icon: Layers },
+                        { label: 'Read Time', name: 'readTime', placeholder: '5 min', icon: Clock },
+                        { label: 'Author', name: 'authorName', placeholder: 'Author...', icon: User },
+                        { label: 'Order', name: 'displayOrder', placeholder: '0', type: 'number', icon: MoreVertical },
+                      ].map((field) => (
+                        <div key={field.name}>
+                          <label className='mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500'>{field.label}</label>
+                          <div className='group relative'>
+                            <field.icon size={14} className='absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors' />
+                            <input
+                              type={field.type || 'text'}
+                              name={field.name}
+                              value={form[field.name]}
+                              onChange={onChange}
+                              placeholder={field.placeholder}
+                              className={cn(inputClass, 'pl-9 h-9 text-xs rounded-lg')}
+                              required={field.name === 'title' || field.name === 'slug'}
+                            />
+                          </div>
+                        </div>
+                      ))}
 
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Page Link (URL)</label>
-                    <input name='slug' value={form.slug} onChange={onChange} placeholder='Example: how-to-buy-property-in-berlin' className={inputClass} required />
-                    <p className='mt-1 text-[11px] text-slate-500'>This is the website link part. It is auto-created from the title, but you can edit it.</p>
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Short Summary</label>
-                    <textarea
-                      name='excerpt'
-                      value={form.excerpt}
-                      onChange={onChange}
-                      placeholder='1-2 short lines people see in the blog list.'
-                      rows={4}
-                      className='w-full rounded-xl border border-[#d7ddd2] bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#0f8a4a] focus:ring-2 focus:ring-[#0f8a4a]/20'
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Category Label</label>
-                    <input name='category' value={form.category} onChange={onChange} placeholder='Example: Buyer Guide' className={inputClass} />
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Estimated Reading Time</label>
-                    <input name='readTime' value={form.readTime} onChange={onChange} placeholder='Example: 8 min' className={inputClass} />
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Author Name</label>
-                    <input name='authorName' value={form.authorName} onChange={onChange} placeholder='Who wrote this blog?' className={inputClass} />
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Display Order</label>
-                    <input name='displayOrder' type='number' min='0' value={form.displayOrder} onChange={onChange} placeholder='0' className={inputClass} />
-                    <p className='mt-1 text-[11px] text-slate-500'>Smaller number appears higher in blog list.</p>
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600'>Cover Image Link</label>
-                    <input name='coverImage' value={form.coverImage} onChange={onChange} placeholder='Paste image URL or /blog/your-image.png' className={inputClass} />
-                  </div>
-
-                  <label className='inline-flex h-11 items-center gap-2 rounded-xl border border-[#d7ddd2] bg-white px-3 text-sm text-slate-700'>
-                    <input name='isLive' type='checkbox' checked={form.isLive} onChange={onChange} className='h-4 w-4 rounded border-[#cfd8c8] text-[#0f8a4a] focus:ring-[#0f8a4a]/20' />
-                    Publish now (show on blog page)
-                  </label>
-                </div>
-              </aside>
-
-              <div className='space-y-5'>
-
-              <section className='rounded-2xl border border-[#d7ddd2] bg-[#f9fbf8] p-4'>
-                <div className='mb-3 flex items-center justify-between'>
-                  <h3 className='font-heading text-lg font-bold text-slate-900'>Intro Banner (Before TOC)</h3>
-                  <button type='button' onClick={addLeadItem} className='rounded-lg border border-[#d7ddd2] bg-white px-3 py-1 text-xs font-semibold text-slate-700'>
-                    + Add Intro Paragraph
-                  </button>
-                </div>
-                <div className='space-y-3'>
-                  {form.structuredContent.lead.map((paragraph, leadIndex) => (
-                    <div key={`lead-${leadIndex}`} className='rounded-xl border border-[#d7ddd2] bg-white p-3'>
-                      <div className='mb-2 flex items-center justify-between text-xs font-semibold text-slate-500'>
-                        <span>Intro Paragraph {leadIndex + 1}</span>
-                        <button type='button' onClick={() => removeLeadItem(leadIndex)} className='text-red-600'>
-                          Remove
-                        </button>
+                      <div>
+                        <label className='mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500'>Excerpt</label>
+                        <textarea
+                          name='excerpt'
+                          value={form.excerpt}
+                          onChange={onChange}
+                          rows={3}
+                          className='w-full rounded-lg border border-slate-300 bg-white p-3 text-xs text-slate-800 outline-none transition-all focus:border-primary focus:ring-1 focus:ring-primary'
+                          placeholder='Summary...'
+                        />
                       </div>
-                      <textarea
-                        rows={3}
-                        value={paragraph}
-                        onChange={(event) => updateLeadItem(leadIndex, event.target.value)}
-                        className='w-full rounded-lg border border-[#d7ddd2] px-3 py-2 text-sm outline-none focus:border-[#0f8a4a]'
-                        placeholder='Write intro paragraph...'
-                      />
+
+                      <div className='pt-2'>
+                        <label className='flex cursor-pointer items-center justify-between rounded-xl bg-white p-3 border border-slate-200 shadow-sm'>
+                          <span className='text-xs font-bold text-primary font-heading uppercase tracking-wider'>Live Status</span>
+                          <div className='relative'>
+                            <input
+                              type='checkbox'
+                              name='isLive'
+                              checked={form.isLive}
+                              onChange={onChange}
+                              className='peer sr-only'
+                            />
+                            <div className='h-5 w-9 rounded-full bg-slate-300 ring-0 transition-all peer-checked:bg-primary' />
+                            <div className='absolute left-1 top-1 h-3 w-3 rounded-full bg-white shadow transition-all peer-checked:translate-x-4' />
+                          </div>
+                        </label>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </section>
+                  </div>
+                </aside>
 
-              <section className='space-y-4'>
-                <div className='flex items-center justify-between'>
-                  <h3 className='font-heading text-lg font-bold text-slate-900'>Sections</h3>
-                  <button type='button' onClick={addSection} className='rounded-lg bg-[#0f8a4a] px-3 py-1.5 text-xs font-semibold text-white'>
-                    + Add Section
-                  </button>
-                </div>
-
-                {form.structuredContent.sections.map((section, sectionIndex) => (
-                  <div key={`section-${sectionIndex}`} className='rounded-2xl border border-[#d7ddd2] bg-white p-4'>
-                    <div className='mb-3 flex items-center justify-between'>
-                      <h4 className='text-sm font-bold text-slate-900'>Section {sectionIndex + 1}</h4>
-                      <button type='button' onClick={() => removeSection(sectionIndex)} className='text-xs font-semibold text-red-600'>
-                        Remove Section
+                <div className='space-y-6'>
+                  <div className='rounded-2xl bg-slate-50 p-6 border border-slate-200'>
+                    <div className='flex items-center justify-between mb-4'>
+                      <h3 className='admin-label text-sm font-extrabold text-slate-900 font-heading tracking-[0.08em] uppercase'>Hero Intro</h3>
+                      <button
+                        type='button'
+                        onClick={addLeadItem}
+                        className='inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-[10px] font-bold text-white shadow-sm hover:brightness-110 transition-all'
+                      >
+                        <Plus size={12} /> Add Paragraph
                       </button>
                     </div>
-
-                    <input
-                      value={section.heading}
-                      onChange={(event) => updateSection(sectionIndex, 'heading', event.target.value)}
-                      className={inputClass}
-                      placeholder='Section Heading'
-                      required
-                    />
-
-                    <div className='mt-3 rounded-xl border border-[#e1e7db] bg-[#f9fbf8] p-3'>
-                      <div className='mb-2 flex items-center justify-between'>
-                        <p className='text-xs font-semibold text-slate-600'>Paragraphs</p>
-                        <button type='button' onClick={() => addSectionListItem(sectionIndex, 'paragraphs', '')} className='text-xs font-semibold text-[#0f8a4a]'>
-                          + Add Paragraph
-                        </button>
-                      </div>
-                      <div className='space-y-2'>
-                        {section.paragraphs.map((paragraph, paragraphIndex) => (
-                          <div key={`section-${sectionIndex}-paragraph-${paragraphIndex}`} className='rounded-lg border border-[#d7ddd2] bg-white p-2'>
-                            <div className='mb-1 flex items-center justify-between text-xs text-slate-500'>
-                              <span>Paragraph {paragraphIndex + 1}</span>
-                              <button
-                                type='button'
-                                onClick={() => removeSectionListItem(sectionIndex, 'paragraphs', paragraphIndex, true)}
-                                className='text-red-600'
-                              >
-                                Remove
-                              </button>
-                            </div>
-                            <textarea
-                              rows={3}
-                              value={paragraph}
-                              onChange={(event) => updateSectionListItem(sectionIndex, 'paragraphs', paragraphIndex, event.target.value)}
-                              className='w-full rounded-lg border border-[#d7ddd2] px-2 py-1.5 text-sm outline-none focus:border-[#0f8a4a]'
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className='mt-3 rounded-xl border border-[#e1e7db] bg-[#f9fbf8] p-3'>
-                      <div className='mb-2 flex items-center justify-between'>
-                        <p className='text-xs font-semibold text-slate-600'>Bullet Points</p>
-                        <button type='button' onClick={() => addSectionListItem(sectionIndex, 'bullets', '')} className='text-xs font-semibold text-[#0f8a4a]'>
-                          + Add Bullet
-                        </button>
-                      </div>
-                      <div className='space-y-2'>
-                        {section.bullets.map((bullet, bulletIndex) => (
-                          <div key={`section-${sectionIndex}-bullet-${bulletIndex}`} className='flex items-center gap-2'>
-                            <input
-                              value={bullet}
-                              onChange={(event) => updateSectionListItem(sectionIndex, 'bullets', bulletIndex, event.target.value)}
-                              className='h-10 w-full rounded-lg border border-[#d7ddd2] px-3 text-sm outline-none focus:border-[#0f8a4a]'
-                              placeholder='Bullet point text'
-                            />
-                            <button type='button' onClick={() => removeSectionListItem(sectionIndex, 'bullets', bulletIndex)} className='text-xs font-semibold text-red-600'>
-                              Remove
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className='mt-3 rounded-xl border border-[#e1e7db] bg-[#f9fbf8] p-3'>
-                      <div className='mb-2 flex items-center justify-between'>
-                        <p className='text-xs font-semibold text-slate-600'>Table Rows</p>
-                        <button
-                          type='button'
-                          onClick={() => addSectionListItem(sectionIndex, 'tableRows', { label: '', value: '', tone: '' })}
-                          className='text-xs font-semibold text-[#0f8a4a]'
-                        >
-                          + Add Table Row
-                        </button>
-                      </div>
-                      <div className='space-y-2'>
-                        {section.tableRows.map((row, rowIndex) => (
-                          <div key={`section-${sectionIndex}-row-${rowIndex}`} className='grid gap-2 sm:grid-cols-12'>
-                            <input
-                              value={row.label}
-                              onChange={(event) => updateTableRow(sectionIndex, rowIndex, 'label', event.target.value)}
-                              className='h-10 rounded-lg border border-[#d7ddd2] px-3 text-sm outline-none focus:border-[#0f8a4a] sm:col-span-4'
-                              placeholder='Label'
-                            />
-                            <input
-                              value={row.value}
-                              onChange={(event) => updateTableRow(sectionIndex, rowIndex, 'value', event.target.value)}
-                              className='h-10 rounded-lg border border-[#d7ddd2] px-3 text-sm outline-none focus:border-[#0f8a4a] sm:col-span-5'
-                              placeholder='Value'
-                            />
-                            <select
-                              value={row.tone || ''}
-                              onChange={(event) => updateTableRow(sectionIndex, rowIndex, 'tone', event.target.value)}
-                              className='h-10 rounded-lg border border-[#d7ddd2] bg-white px-2 text-sm outline-none focus:border-[#0f8a4a] sm:col-span-2'
-                            >
-                              <option value=''>Normal</option>
-                              <option value='success'>Success</option>
-                              <option value='warning'>Warning</option>
-                            </select>
+                    <div className='space-y-3'>
+                      {form.structuredContent.lead.map((text, i) => (
+                        <div key={`lead-${i}`} className='relative group'>
+                          <textarea
+                            value={text}
+                            onChange={(e) => updateLeadItem(i, e.target.value)}
+                            placeholder='Intro text...'
+                            className='w-full rounded-xl border border-slate-300 bg-white p-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary'
+                            rows={2}
+                          />
+                          {form.structuredContent.lead.length > 1 && (
                             <button
                               type='button'
-                              onClick={() => removeSectionListItem(sectionIndex, 'tableRows', rowIndex)}
-                              className='h-10 text-xs font-semibold text-red-600 sm:col-span-1'
+                              onClick={() => removeLeadItem(i)}
+                              className='absolute -right-2 -top-2 hidden h-6 w-6 rounded-full bg-red-600 text-white group-hover:flex items-center justify-center shadow-lg transition-all'
                             >
-                              X
+                              <X size={12} />
                             </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className='mt-3 grid gap-3 sm:grid-cols-2'>
-                      <textarea
-                        rows={3}
-                        value={section.quote}
-                        onChange={(event) => updateSection(sectionIndex, 'quote', event.target.value)}
-                        className='w-full rounded-xl border border-[#d7ddd2] px-3 py-2 text-sm outline-none focus:border-[#0f8a4a]'
-                        placeholder='Quote (optional)'
-                      />
-                      <textarea
-                        rows={3}
-                        value={section.tip}
-                        onChange={(event) => updateSection(sectionIndex, 'tip', event.target.value)}
-                        className='w-full rounded-xl border border-[#d7ddd2] px-3 py-2 text-sm outline-none focus:border-[#0f8a4a]'
-                        placeholder='Baufiking tip (optional)'
-                      />
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </section>
 
-              <div className='flex justify-end gap-2 pt-2'>
-                <button type='button' onClick={() => setIsModalOpen(false)} className='h-10 rounded-xl border border-[#d7ddd2] bg-white px-4 text-sm font-medium text-slate-700'>
-                  Cancel
-                </button>
-                <button type='submit' disabled={isSaving} className='h-10 rounded-xl bg-[#0f8a4a] px-4 text-sm font-semibold text-white hover:brightness-105 disabled:opacity-70'>
-                  {editingId ? 'Update Blog' : 'Create Blog'}
-                </button>
-              </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                  <div className='space-y-6'>
+                    {form.structuredContent.sections.map((section, si) => (
+                      <div
+                        key={`section-${si}`}
+                        className='rounded-2xl border border-slate-200 bg-white p-6 shadow-sm relative'
+                      >
+                        <div className='flex items-center justify-between mb-6'>
+                          <div className='flex items-center gap-3'>
+                            <div className='h-8 w-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs'>
+                              {si + 1}
+                            </div>
+                            <h4 className='font-bold text-sm text-slate-900 font-heading uppercase tracking-widest'>Section Content</h4>
+                          </div>
+                          <button
+                            type='button'
+                            onClick={() => removeSection(si)}
+                            className='text-[10px] font-bold text-red-600 hover:text-red-700 uppercase tracking-widest'
+                          >
+                            Remove
+                          </button>
+                        </div>
 
-      {activePreview && (
-        <div className='fixed inset-0 z-[60] overflow-y-auto bg-slate-900/55 p-4 backdrop-blur-sm'>
-          <div className='mx-auto w-full max-w-4xl rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8'>
-            <div className='mb-4 flex items-start justify-between gap-4'>
-              <div>
-                <p className='text-[11px] uppercase tracking-[0.22em] text-[#946b33]'>{activePreview.category}</p>
-                <h3 className='font-heading text-2xl font-bold text-slate-900'>{activePreview.title}</h3>
-                <p className='mt-1 text-sm text-slate-500'>{activePreview.excerpt}</p>
+                        <div className='space-y-5'>
+                          <div className='space-y-1.5'>
+                            <label className='text-[10px] font-bold uppercase tracking-widest text-slate-500 px-1'>Sub-Heading</label>
+                            <input
+                              value={section.heading}
+                              onChange={(e) => updateSection(si, 'heading', e.target.value)}
+                              placeholder='Section Title...'
+                              className='h-10 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 text-sm font-bold text-primary outline-none focus:border-primary focus:bg-white transition-all'
+                            />
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Body Text</p>
+                              <button type='button' onClick={() => addSectionListItem(si, 'paragraphs')} className='text-[10px] font-bold text-primary hover:underline'>+ Add Paragraph</button>
+                            </div>
+                            {section.paragraphs.map((p, pi) => (
+                              <div key={pi} className='group relative'>
+                                <textarea
+                                  value={p}
+                                  onChange={(e) => updateSectionListItem(si, 'paragraphs', pi, e.target.value)}
+                                  className='w-full rounded-xl border border-slate-300 bg-white p-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary'
+                                  rows={3}
+                                />
+                                {section.paragraphs.length > 1 && (
+                                  <button onClick={() => removeSectionListItem(si, 'paragraphs', pi)} className='absolute right-2 top-2 h-5 w-5 rounded bg-red-600 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center shadow-lg transition-all'><X size={10} /></button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Bullets</p>
+                              <button type='button' onClick={() => addSectionListItem(si, 'bullets')} className='text-[10px] font-bold text-primary hover:underline'>+ Add Point</button>
+                            </div>
+                            <div className='grid gap-2 sm:grid-cols-2'>
+                              {section.bullets.map((b, bi) => (
+                                <div key={bi} className='flex items-center gap-2 group'>
+                                  <div className='h-1.5 w-1.5 rounded-full bg-accent shrink-0' />
+                                  <input
+                                    value={b}
+                                    onChange={(e) => updateSectionListItem(si, 'bullets', bi, e.target.value)}
+                                    placeholder='Bullet point...'
+                                    className='h-8 w-full rounded-lg border border-slate-300 px-2 text-xs focus:border-primary transition-all'
+                                  />
+                                  <button onClick={() => removeSectionListItem(si, 'bullets', bi)} className='text-red-600 opacity-0 group-hover:opacity-100 transition-opacity'><X size={12}/></button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className='grid gap-4 sm:grid-cols-2 pt-2'>
+                            <div className='space-y-2 text-primary'>
+                              <p className='text-[9px] font-black uppercase tracking-widest text-primary/60'>Block Quote</p>
+                              <textarea
+                                value={section.quote}
+                                onChange={(e) => updateSection(si, 'quote', e.target.value)}
+                                rows={2}
+                                className='w-full rounded-xl border border-primary/20 bg-primary/5 px-3 py-2 text-xs italic outline-none focus:bg-white transition-all'
+                                placeholder='Quote...'
+                              />
+                            </div>
+                            <div className='space-y-2 text-accent'>
+                              <p className='text-[9px] font-black uppercase tracking-widest text-accent/60'>Expert Tip</p>
+                              <textarea
+                                value={section.tip}
+                                onChange={(e) => updateSection(si, 'tip', e.target.value)}
+                                rows={2}
+                                className='w-full rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs outline-none focus:bg-white transition-all'
+                                placeholder='Helpful tip...'
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    <button
+                      type='button'
+                      onClick={addSection}
+                      className='w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 bg-white text-slate-500 font-bold text-xs hover:border-primary hover:text-primary hover:bg-slate-50 transition-all uppercase tracking-widest'
+                    >
+                      + Add New Article Section
+                    </button>
+                  </div>
+
+                  <div className='flex items-center justify-end gap-3 pt-6 border-t border-slate-200'>
+                    <button
+                      type='button'
+                      onClick={() => setIsModalOpen(false)}
+                      className='px-6 h-11 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-50'
+                    >
+                      Discard Changes
+                    </button>
+                    <motion.button
+                      type='submit'
+                      disabled={isSaving}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className='px-10 h-11 rounded-xl bg-primary text-white font-bold text-xs shadow-lg'
+                    >
+                      {isSaving ? 'Saving...' : 'Publish & Update'}
+                    </motion.button>
+                  </div>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {activePreview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-[110] grid place-items-center bg-slate-900/40 p-4 backdrop-blur-md'
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 10 }}
+              className='relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-[2rem] bg-white shadow-2xl shrink-0'
+            >
+              <div className='flex h-full flex-col'>
+                <div className='p-6 pb-4 flex items-start justify-between border-b border-slate-200'>
+                  <div>
+                    <span className='text-[10px] font-black uppercase tracking-[0.2em] text-accent'>{activePreview.category}</span>
+                    <h3 className='mt-0.5 text-2xl font-bold text-slate-900 font-heading'>{activePreview.title}</h3>
+                  </div>
+                  <button onClick={() => setActivePreview(null)} className='flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500'>
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className='flex-1 overflow-y-auto p-8 pt-6 pb-16'>
+                  <div 
+                    className='blog-rich-content prose prose-slate prose-sm max-w-none'
+                    dangerouslySetInnerHTML={{ __html: activePreview.contentHtml || '' }}
+                  />
+                </div>
               </div>
-              <button type='button' onClick={() => setActivePreview(null)} className='rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600'>
-                <X className='h-5 w-5' />
-              </button>
-            </div>
-            <div
-              className='blog-rich-content max-h-[68vh] overflow-y-auto rounded-2xl border border-slate-200 p-6'
-              dangerouslySetInnerHTML={{ __html: activePreview.contentHtml || '' }}
-            />
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   )
 }
