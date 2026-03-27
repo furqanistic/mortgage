@@ -8,14 +8,45 @@ import contentRoute from './routes/content.js'
 import contactRoute from './routes/contact.js'
 
 const app = express()
+dotenv.config()
+
+const normalizeOrigin = (value) => value.replace(/\/+$/, '').toLowerCase()
+
+const defaultAllowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://thebureaucratsinstitute.com',
+  'https://www.thebureaucratsinstitute.com',
+]
+
+const envAllowedOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+
+const allowedOrigins = new Set(
+  [...defaultAllowedOrigins, ...envAllowedOrigins].map(normalizeOrigin)
+)
+
 const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with your frontend URL
-  credentials: true, // This allows cookies and credentials to be sent
+  origin(origin, callback) {
+    // Allow server-to-server and tools like Postman/curl that send no Origin header.
+    if (!origin) {
+      return callback(null, true)
+    }
+
+    const normalizedOrigin = normalizeOrigin(origin)
+    if (allowedOrigins.has(normalizedOrigin)) {
+      return callback(null, true)
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`))
+  },
+  credentials: true,
   optionsSuccessStatus: 200,
 }
 
 app.use(cors(corsOptions))
-dotenv.config()
 app.use(cookieParser())
 app.use(express.json())
 
