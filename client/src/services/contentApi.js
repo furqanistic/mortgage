@@ -34,15 +34,19 @@ export const getBlogBySlug = async (slug, admin = false) => {
 }
 
 export const createPartner = async (payload) => {
+  const headers = { ...authHeader() }
+
   const { data } = await axiosInstance.post('/content/admin/partners', payload, {
-    headers: authHeader(),
+    headers,
   })
   return data?.data?.partner
 }
 
 export const updatePartner = async (id, payload) => {
+  const headers = { ...authHeader() }
+
   const { data } = await axiosInstance.put(`/content/admin/partners/${id}`, payload, {
-    headers: authHeader(),
+    headers,
   })
   return data?.data?.partner
 }
@@ -54,15 +58,19 @@ export const deletePartner = async (id) => {
 }
 
 export const createTestimonial = async (payload) => {
+  const headers = { ...authHeader() }
+
   const { data } = await axiosInstance.post('/content/admin/testimonials', payload, {
-    headers: authHeader(),
+    headers,
   })
   return data?.data?.testimonial
 }
 
 export const updateTestimonial = async (id, payload) => {
+  const headers = { ...authHeader() }
+
   const { data } = await axiosInstance.put(`/content/admin/testimonials/${id}`, payload, {
-    headers: authHeader(),
+    headers,
   })
   return data?.data?.testimonial
 }

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { PencilLine, Plus, Star, Trash2, X, Building2, MapPin, Layers, Globe } from 'lucide-react'
+import { PencilLine, Plus, Star, Trash2, X, Building2, MapPin, UploadCloud, Mail, Phone } from 'lucide-react'
 import Layout from './Layout'
 import { createPartner, deletePartner, getPartners, updatePartner } from '@/services/contentApi'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -10,7 +10,10 @@ const emptyPartner = {
   name: '',
   category: 'finance',
   description: '',
+  email: '',
+  phone: '',
   logoUrl: '',
+  logoPublicId: '',
   rating: 4.8,
   reviews: 0,
   featured: false,
@@ -29,6 +32,9 @@ const PartnersAdminPage = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(emptyPartner)
+  const [logoFile, setLogoFile] = useState(null)
+  const [logoPreview, setLogoPreview] = useState('')
+  const logoInputRef = useRef(null)
 
   const sortedPartners = useMemo(
     () => [...partners].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)),
@@ -49,18 +55,29 @@ const PartnersAdminPage = () => {
   }, [])
 
   const openCreate = () => {
+    if (logoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(logoPreview)
+    }
     setEditingId(null)
     setForm(emptyPartner)
+    setLogoFile(null)
+    setLogoPreview('')
     setIsModalOpen(true)
   }
 
   const openEdit = (partner) => {
+    if (logoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(logoPreview)
+    }
     setEditingId(partner._id)
     setForm({
       name: partner.name || '',
       category: partner.category || 'finance',
       description: partner.description || '',
+      email: partner.email || '',
+      phone: partner.phone || '',
       logoUrl: partner.logoUrl || '',
+      logoPublicId: partner.logoPublicId || '',
       rating: partner.rating ?? 4.8,
       reviews: partner.reviews ?? 0,
       featured: Boolean(partner.featured),
@@ -68,7 +85,20 @@ const PartnersAdminPage = () => {
       displayOrder: partner.displayOrder ?? 0,
       isActive: partner.isActive !== false,
     })
+    setLogoFile(null)
+    setLogoPreview(partner.logoUrl || '')
     setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    if (logoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(logoPreview)
+    }
+    setLogoFile(null)
+    if (logoInputRef.current) {
+      logoInputRef.current.value = ''
+    }
+    setIsModalOpen(false)
   }
 
   const onChange = (event) => {
@@ -76,10 +106,65 @@ const PartnersAdminPage = () => {
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
+  const onLogoChange = (event) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+      setLogoFile(null)
+      setLogoPreview(form.logoUrl || '')
+      return
+    }
+
+    if (logoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(logoPreview)
+    }
+
+    setLogoFile(file)
+    setLogoPreview(URL.createObjectURL(file))
+  }
+
+  const clearSelectedLogo = () => {
+    if (logoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(logoPreview)
+    }
+    setLogoFile(null)
+    setLogoPreview(form.logoUrl || '')
+    if (logoInputRef.current) {
+      logoInputRef.current.value = ''
+    }
+  }
+
+  const formatFileSize = (bytes = 0) => {
+    if (!bytes) return '0 KB'
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+  }
+
   const onSubmit = async (event) => {
     event.preventDefault()
+    if (!editingId && !logoFile) {
+      toast.error('Please select a logo image')
+      return
+    }
+
     setIsSaving(true)
-    const payload = { ...form, rating: Number(form.rating), reviews: Number(form.reviews), displayOrder: Number(form.displayOrder) }
+    const payload = new FormData()
+    payload.append('name', form.name)
+    payload.append('category', form.category)
+    payload.append('description', form.description)
+    payload.append('email', form.email || '')
+    payload.append('phone', form.phone || '')
+    payload.append('logoUrl', form.logoUrl || '')
+    payload.append('logoPublicId', form.logoPublicId || '')
+    payload.append('rating', Number(form.rating))
+    payload.append('reviews', Number(form.reviews))
+    payload.append('featured', Boolean(form.featured))
+    payload.append('location', form.location || 'Nationwide')
+    payload.append('displayOrder', Number(form.displayOrder))
+    payload.append('isActive', Boolean(form.isActive))
+    if (logoFile) {
+      payload.append('logo', logoFile)
+    }
+
     try {
       if (editingId) {
         const updated = await updatePartner(editingId, payload)
@@ -90,7 +175,7 @@ const PartnersAdminPage = () => {
         setPartners((prev) => [...prev, created])
         toast.success('Added')
       }
-      setIsModalOpen(false)
+      closeModal()
     } catch (error) {
       toast.error('Failed')
     } finally {
@@ -177,9 +262,9 @@ const PartnersAdminPage = () => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className='fixed inset-0 z-[100] grid place-items-center bg-slate-900/60 p-4 backdrop-blur-sm sm:p-6'>
             <motion.div initial={{ scale: 0.98, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.98, y: 10 }} className='relative w-full max-w-3xl rounded-[2rem] border border-slate-300 bg-white p-7 shadow-2xl'>
               <div className='absolute right-7 top-7'>
-                <button onClick={() => setIsModalOpen(false)} className='flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-red-500'><X size={20} /></button>
+                <button onClick={closeModal} className='flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-red-500'><X size={20} /></button>
               </div>
-              <div className='mb-7'><h2 className='text-3xl font-bold text-slate-900 font-heading tracking-wide uppercase'>Edit Partner</h2></div>
+              <div className='mb-7'><h2 className='text-3xl font-bold text-slate-900 font-heading tracking-wide uppercase'>{editingId ? 'Edit Partner' : 'Add Partner'}</h2></div>
               <form onSubmit={onSubmit} className='space-y-6'>
                 <div className='grid gap-6 lg:grid-cols-2'>
                   <div className='space-y-4'>
@@ -188,7 +273,32 @@ const PartnersAdminPage = () => {
                       <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Sector</label><select name='category' value={form.category} onChange={onChange} className={cn(inputClass, 'appearance-none')}><option value='finance'>Finance</option><option value='brokers'>Brokers</option><option value='legal'>Legal</option><option value='inspection'>Inspection</option></select></div>
                       <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Region</label><input name='location' value={form.location} onChange={onChange} placeholder='Nationwide' className={inputClass} /></div>
                     </div>
-                    <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Logo URL</label><input name='logoUrl' value={form.logoUrl} onChange={onChange} placeholder='URL' className={inputClass} required /></div>
+                    <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+                      <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Email (Private)</label><div className='relative'><Mail size={14} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' /><input name='email' type='email' value={form.email} onChange={onChange} placeholder='partner@company.com' className={cn(inputClass, 'pl-9')} /></div></div>
+                      <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Phone (Private)</label><div className='relative'><Phone size={14} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' /><input name='phone' value={form.phone} onChange={onChange} placeholder='+49 1512 345678' className={cn(inputClass, 'pl-9')} /></div></div>
+                    </div>
+                    <div className='space-y-2.5'>
+                      <label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Logo Upload</label>
+                      <input ref={logoInputRef} type='file' accept='image/*' onChange={onLogoChange} className='hidden' />
+                      <div className='rounded-2xl border border-dashed border-primary/30 bg-gradient-to-br from-primary/[0.04] to-slate-50 p-4'>
+                        <div className='flex flex-wrap items-center gap-2'>
+                          <button type='button' onClick={() => logoInputRef.current?.click()} className='inline-flex h-10 items-center gap-2 rounded-xl bg-white px-4 text-[10px] font-black uppercase tracking-widest text-primary shadow-sm ring-1 ring-primary/20 hover:bg-primary hover:text-white transition-colors'><UploadCloud size={14} /> {logoFile ? 'Replace File' : 'Choose File'}</button>
+                          {logoFile && <button type='button' onClick={clearSelectedLogo} className='inline-flex h-10 items-center rounded-xl bg-white px-4 text-[10px] font-black uppercase tracking-widest text-slate-500 shadow-sm ring-1 ring-slate-200 hover:text-red-500 transition-colors'>Remove</button>}
+                          <p className='text-[10px] font-bold text-slate-500'>Uploaded image is sent to Cloudinary automatically on save.</p>
+                        </div>
+                        <div className='mt-3 flex items-start gap-3'>
+                          <div className='flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-2 shadow-sm'>
+                            {logoPreview ? <img src={logoPreview} alt='Selected logo' className='max-h-full max-w-full object-contain' /> : <Building2 className='text-slate-200' size={18} />}
+                          </div>
+                          {logoFile && (
+                            <div className='space-y-1 pt-1'>
+                              <p className='text-[11px] font-black uppercase tracking-wider text-slate-700'>{logoFile.name}</p>
+                              <p className='text-[10px] font-bold uppercase tracking-wider text-slate-500'>{formatFileSize(logoFile.size)}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className='space-y-4'>
                     <div><label className='mb-1.5 block text-[10px] font-black uppercase tracking-widest text-slate-500 px-1'>Metrics</label><div className='grid grid-cols-3 gap-3'><input name='rating' type='number' step='0.1' value={form.rating} onChange={onChange} className={cn(inputClass, 'text-center font-bold')} /><input name='reviews' type='number' value={form.reviews} onChange={onChange} className={cn(inputClass, 'text-center font-bold')} /><input name='displayOrder' type='number' value={form.displayOrder} onChange={onChange} className={cn(inputClass, 'text-center font-bold')} /></div></div>
@@ -200,7 +310,7 @@ const PartnersAdminPage = () => {
                   <label className='flex cursor-pointer items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 shadow-sm'><input name='isActive' type='checkbox' checked={form.isActive} onChange={onChange} className='h-4 w-4 text-primary' /><span className='text-[10px] font-black uppercase tracking-widest text-slate-600'>Active Profile</span></label>
                 </div>
                 <div className='flex justify-end gap-3'>
-                  <button type='button' onClick={() => setIsModalOpen(false)} className='px-6 h-11 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-500'>Cancel</button>
+                  <button type='button' onClick={closeModal} className='px-6 h-11 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-500'>Cancel</button>
                   <button type='submit' className='px-10 h-11 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-widest font-heading shadow-lg'>{isSaving ? 'Saving...' : 'Save Partner'}</button>
                 </div>
               </form>

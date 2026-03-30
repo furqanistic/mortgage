@@ -1,6 +1,6 @@
+import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
 import authRoute from './routes/auth.js'
@@ -8,41 +8,9 @@ import contentRoute from './routes/content.js'
 import contactRoute from './routes/contact.js'
 
 const app = express()
-dotenv.config()
-
-const normalizeOrigin = (value) => value.replace(/\/+$/, '').toLowerCase()
-
-const defaultAllowedOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'https://thebureaucratsinstitute.com',
-  'https://www.thebureaucratsinstitute.com',
-]
-
-const envAllowedOrigins = (process.env.CORS_ORIGINS || '')
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean)
-
-const allowedOrigins = new Set(
-  [...defaultAllowedOrigins, ...envAllowedOrigins].map(normalizeOrigin)
-)
-
 const corsOptions = {
-  origin(origin, callback) {
-    // Allow server-to-server and tools like Postman/curl that send no Origin header.
-    if (!origin) {
-      return callback(null, true)
-    }
-
-    const normalizedOrigin = normalizeOrigin(origin)
-    if (allowedOrigins.has(normalizedOrigin)) {
-      return callback(null, true)
-    }
-
-    return callback(new Error(`CORS blocked for origin: ${origin}`))
-  },
-  credentials: true,
+  origin: 'http://localhost:5173', // Replace with your frontend URL
+  credentials: true, // This allows cookies and credentials to be sent
   optionsSuccessStatus: 200,
 }
 

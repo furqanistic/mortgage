@@ -2,17 +2,39 @@ import { cn } from '@/lib/utils'
 import { renderLegacyArticleToHtml } from '@/pages/Blog/BlogPage'
 import { createBlog, deleteBlog, getBlogs, updateBlog } from '@/services/contentApi'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Calendar, ChevronRight, Clock, Eye, Filter, Layers, MoreVertical, PencilLine, Plus, Search, Settings, Trash2, User, X, ExternalLink } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { Calendar, Clock, Eye, ExternalLink, Filter, Image, Layers, MoreVertical, PencilLine, Plus, Search, Settings, Trash2, UploadCloud, User, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import Layout from './Layout'
+
+const createEmptyCard = () => ({
+  title: '',
+  text: '',
+})
+
+const createEmptyTableRow = () => ({
+  label: '',
+  value: '',
+  tone: '',
+})
+
+const createEmptySectionImage = () => ({
+  url: '',
+  caption: '',
+  alt: '',
+  publicId: '',
+})
 
 const createEmptySection = () => ({
   heading: '',
   paragraphs: [''],
   bullets: [],
+  paragraphsAfterBullets: [],
+  images: [],
+  cards: [],
   tableRows: [],
   quote: '',
+  paragraphsAfterQuote: [],
   tip: '',
 })
 
@@ -50,36 +72,78 @@ const formatDate = (iso) => {
 }
 
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj))
+const cleanTextList = (value) =>
+  (Array.isArray(value) ? value : [])
+    .map((item) => String(item ?? '').trim())
+    .filter(Boolean)
 
-const sanitizeStructuredContent = (structuredContent, fallbackExcerpt = '') => {
+const sanitizeStructuredContent = (structuredContent, fallbackExcerpt = '', hasPendingImageFile = () => false) => {
   const source = structuredContent && typeof structuredContent === 'object' ? deepClone(structuredContent) : {}
-  const lead = Array.isArray(source.lead) ? source.lead : []
+  const lead = cleanTextList(source.lead)
   const sections = Array.isArray(source.sections) ? source.sections : []
 
   const normalizedSections = sections
-    .map((section) => ({
-      heading: section?.heading || '',
-      paragraphs: Array.isArray(section?.paragraphs) ? section.paragraphs : [],
-      bullets: Array.isArray(section?.bullets) ? section.bullets : [],
+    .map((section, sectionIndex) => ({
+      heading: String(section?.heading || '').trim(),
+      paragraphs: cleanTextList(section?.paragraphs),
+      bullets: cleanTextList(section?.bullets),
+      paragraphsAfterBullets: cleanTextList(section?.paragraphsAfterBullets),
+      images: Array.isArray(section?.images)
+        ? section.images
+            .map((image, imageIndex) => ({
+              url: String(image?.url || '').trim(),
+              caption: String(image?.caption || '').trim(),
+              alt: String(image?.alt || '').trim(),
+              publicId: String(image?.publicId || '').trim(),
+              hasPendingUpload: hasPendingImageFile(sectionIndex, imageIndex),
+            }))
+            .filter((image) => image.url || image.caption || image.alt || image.publicId || image.hasPendingUpload)
+            .map(({ url, caption, alt, publicId }) => ({ url, caption, alt, publicId }))
+        : [],
+      cards: Array.isArray(section?.cards)
+        ? section.cards.map((card) => ({
+            title: String(card?.title || '').trim(),
+            text: String(card?.text || '').trim(),
+          }))
+            .filter((card) => card.title || card.text)
+        : [],
       tableRows: Array.isArray(section?.tableRows)
         ? section.tableRows.map((row) => ({
-            label: row?.label || '',
-            value: row?.value || '',
-            tone: row?.tone || '',
+            label: String(row?.label || '').trim(),
+            value: String(row?.value || '').trim(),
+            tone: String(row?.tone || '').trim(),
           }))
+            .filter((row) => row.label || row.value)
         : [],
-      quote: section?.quote || '',
-      tip: section?.tip || '',
+      quote: String(section?.quote || '').trim(),
+      paragraphsAfterQuote: cleanTextList(section?.paragraphsAfterQuote),
+      tip: String(section?.tip || '').trim(),
     }))
-    .filter((section) => section.heading || section.paragraphs.length || section.bullets.length || section.tableRows.length || section.quote || section.tip)
+    .filter(
+      (section) =>
+        section.heading ||
+        section.paragraphs.length ||
+        section.bullets.length ||
+        section.paragraphsAfterBullets.length ||
+        section.images.length ||
+        section.cards.length ||
+        section.tableRows.length ||
+        section.quote ||
+        section.paragraphsAfterQuote.length ||
+        section.tip
+    )
 
   if (normalizedSections.length === 0) {
     normalizedSections.push({
       heading: '',
-      paragraphs: [fallbackExcerpt || ''],
+      paragraphs: [''],
       bullets: [],
+      paragraphsAfterBullets: [],
+      images: [],
+      cards: [],
       tableRows: [],
       quote: '',
+      paragraphsAfterQuote: [],
       tip: '',
     })
   }
@@ -99,6 +163,12 @@ const BlogsAdminPage = () => {
   const [form, setForm] = useState(createEmptyBlogForm())
   const [activePreview, setActivePreview] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [deletingIds, setDeletingIds] = useState(new Set())
+  const [coverImageFile, setCoverImageFile] = useState(null)
+  const [coverImagePreview, setCoverImagePreview] = useState('')
+  const [inlineImageFiles, setInlineImageFiles] = useState({})
+  const [inlineImagePreviews, setInlineImagePreviews] = useState({})
+  const coverImageInputRef = useRef(null)
 
   const stats = useMemo(() => {
     const published = blogs.filter((item) => item.isLive).length
@@ -128,12 +198,28 @@ const BlogsAdminPage = () => {
   }, [])
 
   const openCreate = () => {
+    if (coverImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(coverImagePreview)
+    }
+    Object.values(inlineImagePreviews).forEach((value) => {
+      if (String(value).startsWith('blob:')) URL.revokeObjectURL(value)
+    })
     setEditingId(null)
     setForm(createEmptyBlogForm())
+    setCoverImageFile(null)
+    setCoverImagePreview('')
+    setInlineImageFiles({})
+    setInlineImagePreviews({})
     setIsModalOpen(true)
   }
 
   const openEdit = (blog) => {
+    if (coverImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(coverImagePreview)
+    }
+    Object.values(inlineImagePreviews).forEach((value) => {
+      if (String(value).startsWith('blob:')) URL.revokeObjectURL(value)
+    })
     const structuredContent = sanitizeStructuredContent(
       blog.structuredContent,
       blog.excerpt || ''
@@ -152,7 +238,27 @@ const BlogsAdminPage = () => {
       authorName: blog.authorName || '',
       structuredContent,
     })
+    setCoverImageFile(null)
+    setCoverImagePreview(blog.coverImage || '')
+    setInlineImageFiles({})
+    setInlineImagePreviews({})
     setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    if (coverImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(coverImagePreview)
+    }
+    Object.values(inlineImagePreviews).forEach((value) => {
+      if (String(value).startsWith('blob:')) URL.revokeObjectURL(value)
+    })
+    setCoverImageFile(null)
+    setInlineImageFiles({})
+    setInlineImagePreviews({})
+    if (coverImageInputRef.current) {
+      coverImageInputRef.current.value = ''
+    }
+    setIsModalOpen(false)
   }
 
   const onChange = (event) => {
@@ -169,6 +275,10 @@ const BlogsAdminPage = () => {
       return
     }
 
+    if (name === 'coverImage' && !coverImageFile) {
+      setCoverImagePreview(value)
+    }
+
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
@@ -178,6 +288,24 @@ const BlogsAdminPage = () => {
       structuredContent: updater(deepClone(prev.structuredContent)),
     }))
   }
+
+  const revokeInlineImagePreviewMap = (map) => {
+    Object.values(map).forEach((value) => {
+      if (String(value).startsWith('blob:')) {
+        URL.revokeObjectURL(value)
+      }
+    })
+  }
+
+  const resetInlineImageLocalState = () => {
+    setInlineImageFiles({})
+    setInlineImagePreviews((prev) => {
+      revokeInlineImagePreviewMap(prev)
+      return {}
+    })
+  }
+
+  const getInlineImageKey = (sectionIndex, imageIndex) => `${sectionIndex}-${imageIndex}`
 
   const updateLeadItem = (index, value) => {
     updateStructuredContent((structuredContent) => {
@@ -209,6 +337,7 @@ const BlogsAdminPage = () => {
   }
 
   const addSection = () => {
+    resetInlineImageLocalState()
     updateStructuredContent((structuredContent) => {
       structuredContent.sections.push(createEmptySection())
       return structuredContent
@@ -216,6 +345,7 @@ const BlogsAdminPage = () => {
   }
 
   const removeSection = (sectionIndex) => {
+    resetInlineImageLocalState()
     updateStructuredContent((structuredContent) => {
       if (structuredContent.sections.length <= 1) return structuredContent
       structuredContent.sections.splice(sectionIndex, 1)
@@ -253,20 +383,167 @@ const BlogsAdminPage = () => {
     })
   }
 
+  const addTableRow = (sectionIndex) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].tableRows.push(createEmptyTableRow())
+      return structuredContent
+    })
+  }
+
+  const removeTableRow = (sectionIndex, rowIndex) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].tableRows.splice(rowIndex, 1)
+      return structuredContent
+    })
+  }
+
+  const updateCard = (sectionIndex, cardIndex, key, value) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].cards[cardIndex][key] = value
+      return structuredContent
+    })
+  }
+
+  const addCard = (sectionIndex) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].cards.push(createEmptyCard())
+      return structuredContent
+    })
+  }
+
+  const removeCard = (sectionIndex, cardIndex) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].cards.splice(cardIndex, 1)
+      return structuredContent
+    })
+  }
+
+  const updateSectionImage = (sectionIndex, imageIndex, key, value) => {
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].images[imageIndex][key] = value
+      return structuredContent
+    })
+  }
+
+  const addSectionImage = (sectionIndex) => {
+    resetInlineImageLocalState()
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].images.push(createEmptySectionImage())
+      return structuredContent
+    })
+  }
+
+  const removeSectionImage = (sectionIndex, imageIndex) => {
+    resetInlineImageLocalState()
+    updateStructuredContent((structuredContent) => {
+      structuredContent.sections[sectionIndex].images.splice(imageIndex, 1)
+      return structuredContent
+    })
+  }
+
+  const onInlineImageFileChange = (sectionIndex, imageIndex, event) => {
+    const file = event.target.files?.[0]
+    const key = getInlineImageKey(sectionIndex, imageIndex)
+
+    if (!file) {
+      setInlineImageFiles((prev) => {
+        const next = { ...prev }
+        delete next[key]
+        return next
+      })
+      setInlineImagePreviews((prev) => {
+        const next = { ...prev }
+        if (String(next[key]).startsWith('blob:')) URL.revokeObjectURL(next[key])
+        delete next[key]
+        return next
+      })
+      return
+    }
+
+    setInlineImageFiles((prev) => ({ ...prev, [key]: file }))
+    setInlineImagePreviews((prev) => {
+      const next = { ...prev }
+      if (String(next[key]).startsWith('blob:')) URL.revokeObjectURL(next[key])
+      next[key] = URL.createObjectURL(file)
+      return next
+    })
+  }
+
+  const clearInlineImageFile = (sectionIndex, imageIndex) => {
+    const key = getInlineImageKey(sectionIndex, imageIndex)
+    setInlineImageFiles((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+    setInlineImagePreviews((prev) => {
+      const next = { ...prev }
+      if (String(next[key]).startsWith('blob:')) URL.revokeObjectURL(next[key])
+      delete next[key]
+      return next
+    })
+  }
+
+  const onCoverImageChange = (event) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+      setCoverImageFile(null)
+      setCoverImagePreview(form.coverImage || '')
+      return
+    }
+
+    if (coverImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(coverImagePreview)
+    }
+
+    setCoverImageFile(file)
+    setCoverImagePreview(URL.createObjectURL(file))
+  }
+
+  const clearCoverImageSelection = () => {
+    if (coverImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(coverImagePreview)
+    }
+    setCoverImageFile(null)
+    setCoverImagePreview(form.coverImage || '')
+    if (coverImageInputRef.current) {
+      coverImageInputRef.current.value = ''
+    }
+  }
+
   const onSubmit = async (event) => {
     event.preventDefault()
     setIsSaving(true)
 
-    const normalizedStructuredContent = sanitizeStructuredContent(form.structuredContent, form.excerpt)
-    const payload = {
-      ...form,
-      slug: normalizeSlug(form.slug || form.title),
-      displayOrder: Number(form.displayOrder) || 0,
-      structuredContent: normalizedStructuredContent,
-      contentHtml: renderLegacyArticleToHtml(normalizedStructuredContent),
+    const hasPendingInlineImageFile = (sectionIndex, imageIndex) =>
+      Boolean(inlineImageFiles[getInlineImageKey(sectionIndex, imageIndex)])
+    const normalizedStructuredContent = sanitizeStructuredContent(form.structuredContent, form.excerpt, hasPendingInlineImageFile)
+    const normalizedSlug = normalizeSlug(form.slug || form.title)
+    const payload = new FormData()
+    payload.append('title', form.title)
+    payload.append('slug', normalizedSlug)
+    payload.append('excerpt', form.excerpt || '')
+    payload.append('category', form.category || '')
+    payload.append('coverImage', form.coverImage || '')
+    payload.append('readTime', form.readTime || '')
+    payload.append('isLive', Boolean(form.isLive))
+    payload.append('displayOrder', Number(form.displayOrder) || 0)
+    payload.append('authorName', form.authorName || '')
+    payload.append('structuredContent', JSON.stringify(normalizedStructuredContent))
+    payload.append('contentHtml', renderLegacyArticleToHtml(normalizedStructuredContent))
+    if (coverImageFile) {
+      payload.append('coverImageFile', coverImageFile)
     }
+    normalizedStructuredContent.sections.forEach((section, sectionIndex) => {
+      ;(section.images || []).forEach((_, imageIndex) => {
+        const imageFile = inlineImageFiles[getInlineImageKey(sectionIndex, imageIndex)]
+        if (imageFile) {
+          payload.append(`sectionImageFile_${sectionIndex}_${imageIndex}`, imageFile)
+        }
+      })
+    })
 
-    if (!payload.slug) {
+    if (!normalizedSlug) {
       toast.error('Please add a title or slug')
       setIsSaving(false)
       return
@@ -282,7 +559,7 @@ const BlogsAdminPage = () => {
         setBlogs((prev) => [...prev, created])
         toast.success('New blog post created')
       }
-      setIsModalOpen(false)
+      closeModal()
     } catch (error) {
       toast.error(error.response?.data?.message || 'Action failed')
     } finally {
@@ -431,17 +708,32 @@ const BlogsAdminPage = () => {
                           <PencilLine size={16} />
                         </motion.button>
                         <motion.button
+                          disabled={deletingIds.has(blog._id)}
                           onClick={async () => {
                             if (!window.confirm('Delete this article?')) return
+                            if (deletingIds.has(blog._id)) return
+
+                            setDeletingIds((prev) => {
+                              const next = new Set(prev)
+                              next.add(blog._id)
+                              return next
+                            })
+
                             try {
                               await deleteBlog(blog._id)
                               setBlogs((prev) => prev.filter((row) => row._id !== blog._id))
                               toast.success('Deleted')
                             } catch (error) {
                               toast.error('Failed')
+                            } finally {
+                              setDeletingIds((prev) => {
+                                const next = new Set(prev)
+                                next.delete(blog._id)
+                                return next
+                              })
                             }
                           }}
-                          className='flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-red-500 hover:text-white transition-all'
+                          className='flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-red-500 hover:text-white transition-all disabled:cursor-not-allowed disabled:opacity-50'
                         >
                           <Trash2 size={16} />
                         </motion.button>
@@ -473,7 +765,7 @@ const BlogsAdminPage = () => {
               <div className='absolute right-6 top-6'>
                 <button
                   type='button'
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={closeModal}
                   className='flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-500 border border-slate-200 hover:bg-red-50 hover:text-red-500'
                 >
                   <X size={20} />
@@ -527,6 +819,45 @@ const BlogsAdminPage = () => {
                           className='w-full rounded-lg border border-slate-300 bg-white p-3 text-xs text-slate-800 outline-none transition-all focus:border-primary focus:ring-1 focus:ring-primary'
                           placeholder='Summary...'
                         />
+                      </div>
+
+                      <div className='space-y-2.5'>
+                        <label className='mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500'>Cover Image</label>
+                        <input ref={coverImageInputRef} type='file' accept='image/*' onChange={onCoverImageChange} className='hidden' />
+                        <div className='rounded-2xl border border-dashed border-primary/30 bg-gradient-to-br from-primary/[0.04] to-slate-50 p-4'>
+                          <div className='flex flex-wrap items-center gap-2'>
+                            <button type='button' onClick={() => coverImageInputRef.current?.click()} className='inline-flex h-9 items-center gap-2 rounded-lg bg-white px-3 text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm ring-1 ring-primary/20 hover:bg-primary hover:text-white transition-colors'>
+                              <UploadCloud size={12} />
+                              {coverImageFile ? 'Replace File' : 'Choose File'}
+                            </button>
+                            {coverImageFile && (
+                              <button type='button' onClick={clearCoverImageSelection} className='inline-flex h-9 items-center rounded-lg bg-white px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500 shadow-sm ring-1 ring-slate-200 hover:text-red-500 transition-colors'>
+                                Remove
+                              </button>
+                            )}
+                            <p className='text-[10px] font-bold text-slate-500'>Uploaded image goes to Cloudinary on save.</p>
+                          </div>
+                          <div className='mt-3 flex items-start gap-3'>
+                            <div className='flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white p-0.5 shadow-sm'>
+                              {coverImagePreview ? (
+                                <img src={coverImagePreview} alt='Blog cover preview' className='h-full w-full rounded-lg object-cover' />
+                              ) : (
+                                <div className='flex h-full w-full items-center justify-center rounded-lg bg-slate-50 text-slate-300'>
+                                  <Image size={16} />
+                                </div>
+                              )}
+                            </div>
+                            <div className='flex-1'>
+                              <input
+                                name='coverImage'
+                                value={form.coverImage}
+                                onChange={onChange}
+                                placeholder='or paste image URL...'
+                                className={cn(inputClass, 'h-9 text-xs')}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       <div className='pt-2'>
@@ -632,7 +963,7 @@ const BlogsAdminPage = () => {
                                   rows={3}
                                 />
                                 {section.paragraphs.length > 1 && (
-                                  <button onClick={() => removeSectionListItem(si, 'paragraphs', pi)} className='absolute right-2 top-2 h-5 w-5 rounded bg-red-600 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center shadow-lg transition-all'><X size={10} /></button>
+                                  <button type='button' onClick={() => removeSectionListItem(si, 'paragraphs', pi)} className='absolute right-2 top-2 h-5 w-5 rounded bg-red-600 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center shadow-lg transition-all'><X size={10} /></button>
                                 )}
                               </div>
                             ))}
@@ -653,10 +984,146 @@ const BlogsAdminPage = () => {
                                     placeholder='Bullet point...'
                                     className='h-8 w-full rounded-lg border border-slate-300 px-2 text-xs focus:border-primary transition-all'
                                   />
-                                  <button onClick={() => removeSectionListItem(si, 'bullets', bi)} className='text-red-600 opacity-0 group-hover:opacity-100 transition-opacity'><X size={12}/></button>
+                                  <button type='button' onClick={() => removeSectionListItem(si, 'bullets', bi)} className='text-red-600 opacity-0 group-hover:opacity-100 transition-opacity'><X size={12}/></button>
                                 </div>
                               ))}
                             </div>
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Paragraphs After Bullets</p>
+                              <button type='button' onClick={() => addSectionListItem(si, 'paragraphsAfterBullets')} className='text-[10px] font-bold text-primary hover:underline'>+ Add Paragraph</button>
+                            </div>
+                            {(section.paragraphsAfterBullets || []).map((p, pi) => (
+                              <div key={`after-bullets-${pi}`} className='group relative'>
+                                <textarea
+                                  value={p}
+                                  onChange={(e) => updateSectionListItem(si, 'paragraphsAfterBullets', pi, e.target.value)}
+                                  className='w-full rounded-xl border border-slate-300 bg-white p-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary'
+                                  rows={2}
+                                />
+                                <button type='button' onClick={() => removeSectionListItem(si, 'paragraphsAfterBullets', pi)} className='absolute right-2 top-2 h-5 w-5 rounded bg-red-600 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center shadow-lg transition-all'><X size={10} /></button>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Inline Images</p>
+                              <button type='button' onClick={() => addSectionImage(si)} className='text-[10px] font-bold text-primary hover:underline'>+ Add Image</button>
+                            </div>
+                            {(section.images || []).map((image, imageIndex) => {
+                              const imageKey = getInlineImageKey(si, imageIndex)
+                              const previewSrc = inlineImagePreviews[imageKey] || image.url || ''
+                              return (
+                                <div key={`section-image-${imageIndex}`} className='rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2'>
+                                  <div className='flex items-center justify-end gap-2'>
+                                    {inlineImageFiles[imageKey] && (
+                                      <button type='button' onClick={() => clearInlineImageFile(si, imageIndex)} className='text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-red-600'>Clear File</button>
+                                    )}
+                                    <button type='button' onClick={() => removeSectionImage(si, imageIndex)} className='text-[10px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700'>Remove</button>
+                                  </div>
+                                  <input
+                                    value={image.url}
+                                    onChange={(e) => updateSectionImage(si, imageIndex, 'url', e.target.value)}
+                                    placeholder='Image URL...'
+                                    className='h-9 w-full rounded-lg border border-slate-300 bg-white px-2 text-xs outline-none focus:border-primary'
+                                  />
+                                  <div className='grid gap-2 sm:grid-cols-2'>
+                                    <input
+                                      value={image.caption || ''}
+                                      onChange={(e) => updateSectionImage(si, imageIndex, 'caption', e.target.value)}
+                                      placeholder='Caption (optional)'
+                                      className='h-9 w-full rounded-lg border border-slate-300 bg-white px-2 text-xs outline-none focus:border-primary'
+                                    />
+                                    <input
+                                      value={image.alt || ''}
+                                      onChange={(e) => updateSectionImage(si, imageIndex, 'alt', e.target.value)}
+                                      placeholder='Alt text (optional)'
+                                      className='h-9 w-full rounded-lg border border-slate-300 bg-white px-2 text-xs outline-none focus:border-primary'
+                                    />
+                                  </div>
+                                  <div className='flex items-center gap-2'>
+                                    <input
+                                      type='file'
+                                      accept='image/*'
+                                      onChange={(e) => onInlineImageFileChange(si, imageIndex, e)}
+                                      className='block w-full text-[11px] text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-[10px] file:font-bold file:uppercase file:tracking-wider file:text-primary'
+                                    />
+                                  </div>
+                                  {previewSrc && (
+                                    <div className='overflow-hidden rounded-lg border border-slate-200 bg-white'>
+                                      <img src={previewSrc} alt={image.alt || 'Section image'} className='h-40 w-full object-cover' />
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Cards</p>
+                              <button type='button' onClick={() => addCard(si)} className='text-[10px] font-bold text-primary hover:underline'>+ Add Card</button>
+                            </div>
+                            {(section.cards || []).map((card, ci) => (
+                              <div key={`card-${ci}`} className='rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2'>
+                                <div className='flex items-center justify-end'>
+                                  <button type='button' onClick={() => removeCard(si, ci)} className='text-[10px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700'>Remove</button>
+                                </div>
+                                <input
+                                  value={card.title}
+                                  onChange={(e) => updateCard(si, ci, 'title', e.target.value)}
+                                  placeholder='Card title...'
+                                  className='h-9 w-full rounded-lg border border-slate-300 bg-white px-2 text-xs outline-none focus:border-primary'
+                                />
+                                <textarea
+                                  value={card.text}
+                                  onChange={(e) => updateCard(si, ci, 'text', e.target.value)}
+                                  placeholder='Card text...'
+                                  className='w-full rounded-lg border border-slate-300 bg-white p-2 text-xs outline-none focus:border-primary'
+                                  rows={2}
+                                />
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Table Rows</p>
+                              <button type='button' onClick={() => addTableRow(si)} className='text-[10px] font-bold text-primary hover:underline'>+ Add Row</button>
+                            </div>
+                            {(section.tableRows || []).map((row, ri) => (
+                              <div key={`row-${ri}`} className='rounded-xl border border-slate-200 bg-white p-3 space-y-2'>
+                                <div className='grid gap-2 sm:grid-cols-2'>
+                                  <input
+                                    value={row.label}
+                                    onChange={(e) => updateTableRow(si, ri, 'label', e.target.value)}
+                                    placeholder='Label...'
+                                    className='h-9 w-full rounded-lg border border-slate-300 px-2 text-xs outline-none focus:border-primary'
+                                  />
+                                  <input
+                                    value={row.value}
+                                    onChange={(e) => updateTableRow(si, ri, 'value', e.target.value)}
+                                    placeholder='Value...'
+                                    className='h-9 w-full rounded-lg border border-slate-300 px-2 text-xs outline-none focus:border-primary'
+                                  />
+                                </div>
+                                <div className='flex items-center justify-between'>
+                                  <select
+                                    value={row.tone || ''}
+                                    onChange={(e) => updateTableRow(si, ri, 'tone', e.target.value)}
+                                    className='h-8 rounded-lg border border-slate-300 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-600'
+                                  >
+                                    <option value=''>Default</option>
+                                    <option value='success'>Success</option>
+                                    <option value='warning'>Warning</option>
+                                  </select>
+                                  <button type='button' onClick={() => removeTableRow(si, ri)} className='text-[10px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700'>Remove</button>
+                                </div>
+                              </div>
+                            ))}
                           </div>
 
                           <div className='grid gap-4 sm:grid-cols-2 pt-2'>
@@ -681,6 +1148,24 @@ const BlogsAdminPage = () => {
                               />
                             </div>
                           </div>
+
+                          <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-[10px] font-black uppercase tracking-widest text-slate-500'>Paragraphs After Quote</p>
+                              <button type='button' onClick={() => addSectionListItem(si, 'paragraphsAfterQuote')} className='text-[10px] font-bold text-primary hover:underline'>+ Add Paragraph</button>
+                            </div>
+                            {(section.paragraphsAfterQuote || []).map((p, pi) => (
+                              <div key={`after-quote-${pi}`} className='group relative'>
+                                <textarea
+                                  value={p}
+                                  onChange={(e) => updateSectionListItem(si, 'paragraphsAfterQuote', pi, e.target.value)}
+                                  className='w-full rounded-xl border border-slate-300 bg-white p-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary'
+                                  rows={2}
+                                />
+                                <button type='button' onClick={() => removeSectionListItem(si, 'paragraphsAfterQuote', pi)} className='absolute right-2 top-2 h-5 w-5 rounded bg-red-600 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center shadow-lg transition-all'><X size={10} /></button>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -697,7 +1182,7 @@ const BlogsAdminPage = () => {
                   <div className='flex items-center justify-end gap-3 pt-6 border-t border-slate-200'>
                     <button
                       type='button'
-                      onClick={() => setIsModalOpen(false)}
+                      onClick={closeModal}
                       className='px-6 h-11 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-50'
                     >
                       Discard Changes

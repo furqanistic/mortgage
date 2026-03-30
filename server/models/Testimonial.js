@@ -7,6 +7,7 @@ const TestimonialSchema = new mongoose.Schema(
     location: { type: String, default: '', trim: true },
     text: { type: String, required: true, trim: true },
     image: { type: String, required: true, trim: true },
+    imagePublicId: { type: String, default: '', trim: true },
     rating: { type: Number, min: 1, max: 5, default: 5 },
     displayOrder: { type: Number, default: 0 },
     isActive: { type: Boolean, default: true },

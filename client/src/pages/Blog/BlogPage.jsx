@@ -672,6 +672,17 @@ export const renderLegacyArticleToHtml = (article) => {
       const paragraphsAfterBullets = (section.paragraphsAfterBullets || [])
         .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
         .join('')
+      const images = section.images?.length
+        ? `<div>${section.images
+            .map((image) => {
+              const src = escapeHtml(image?.url || '')
+              if (!src) return ''
+              const alt = escapeHtml(image?.alt || image?.caption || section.heading || 'Article image')
+              const caption = image?.caption ? `<figcaption>${escapeHtml(image.caption)}</figcaption>` : ''
+              return `<figure><img src="${src}" alt="${alt}" loading="lazy" decoding="async" />${caption}</figure>`
+            })
+            .join('')}</div>`
+        : ''
       const cards = section.cards?.length
         ? `<div>${section.cards
             .map((card) => `<h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.text)}</p>`)
@@ -688,7 +699,7 @@ export const renderLegacyArticleToHtml = (article) => {
         .join('')
       const tip = section.tip ? `<blockquote><strong>Baufiking Tip:</strong> ${escapeHtml(section.tip)}</blockquote>` : ''
 
-      return `<section><h2>${escapeHtml(section.heading || '')}</h2>${paragraphs}${bullets}${paragraphsAfterBullets}${cards}${tableRows}${quote}${paragraphsAfterQuote}${tip}</section>`
+      return `<section><h2>${escapeHtml(section.heading || '')}</h2>${paragraphs}${bullets}${paragraphsAfterBullets}${images}${cards}${tableRows}${quote}${paragraphsAfterQuote}${tip}</section>`
     })
     .join('')
 
@@ -1159,6 +1170,29 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
                           {section.paragraphsAfterBullets.map((paragraph, index) => (
                             <p key={`${section.heading}-after-bullets-${index}`}>{paragraph}</p>
                           ))}
+                        </div>
+                      )}
+
+                      {section.images && section.images.length > 0 && (
+                        <div className="mt-5 space-y-4">
+                          {section.images
+                            .filter((image) => image?.url)
+                            .map((image, imageIndex) => (
+                              <figure key={`${section.heading}-image-${imageIndex}`} className="space-y-2">
+                                <div className="overflow-hidden rounded-xl" style={{ border: '1px solid rgba(26,77,46,0.14)' }}>
+                                  <img
+                                    src={image.url}
+                                    alt={image.alt || image.caption || headingText}
+                                    className="w-full h-auto object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </div>
+                                {image.caption && (
+                                  <figcaption className="text-xs sm:text-sm text-muted-foreground">{image.caption}</figcaption>
+                                )}
+                              </figure>
+                            ))}
                         </div>
                       )}
 

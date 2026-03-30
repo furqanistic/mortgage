@@ -7,6 +7,7 @@ const BlogSchema = new mongoose.Schema(
     excerpt: { type: String, default: '', trim: true },
     category: { type: String, default: '', trim: true },
     coverImage: { type: String, default: '', trim: true },
+    coverImagePublicId: { type: String, default: '', trim: true },
     readTime: { type: String, default: '', trim: true },
     contentHtml: { type: String, required: true },
     structuredContent: { type: mongoose.Schema.Types.Mixed, default: null },
