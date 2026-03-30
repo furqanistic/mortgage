@@ -25,6 +25,11 @@ const createEmptySectionImage = () => ({
   publicId: '',
 })
 
+const createEmptyTocEntry = () => ({
+  title: '',
+  focus: '',
+})
+
 const createEmptySection = () => ({
   heading: '',
   paragraphs: [''],
@@ -51,6 +56,7 @@ const createEmptyBlogForm = () => ({
   structuredContent: {
     lead: [''],
     sections: [createEmptySection()],
+    toc: [createEmptyTocEntry()],
   },
 })
 
@@ -77,10 +83,35 @@ const cleanTextList = (value) =>
     .map((item) => String(item ?? '').trim())
     .filter(Boolean)
 
+const buildDefaultTocFocus = (section) => {
+  const paragraph = (Array.isArray(section?.paragraphs) ? section.paragraphs : []).find((item) => String(item || '').trim())
+  if (paragraph) return String(paragraph).trim()
+  return '—'
+}
+
+const buildTocFromSections = (sections = [], toc = []) =>
+  sections.map((section, index) => {
+    const existing = toc[index] || createEmptyTocEntry()
+    const defaultTitle = String(section?.heading || '').trim() || `Section ${index + 1}`
+    const defaultFocus = buildDefaultTocFocus(section)
+    return {
+      title: String(existing.title || '').trim() || defaultTitle,
+      focus: String(existing.focus || '').trim() || defaultFocus,
+    }
+  })
+
+const syncTocWithSections = (structuredContent) => {
+  const sections = Array.isArray(structuredContent?.sections) ? structuredContent.sections : []
+  const toc = Array.isArray(structuredContent?.toc) ? structuredContent.toc : []
+  structuredContent.toc = buildTocFromSections(sections, toc)
+  return structuredContent
+}
+
 const sanitizeStructuredContent = (structuredContent, fallbackExcerpt = '', hasPendingImageFile = () => false) => {
   const source = structuredContent && typeof structuredContent === 'object' ? deepClone(structuredContent) : {}
   const lead = cleanTextList(source.lead)
   const sections = Array.isArray(source.sections) ? source.sections : []
+  const existingToc = Array.isArray(source.toc) ? source.toc : []
 
   const normalizedSections = sections
     .map((section, sectionIndex) => ({
@@ -148,9 +179,12 @@ const sanitizeStructuredContent = (structuredContent, fallbackExcerpt = '', hasP
     })
   }
 
+  const normalizedToc = buildTocFromSections(normalizedSections, existingToc)
+
   return {
     lead: lead.length ? lead : [fallbackExcerpt || 'Write a short intro banner here.'],
     sections: normalizedSections,
+    toc: normalizedToc,
   }
 }
 
@@ -168,6 +202,7 @@ const BlogsAdminPage = () => {
   const [coverImagePreview, setCoverImagePreview] = useState('')
   const [inlineImageFiles, setInlineImageFiles] = useState({})
   const [inlineImagePreviews, setInlineImagePreviews] = useState({})
+  const [isTocModalOpen, setIsTocModalOpen] = useState(false)
   const coverImageInputRef = useRef(null)
 
   const stats = useMemo(() => {
@@ -210,6 +245,7 @@ const BlogsAdminPage = () => {
     setCoverImagePreview('')
     setInlineImageFiles({})
     setInlineImagePreviews({})
+    setIsTocModalOpen(false)
     setIsModalOpen(true)
   }
 
@@ -242,6 +278,7 @@ const BlogsAdminPage = () => {
     setCoverImagePreview(blog.coverImage || '')
     setInlineImageFiles({})
     setInlineImagePreviews({})
+    setIsTocModalOpen(false)
     setIsModalOpen(true)
   }
 
@@ -255,6 +292,7 @@ const BlogsAdminPage = () => {
     setCoverImageFile(null)
     setInlineImageFiles({})
     setInlineImagePreviews({})
+    setIsTocModalOpen(false)
     if (coverImageInputRef.current) {
       coverImageInputRef.current.value = ''
     }
@@ -285,7 +323,7 @@ const BlogsAdminPage = () => {
   const updateStructuredContent = (updater) => {
     setForm((prev) => ({
       ...prev,
-      structuredContent: updater(deepClone(prev.structuredContent)),
+      structuredContent: syncTocWithSections(updater(deepClone(prev.structuredContent))),
     }))
   }
 
@@ -481,6 +519,19 @@ const BlogsAdminPage = () => {
       if (String(next[key]).startsWith('blob:')) URL.revokeObjectURL(next[key])
       delete next[key]
       return next
+    })
+  }
+
+  const updateTocItem = (index, key, value) => {
+    updateStructuredContent((structuredContent) => {
+      if (!Array.isArray(structuredContent.toc)) {
+        structuredContent.toc = buildTocFromSections(structuredContent.sections, [])
+      }
+      if (!structuredContent.toc[index]) {
+        structuredContent.toc[index] = createEmptyTocEntry()
+      }
+      structuredContent.toc[index][key] = value
+      return structuredContent
     })
   }
 
@@ -762,7 +813,14 @@ const BlogsAdminPage = () => {
               exit={{ opacity: 0, scale: 0.98, y: 10 }}
               className='relative w-full max-w-7xl rounded-[2rem] border border-slate-300 bg-white p-6 shadow-2xl sm:p-8'
             >
-              <div className='absolute right-6 top-6'>
+              <div className='absolute right-6 top-6 flex items-center gap-2'>
+                <button
+                  type='button'
+                  onClick={() => setIsTocModalOpen(true)}
+                  className='inline-flex h-10 items-center rounded-xl border border-slate-200 bg-white px-3 text-[10px] font-black uppercase tracking-widest text-primary shadow-sm hover:bg-primary hover:text-white transition-colors'
+                >
+                  View Table of Content
+                </button>
                 <button
                   type='button'
                   onClick={closeModal}
@@ -1199,6 +1257,69 @@ const BlogsAdminPage = () => {
                   </div>
                 </div>
               </form>
+
+              <AnimatePresence>
+                {isTocModalOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className='absolute inset-0 z-20 overflow-y-auto rounded-[2rem] bg-slate-900/40 p-4 backdrop-blur-sm sm:p-6'
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                      className='mx-auto mt-2 w-full max-w-4xl rounded-2xl border border-slate-200 bg-white p-5 shadow-xl'
+                    >
+                      <div className='mb-4 flex items-center justify-between'>
+                        <div>
+                          <h3 className='text-lg font-bold text-slate-900 font-heading'>Table of Contents Preview</h3>
+                          <p className='text-xs text-slate-500'>Rows are auto-generated from sections. You can edit text only.</p>
+                        </div>
+                        <button
+                          type='button'
+                          onClick={() => setIsTocModalOpen(false)}
+                          className='flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 hover:text-red-500'
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+
+                      <div className='rounded-xl overflow-hidden' style={{ border: '1px solid rgba(26,77,46,0.12)' }}>
+                        <table className='w-full text-left text-sm'>
+                          <thead className='bg-primary/5'>
+                            <tr>
+                              <th className='px-4 py-2.5 font-semibold text-primary'>Section</th>
+                              <th className='px-4 py-2.5 font-semibold text-primary'>Focus</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(form.structuredContent.toc || []).map((tocItem, index) => (
+                              <tr key={`toc-row-${index}`} className='border-t border-primary/10 hover:bg-primary/5 transition-colors'>
+                                <td className='px-4 py-2.5'>
+                                  <input
+                                    value={tocItem.title || `Section ${index + 1}`}
+                                    onChange={(e) => updateTocItem(index, 'title', e.target.value)}
+                                    className='h-9 w-full rounded-lg border border-slate-300 px-2 text-xs font-semibold text-primary outline-none focus:border-primary'
+                                  />
+                                </td>
+                                <td className='px-4 py-2.5'>
+                                  <input
+                                    value={tocItem.focus || ''}
+                                    onChange={(e) => updateTocItem(index, 'focus', e.target.value)}
+                                    className='h-9 w-full rounded-lg border border-slate-300 px-2 text-xs text-muted-foreground outline-none focus:border-primary'
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         )}

@@ -1118,6 +1118,9 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
                             {articleForSections.sections.map((section, index) => {
                               const headingText = section.heading || `Section ${index + 1}`
                               const sectionId = toSectionId(headingText) || `section-${index + 1}`
+                              const tocItem = Array.isArray(articleForSections.toc) ? articleForSections.toc[index] : null
+                              const tocTitle = tocItem?.title || headingText
+                              const tocFocus = tocItem?.focus || ((section.paragraphs && section.paragraphs[0]) || '—')
                               return (
                               <tr key={`toc-row-${sectionId}`} className="border-t border-primary/10 hover:bg-primary/5 transition-colors">
                                 <td className="px-4 py-2.5">
@@ -1125,11 +1128,11 @@ const BlogPage = ({ language = 'de', onLanguageChange }) => {
                                     href={`#${sectionId}`}
                                     className="group inline-flex w-full items-center justify-between rounded-md px-2 py-1.5 font-semibold text-primary hover:bg-primary/10 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                                   >
-                                    <span className="group-hover:text-primary/90">{index + 1}. {headingText}</span>
+                                    <span className="group-hover:text-primary/90">{index + 1}. {tocTitle}</span>
                                   </a>
                                 </td>
                                 <td className="px-4 py-2.5 text-muted-foreground">
-                                  {(section.paragraphs && section.paragraphs[0]) || '—'}
+                                  {tocFocus}
                                 </td>
                               </tr>
                               )
