@@ -122,8 +122,8 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     const annualCosts = (nonTransferableCosts + maintenanceCosts) * 12
     const annualFinancing = year1Amortization.yearlyDebtService
 
-    // Match provided solved sheet: tax deduction uses yearly financing payment, not interest-only.
-    const deductibleExpenses = annualFinancing + annualCosts + annualDepreciation
+    // Tax deductions: interest and AfA are deductible; principal repayment is not.
+    const deductibleExpenses = interestYear1 + annualCosts + annualDepreciation
     const taxableRentalIncome = annualRentIncome - deductibleExpenses
     const taxLiability = taxableRentalIncome * (taxRate / 100)
     const annualTaxSavings = Math.max(0, -taxLiability)
@@ -159,7 +159,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
 
       totalPrincipalPaid += yearlyPrincipal
 
-      const yearlyDeductible = yearlyDebtService + yearlyCosts + annualDepreciation
+      const yearlyDeductible = yearlyAmortization.yearlyInterest + yearlyCosts + annualDepreciation
       const yearlyTaxableIncome = yearlyRent - yearlyDeductible
       const yearlyTaxLiability = yearlyTaxableIncome * (taxRate / 100)
       const yearlyTaxSavings = Math.max(0, -yearlyTaxLiability)
@@ -223,11 +223,12 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     for (let year = 1; year <= years; year += 1) {
       const comparisonYear = amortizeOneYear(compLoanBalance)
       const yearlyDebtService = comparisonYear.yearlyDebtService
+      const yearlyInterest = comparisonYear.yearlyInterest
       compLoanBalance = comparisonYear.endBalance
 
       const yearlyRent = compRent * 12
       const yearlyCosts = compCosts * 12
-      const yearlyDeductible = yearlyDebtService + yearlyCosts + annualDepreciation
+      const yearlyDeductible = yearlyInterest + yearlyCosts + annualDepreciation
       const yearlyTaxable = yearlyRent - yearlyDeductible
       const yearlyTax = Math.max(0, yearlyTaxable * (taxRate / 100))
       const yearlyTaxSavings = Math.max(0, -yearlyTaxable * (taxRate / 100))
@@ -254,6 +255,9 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
       monthlyPayment,
       interestYear1,
       principalYear1,
+      annualDepreciation,
+      annualInterestDeductible: interestYear1,
+      annualOperatingCostsDeductible: annualCosts,
       monthlyOperatingCosts: nonTransferableCosts + maintenanceCosts,
       monthlyCashflowAfterTax,
       grossYield,
@@ -389,7 +393,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
       description: isEnglish ? 'Tax assumptions affecting after-tax returns.' : 'Steuerannahmen fuer Nettorendite.',
       fields: [
         { key: 'taxRate', label: isEnglish ? 'Your Tax Rate' : 'Persoenlicher Steuersatz', hint: isEnglish ? 'Marginal income tax rate.' : 'Persoenlicher Grenzsteuersatz.', value: taxRate, setter: setTaxRate, suffix: '%', min: 0, max: 50, step: 1 },
-        { key: 'depreciationRate', label: isEnglish ? 'Depreciation (AfA)' : 'Abschreibung (AfA)', hint: isEnglish ? 'Annual depreciation rate for building part.' : 'Jaehrliche Abschreibung auf Gebaeudeanteil.', value: depreciationRate, setter: setDepreciationRate, suffix: '%', min: 0, max: 5, step: 0.1 },
+        { key: 'depreciationRate', label: isEnglish ? 'Depreciation (AfA)' : 'Abschreibung (AfA)', hint: isEnglish ? 'Annual depreciation rate for building part.' : 'Jaehrliche Abschreibung auf Gebaeudeanteil.', value: depreciationRate, setter: setDepreciationRate, suffix: '%', min: 0, step: 0.1 },
         { key: 'buildingRatio', label: isEnglish ? 'Building Ratio' : 'Gebaeudeanteil', hint: isEnglish ? 'Share of purchase considered depreciable building.' : 'Anteil des Gebaeudes am Kaufpreis.', value: buildingRatio, setter: setBuildingRatio, suffix: '%', min: 50, max: 95, step: 1 },
       ],
     },
@@ -570,6 +574,8 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     ly = dataRow(isEnglish ? 'Tax Rate' : 'Steuersatz', `${taxRate}%`, ly)
     ly = dataRow(isEnglish ? 'Appreciation' : 'Wertsteigerung', `${propertyGrowth.toFixed(1)}%`, ly)
     ly = dataRow(isEnglish ? 'Depreciation (Afa)' : 'Abschreibung', `${depreciationRate.toFixed(1)}%`, ly)
+    ly = dataRow(isEnglish ? 'AfA amount (year 1)' : 'AfA-Betrag (Jahr 1)', formatCurrency(data.annualDepreciation), ly)
+    ly = dataRow(isEnglish ? 'Deductible loan interest (Y1)' : 'Abzugsf. Darlehenszins (J1)', formatCurrency(data.annualInterestDeductible), ly)
 
     doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(26, 77, 46)
     doc.text(isEnglish ? '10-YEAR PROJECTION' : '10-JAHRES PROGNOSE', ml + colW + 10, ry)
@@ -588,6 +594,7 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
     ry = resultRow(isEnglish ? 'Remaining Debt' : 'Restschuld', formatCurrency(data.remainingBalance), ry)
     ry = resultRow(isEnglish ? 'Cum. Cashflow' : 'Gesamt-Cashflow', formatCurrency(data.cumulativeCashflowAfterTax), ry)
     ry = resultRow(isEnglish ? 'Annual Tax Savings' : 'Steuerersparnis p.a.', formatCurrency(data.annualTaxSavings), ry)
+    ry = resultRow(isEnglish ? 'Total deductible (Y1)' : 'Abzuege gesamt (J1)', formatCurrency(data.deductibleExpenses), ry)
     
     ry += 2
     doc.setFillColor(232, 245, 233)
@@ -812,8 +819,23 @@ const PropertyInvestmentCalculator = ({ language = 'de' }) => {
                       <span className="text-sm text-slate-500">{isEnglish ? 'Rental Income' : 'Mieteinnahmen'}</span>
                       <span className="text-sm font-bold">{formatCurrency(data.annualRentIncome)}</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-slate-50">
-                      <span className="text-sm text-slate-500">{isEnglish ? 'Deductible Expenses' : 'Abzusetzende Kosten'}</span>
+                    <div className="pt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                      {isEnglish ? 'Deductible expenses (year 1)' : 'Abzugsfaehige Kosten (Jahr 1)'}
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-slate-50 pl-1">
+                      <span className="text-sm text-slate-500">{isEnglish ? 'Depreciation (AfA)' : 'Abschreibung (AfA)'}</span>
+                      <span className="text-sm font-bold">{formatCurrency(data.annualDepreciation)}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-slate-50 pl-1">
+                      <span className="text-sm text-slate-500">{isEnglish ? 'Interest on loan' : 'Darlehenszins'}</span>
+                      <span className="text-sm font-bold">{formatCurrency(data.annualInterestDeductible)}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-slate-50 pl-1">
+                      <span className="text-sm text-slate-500">{isEnglish ? 'Operating costs (p.a.)' : 'Betriebskosten (p.a.)'}</span>
+                      <span className="text-sm font-bold">{formatCurrency(data.annualOperatingCostsDeductible)}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 pt-3 border-t border-slate-200">
+                      <span className="text-sm font-semibold text-slate-700">{isEnglish ? 'Total deductible expenses' : 'Summe abzugsfaehige Kosten'}</span>
                       <span className="text-sm font-bold">{formatCurrency(data.deductibleExpenses)}</span>
                     </div>
                   </div>
